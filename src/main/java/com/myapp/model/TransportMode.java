@@ -1,5 +1,7 @@
 package com.myapp.model;
 
-public class TransportMode {
-    
+public enum TransportMode {
+    CAR,  
+    BIKE, 
+    FOOT; 
 }
