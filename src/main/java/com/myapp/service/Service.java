@@ -1,13 +1,16 @@
 package com.myapp.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.myapp.api.NominatimClient;
+import com.myapp.api.OSRMClient;
 import com.myapp.api.OverpassClient;
 import com.myapp.model.POI;
 import com.myapp.model.Point;
 import com.myapp.model.Route;
+import com.myapp.model.TransportMode;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,8 +18,21 @@ import com.google.gson.JsonParser;
 
 public class Service {
     
+    private final OSRMClient osrmClient = new OSRMClient();
     private final OverpassClient overpassClient = new OverpassClient();
     private final NominatimClient nominatimClient = new NominatimClient();
+
+    public Route getRoute(Point origin, Point destination, TransportMode mode) {
+        try {
+            String routeJson = osrmClient.getRouteJson(origin, destination, mode);
+            System.out.println(routeJson);
+            JsonObject JsonObject = JsonParser.parseString(routeJson).getAsJsonObject();
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error fetching route: " + e.getMessage());
+            return null;
+        }
+        return null;
+    }   
 
     public List<POI> getPOIsAlongRoute(Route route, String overpassFilter) {
         if (route == null || route.getRoutePoints().isEmpty()) return List.of();
