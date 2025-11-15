@@ -7,14 +7,12 @@ public class Route {
     private final long durationSec;
     private final TransportMode mode;
     private final List<POI> pois;
-    private final List<Point> path;
 
-    public Route(double distanceKm, long durationSec, TransportMode mode, List<POI> pois, List<Point> path) {
+    public Route(double distanceKm, long durationSec, TransportMode mode, List<POI> pois) {
         this.distanceKm = distanceKm;
         this.durationSec = durationSec;
         this.mode = mode;
         this.pois = pois;
-        this.path = path;
     }
 
     public double getDistanceKm() {
@@ -33,9 +31,6 @@ public class Route {
         return pois;
     }
 
-    public List<Point> getPath() {
-        return path;
-    }
 
 
 }
