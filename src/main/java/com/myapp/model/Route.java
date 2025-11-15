@@ -35,4 +35,8 @@ public class Route {
     public List<POI> getPois() {
         return pois;
     }
+
+    public void addPOI(POI poi) {
+        this.pois.add(poi);
+    }
 }
