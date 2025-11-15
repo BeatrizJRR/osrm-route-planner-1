@@ -24,14 +24,38 @@ public class Service {
 
     public Route getRoute(Point origin, Point destination, TransportMode mode) {
         try {
-            String routeJson = osrmClient.getRouteJson(origin, destination, mode);
-            System.out.println(routeJson);
-            JsonObject JsonObject = JsonParser.parseString(routeJson).getAsJsonObject();
+            String route = osrmClient.getRouteJson(origin, destination, mode);
+            JsonObject osrmResponseJSON = JsonParser.parseString(route).getAsJsonObject();
+            if (!osrmResponseJSON.has("routes")) {
+                System.err.println("[RouteService] JSON sem 'routes'");
+                return null;
+            }
+            JsonArray routes = osrmResponseJSON.getAsJsonArray("routes");
+            if (routes.size() == 0) {
+                System.err.println("[RouteService] Nenhuma rota encontrada");
+                return null;
+            }
+
+            JsonObject firstRoute = routes.get(0).getAsJsonObject();
+            double distanceKm = firstRoute.get("distance").getAsDouble() / 1000.0;
+            long durationSec = Math.round(firstRoute.get("duration").getAsDouble());
+
+            List<Point> path = new ArrayList<>();
+            JsonArray coordsArray = firstRoute
+                    .getAsJsonObject("geometry")
+                    .getAsJsonArray("coordinates");
+
+            for (JsonElement el : coordsArray) {
+                JsonArray coord = el.getAsJsonArray();
+                double lon = coord.get(0).getAsDouble();
+                double lat = coord.get(1).getAsDouble();
+                path.add(new Point(lat, lon, null));
+            }
+            return new Route(path, distanceKm, durationSec, mode, List.of());
         } catch (IOException | InterruptedException e) {
             System.out.println("Error fetching route: " + e.getMessage());
             return null;
         }
-        return null;
     }   
 
     public List<POI> getPOIsAlongRoute(Route route, String overpassFilter) {
@@ -56,7 +80,12 @@ public class Service {
 
         try {
             String json = overpassClient.postOverpass(ql);
-            return parseOverpassPOIs(json);
+            System.out.println("[PoiService] Overpass response: " + json);
+            List<POI> routePOIs = parseOverpassPOIs(json);
+            for (POI poi : routePOIs) {
+                route.addPOI(poi);
+            }
+            return routePOIs;
         } catch (Exception e) {
             System.err.println("[PoiService] Erro Overpass: " + e.getMessage());
             return List.of();
