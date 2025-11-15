@@ -30,7 +30,4 @@ public class Route {
     public List<POI> getPois() {
         return pois;
     }
-
-
-
 }
