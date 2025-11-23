@@ -1,15 +1,20 @@
 package com.myapp.ui;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.myapp.model.Point;
 import com.myapp.model.Route;
 import com.myapp.model.TransportMode;
 import com.myapp.service.Service;
 import com.sothawo.mapjfx.*;
 import com.sothawo.mapjfx.event.MapViewEvent;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -18,6 +23,8 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+import javafx.scene.text.Text;
+
 public class MapViewer extends Application {
 
     private final MapView mapView = new MapView();
@@ -25,11 +32,17 @@ public class MapViewer extends Application {
     private Marker destinationMarker = null;
     private Marker searchMarker = null;
     private CoordinateLine currentRouteLine = null;
+    private Point lastSearchPoint = null;
 
     private final Service service = new Service();
 
     private final Label routeInfoLabel = new Label("Defina origem e destino...");
     private final ComboBox<TransportMode> modeBox = new ComboBox<>();
+
+    private TextField origemField;
+    private TextField destinoField;
+    private TextField pesquisaField;
+    private ContextMenu suggestionsMenu = new ContextMenu();
 
     @Override
     public void start(Stage stage) {
@@ -42,19 +55,21 @@ public class MapViewer extends Application {
         sidebar.getStyleClass().add("sidebar");
         sidebar.setPadding(new Insets(20));
 
-        TextField origemField = new TextField();
-        origemField.setPromptText("Origem");
+        origemField = new TextField();
+        destinoField = new TextField();
+        pesquisaField = new TextField();
 
-        TextField destinoField = new TextField();
+        origemField.setPromptText("Origem");
         destinoField.setPromptText("Destino");
 
         Button btnOrigem = new Button("Definir Origem");
         Button btnDestino = new Button("Definir Destino");
         Button btnReset = new Button("Nova Pesquisa");
 
-        TextField pesquisaField = new TextField();
         pesquisaField.setPromptText("Pesquisar no mapa...");
         Button btnPesquisar = new Button("Pesquisar");
+
+        setupAutocomplete();
 
         modeBox.getItems().setAll(TransportMode.values());
         modeBox.setValue(TransportMode.CAR);
@@ -89,16 +104,9 @@ public class MapViewer extends Application {
         mapContainer.getChildren().add(mapView);
 
         // --- EVENTOS ---
-        btnOrigem.setOnAction(e -> {
-            // Integra pesquisa se quiseres
-        });
-
-        btnDestino.setOnAction(e -> {
-        });
-
-        btnPesquisar.setOnAction(e -> {
-        });
-
+        btnOrigem.setOnAction(e -> handleSetOrigem());
+        btnDestino.setOnAction(e -> handleSetDestino());
+        btnPesquisar.setOnAction(e -> handlePesquisar());
         btnCalcular.setOnAction(e -> calculateRoute(modeBox.getValue()));
         btnReset.setOnAction(e -> resetMap());
 
@@ -226,9 +234,180 @@ public class MapViewer extends Application {
         searchMarker = null;
         currentRouteLine = null;
 
+        origemField.setText("");
+        destinoField.setText("");
+        pesquisaField.setText("");
+
         mapView.setCenter(new Coordinate(38.7223, -9.1393));
         mapView.setZoom(10);
 
         routeInfoLabel.setText("Mapa limpo.");
     }
+
+    // Trata o botão "Definir Origem"
+    private void handleSetOrigem() {
+        String input = origemField.getText().trim();
+
+        // 1) Se o utilizador escreveu algo no campo, tenta geocodificar
+        if (!input.isEmpty()) {
+            new Thread(() -> {
+                Point result = service.getGeocodeFromLocationString(input);
+
+                if (result == null) {
+                    Platform.runLater(() ->
+                            routeInfoLabel.setText("Origem não encontrada: " + input));
+                    return;
+                }
+
+                Coordinate coord = new Coordinate(result.getLatitude(), result.getLongitude());
+
+                Platform.runLater(() -> {
+                    setOrigin(coord);
+                    origemField.setText(result.getName());
+                    mapView.setCenter(coord);
+                    mapView.setZoom(15);
+                });
+            }).start();
+
+            return; // já tratámos este cenário
+        }
+
+        // 2) Senão usa o último ponto pesquisado
+        if (lastSearchPoint == null) {
+            routeInfoLabel.setText("Escreve um local ou faz uma pesquisa.");
+            return;
+        }
+
+        Coordinate coord = new Coordinate(
+                lastSearchPoint.getLatitude(),
+                lastSearchPoint.getLongitude()
+        );
+
+        setOrigin(coord);
+        origemField.setText(lastSearchPoint.getName());
+    }
+
+
+    // Trata o botão "Definir Destino"
+    private void handleSetDestino() {
+        String input = destinoField.getText().trim();
+
+        // 1) Se o utilizador escreveu algo no campo, tenta geocodificar
+        if (!input.isEmpty()) {
+            new Thread(() -> {
+                Point result = service.getGeocodeFromLocationString(input);
+
+                if (result == null) {
+                    Platform.runLater(() ->
+                            routeInfoLabel.setText("Destino não encontrado: " + input));
+                    return;
+                }
+
+                Coordinate coord = new Coordinate(result.getLatitude(), result.getLongitude());
+
+                Platform.runLater(() -> {
+                    setDestination(coord);
+                    destinoField.setText(result.getName());
+                    mapView.setCenter(coord);
+                    mapView.setZoom(15);
+                });
+            }).start();
+
+            return;
+        }
+
+        // 2) Senão usa o último ponto pesquisado
+        if (lastSearchPoint == null) {
+            routeInfoLabel.setText("Escreve um local ou faz uma pesquisa.");
+            return;
+        }
+
+        Coordinate coord = new Coordinate(
+                lastSearchPoint.getLatitude(),
+                lastSearchPoint.getLongitude()
+        );
+
+        setDestination(coord);
+        destinoField.setText(lastSearchPoint.getName());
+    }
+
+
+    // Trata o botão "Pesquisar"
+    private void handlePesquisar() {
+        String query = pesquisaField.getText().trim();
+        if (query.isEmpty()) {
+            routeInfoLabel.setText("Escreve um local a pesquisar.");
+            return;
+        }
+
+        // Faz a chamada à API numa thread separada para não bloquear a UI
+        new Thread(() -> {
+            Point result = service.getGeocodeFromLocationString(query);
+
+            if (result == null) {
+                Platform.runLater(() -> routeInfoLabel.setText("Local não encontrado."));
+                return;
+            }
+
+            lastSearchPoint = result; // guardar para usar nos botões origem/destino
+            Coordinate coord = new Coordinate(result.getLatitude(), result.getLongitude());
+
+            Platform.runLater(() -> {
+                setSearchMarker(coord);
+                mapView.setCenter(coord);
+                mapView.setZoom(15);
+
+                routeInfoLabel.setText("Encontrado: " + result.getName());
+            });
+        }).start();
+    }
+
+    private void setupAutocomplete() {
+        // Aplica autocomplete a todos os campos que precisam
+        setupFieldAutocomplete(pesquisaField);
+        setupFieldAutocomplete(origemField);
+        setupFieldAutocomplete(destinoField);
+}
+    private void setupFieldAutocomplete(TextField field) {
+        field.textProperty().addListener((obs, oldText, newText) -> {
+            if (newText.isBlank()) {
+                suggestionsMenu.hide();
+                return;
+            }
+
+            new Thread(() -> {
+                try {
+                    List<Point> results = service.searchLocations(newText);
+
+                    Platform.runLater(() -> {
+                        suggestionsMenu.getItems().clear();
+
+                        for (Point p : results) {
+                            MenuItem item = new MenuItem(p.getName());
+                            item.setOnAction(e -> {
+                                field.setText(p.getName());  // Atualiza o campo correto
+                                lastSearchPoint = p;
+                                suggestionsMenu.hide();
+                            });
+                            suggestionsMenu.getItems().add(item);
+                        }
+
+                        if (!results.isEmpty()) {
+                            suggestionsMenu.show(field, Side.BOTTOM, 0, 0); // Mostrar sobre o campo correto
+                        } else {
+                            suggestionsMenu.hide();
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        });
+    }
+
+
+    
+
+
 }

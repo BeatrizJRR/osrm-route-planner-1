@@ -135,4 +135,22 @@ public class Service {
             return null;
         }
     }
+
+    public List<Point> searchLocations(String query) {
+        List<Point> results = new ArrayList<>();
+        try {
+            String json = nominatimClient.searchJson(query);
+            JsonArray array = JsonParser.parseString(json).getAsJsonArray();
+            for (JsonElement el : array) {
+                JsonObject obj = el.getAsJsonObject();
+                double lat = obj.get("lat").getAsDouble();
+                double lon = obj.get("lon").getAsDouble();
+                String displayName = obj.get("display_name").getAsString();
+                results.add(new Point(lat, lon, displayName));
+            }
+        } catch (Exception e) {
+            System.err.println("[GeocodingService] Erro a pesquisar Nominatim: " + e.getMessage());
+        }
+        return results;
+    }
 }
