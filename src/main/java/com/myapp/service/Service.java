@@ -3,6 +3,7 @@ package com.myapp.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.myapp.api.NominatimClient;
 import com.myapp.api.OSRMClient;
@@ -51,46 +52,91 @@ public class Service {
                 double lat = coord.get(1).getAsDouble();
                 path.add(new Point(lat, lon, null));
             }
-            return new Route(path, distanceKm, durationSec, mode, List.of());
+            return new Route(path, distanceKm, durationSec, mode, new ArrayList<>());
         } catch (IOException | InterruptedException e) {
             System.out.println("Error fetching route: " + e.getMessage());
             return null;
         }
     }   
-
-    public List<POI> getPOIsAlongRoute(Route route, String overpassFilter) {
+    public List<POI> getPOIsAlongRoute(Route route, String type) {
         if (route == null || route.getRoutePoints().isEmpty()) return List.of();
 
-        double minLat = Double.POSITIVE_INFINITY, maxLat = Double.NEGATIVE_INFINITY;
-        double minLon = Double.POSITIVE_INFINITY, maxLon = Double.NEGATIVE_INFINITY;
-        for (Point p : route.getRoutePoints()) {
-            minLat = Math.min(minLat, p.getLatitude());
-            maxLat = Math.max(maxLat, p.getLatitude());
-            minLon = Math.min(minLon, p.getLongitude());
-            maxLon = Math.max(maxLon, p.getLongitude());
+        List<POI> result = new ArrayList<>();
+        List<Point> points = route.getRoutePoints();
+
+        int size = points.size();
+        int radius = 250;
+
+        String tag = switch (type) {
+            case "Restaurant" -> "amenity=restaurant";
+            case "Cafe" -> "amenity=cafe";
+            case "Fast Food" -> "amenity=fast_food";
+            case "Bar" -> "amenity=bar";
+            case "Toilets" -> "amenity=toilets";
+            case "ATM" -> "amenity=atm";
+            case "Fuel" -> "amenity=fuel";
+            case "Pharmacy" -> "amenity=pharmacy";
+            case "Hospital" -> "amenity=hospital";
+            case "Parking" -> "amenity=parking";
+            case "Bank" -> "amenity=bank";
+
+            case "Supermarket" -> "shop=supermarket";
+            case "Bakery" -> "shop=bakery";
+            case "Mall" -> "shop=mall";
+            case "Convenience Store" -> "shop=convenience";
+
+            case "Hotel" -> "tourism=hotel";
+            case "Museum" -> "tourism=museum";
+            case "Attraction" -> "tourism=attraction";
+
+            default -> null;
+        };
+
+        if (tag == null) return List.of(); // segurança
+
+        int checkpoints = 30; // evenly spaced points
+
+        for (int i = 0; i < checkpoints; i++) {
+            int index = (int) ((i / (double) checkpoints) * size);
+            Point p = points.get(index);
+
+            String ql = String.format(Locale.US, """
+            [out:json][timeout:25];
+            (
+            node[%s](around:%d,%f,%f);
+            );
+            out center 20;
+            """, tag, radius, p.getLatitude(), p.getLongitude());
+
+            try {
+                String json = overpassClient.postOverpass(ql);
+                List<POI> chunkPois = parseOverpassPOIs(json);
+                result.addAll(chunkPois);
+
+                if (result.size() > 80) break;
+
+            } catch (Exception ignored) {}
         }
 
-        String ql = String.format("""
-                [out:json][timeout:25];
-                (
-                  %s(%f,%f,%f,%f);
-                );
-                out center;
-                """, overpassFilter, minLat, minLon, maxLat, maxLon);
 
-        try {
-            String json = overpassClient.postOverpass(ql);
-            System.out.println("[PoiService] Overpass response: " + json);
-            List<POI> routePOIs = parseOverpassPOIs(json);
-            for (POI poi : routePOIs) {
-                route.addPOI(poi);
-            }
-            return routePOIs;
-        } catch (Exception e) {
-            System.err.println("[PoiService] Erro Overpass: " + e.getMessage());
-            return List.of();
+        // Remover duplicados (coordenadas iguais)
+        List<POI> unique = new ArrayList<>();
+        for (POI poi : result) {
+            boolean exists = unique.stream().anyMatch(
+                x -> Math.abs(x.getCoordinate().getLatitude() - poi.getCoordinate().getLatitude()) < 0.00001 &&
+                    Math.abs(x.getCoordinate().getLongitude() - poi.getCoordinate().getLongitude()) < 0.00001
+            );
+            if (!exists) unique.add(poi);
         }
+
+        // Aplicar limite final
+        if (unique.size() > 150) {  
+            return unique.subList(0, 150);
+        }
+
+        return unique;
     }
+
 
     private List<POI> parseOverpassPOIs(String json) {
         List<POI> pois = new ArrayList<>();

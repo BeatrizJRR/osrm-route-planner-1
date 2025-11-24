@@ -3,8 +3,10 @@ package com.myapp.ui;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.myapp.model.POI;
 import com.myapp.model.Point;
 import com.myapp.model.Route;
+import com.myapp.model.RouteExporter;
 import com.myapp.model.TransportMode;
 import com.myapp.service.Service;
 import com.sothawo.mapjfx.*;
@@ -33,6 +35,11 @@ public class MapViewer extends Application {
     private Marker searchMarker = null;
     private CoordinateLine currentRouteLine = null;
     private Point lastSearchPoint = null;
+    private Route lastRoute = null;
+    private final List<Marker> poiMarkers = new java.util.ArrayList<>();
+    private ComboBox<String> poiFilterBox;
+
+
 
     private final Service service = new Service();
 
@@ -68,6 +75,7 @@ public class MapViewer extends Application {
 
         pesquisaField.setPromptText("Pesquisar no mapa...");
         Button btnPesquisar = new Button("Pesquisar");
+        Button btnSearchPois = new Button("Pesquisar POIs na Rota");
 
         setupAutocomplete();
 
@@ -75,6 +83,36 @@ public class MapViewer extends Application {
         modeBox.setValue(TransportMode.CAR);
 
         Button btnCalcular = new Button("Calcular Rota");
+
+        Button btnExportJson = new Button("Exportar JSON");
+        Button btnExportGpx = new Button("Exportar GPX");
+
+        poiFilterBox = new ComboBox<>();
+        poiFilterBox.getItems().addAll(
+            "Nenhum",
+            "Restaurant",
+            "Cafe",
+            "Fast Food",
+            "Bar",
+            "Toilets",
+            "ATM",
+            "Fuel",
+            "Pharmacy",
+            "Hospital",
+            "Parking",
+            "Bank",
+            "Supermarket",
+            "Bakery",
+            "Mall",
+            "Convenience Store",
+            "Hotel",
+            "Museum",
+            "Attraction"
+        );
+
+        poiFilterBox.setValue("Nenhum"); // default
+
+
 
         sidebar.getChildren().addAll(
                 new Label("🧭 Planeador"),
@@ -88,8 +126,14 @@ public class MapViewer extends Application {
                 modeBox,
                 btnCalcular,
                 new Separator(),
+                new Label("📍 Tipo de POI"),
+                poiFilterBox,
+                btnSearchPois,
+                new Separator(),
                 btnReset,
-                routeInfoLabel);
+                routeInfoLabel, 
+                btnExportGpx, btnExportJson
+                );
 
         // --- MAPA ---
         StackPane mapContainer = new StackPane();
@@ -109,6 +153,11 @@ public class MapViewer extends Application {
         btnPesquisar.setOnAction(e -> handlePesquisar());
         btnCalcular.setOnAction(e -> calculateRoute(modeBox.getValue()));
         btnReset.setOnAction(e -> resetMap());
+        btnExportJson.setOnAction(e -> handleExportJson());
+        btnExportGpx.setOnAction(e -> handleExportGpx());
+        btnSearchPois.setOnAction(e -> handleSearchPois());
+
+
 
         // --- INIT MAP ---
         mapView.initialize(Configuration.builder()
@@ -171,6 +220,15 @@ public class MapViewer extends Application {
         mapView.addMarker(searchMarker);
     }
 
+    // --- LIMPAR POIS ---
+    private void clearPoisFromMap() {
+        for (Marker m : poiMarkers) {
+            mapView.removeMarker(m);
+        }
+        poiMarkers.clear();
+}
+
+
     // --- CALCULAR ROTA (com fix extents) ---
     private void calculateRoute(TransportMode mode) {
         if (originMarker == null || destinationMarker == null) {
@@ -194,7 +252,7 @@ public class MapViewer extends Application {
             routeInfoLabel.setText("Erro ao calcular rota.");
             return;
         }
-
+        
         List<Coordinate> coords = route.getRoutePoints().stream()
                 .map(p -> new Coordinate(p.getLatitude(), p.getLongitude()))
                 .toList();
@@ -217,6 +275,8 @@ public class MapViewer extends Application {
                 route.getDistanceKm(),
                 route.getDurationSec() / 60,
                 mode));
+        
+        lastRoute = route;
     }
 
     private void resetMap() {
@@ -224,6 +284,11 @@ public class MapViewer extends Application {
             mapView.removeMarker(originMarker);
         if (destinationMarker != null)
             mapView.removeMarker(destinationMarker);
+
+        for (Marker m : poiMarkers) {
+            mapView.removeMarker(m);
+        }
+        poiMarkers.clear();
         if (searchMarker != null)
             mapView.removeMarker(searchMarker);
         if (currentRouteLine != null)
@@ -233,6 +298,9 @@ public class MapViewer extends Application {
         destinationMarker = null;
         searchMarker = null;
         currentRouteLine = null;
+
+ 
+
 
         origemField.setText("");
         destinoField.setText("");
@@ -362,6 +430,66 @@ public class MapViewer extends Application {
         }).start();
     }
 
+        // --- EXPORTAR JSON ---
+    private void handleExportJson() {
+        if (lastRoute == null) {
+            routeInfoLabel.setText("Nenhuma rota calculada.");
+            return;
+        }
+
+        try {
+            RouteExporter.exportToJson(lastRoute, "route.json");
+            routeInfoLabel.setText("Exportado para route.json");
+        } catch (Exception ex) {
+            routeInfoLabel.setText("Erro ao exportar JSON");
+            ex.printStackTrace();
+        }
+    }
+
+    // --- EXPORTAR GPX ---
+    private void handleExportGpx() {
+        if (lastRoute == null) {
+            routeInfoLabel.setText("Nenhuma rota calculada.");
+            return;
+        }
+
+        try {
+            RouteExporter.exportToGPX(lastRoute, "route.gpx");
+            routeInfoLabel.setText("Exportado para route.gpx");
+        } catch (Exception ex) {
+            routeInfoLabel.setText("Erro ao exportar GPX");
+            ex.printStackTrace();
+        }
+    }
+
+    private void handleSearchPois() {
+        if (lastRoute == null) {
+            routeInfoLabel.setText("Calcula uma rota primeiro.");
+            return;
+        }
+
+        String selected = poiFilterBox.getValue();
+
+        if (selected.equals("Nenhum")) {
+            clearPoisFromMap();
+            routeInfoLabel.setText("Nenhum tipo selecionado.");
+            return;
+        }
+
+        routeInfoLabel.setText("A procurar POIs...");
+
+        new Thread(() -> {
+            List<POI> pois = service.getPOIsAlongRoute(lastRoute, selected);
+
+            Platform.runLater(() -> {
+                showPoisOnMap(pois);
+                routeInfoLabel.setText(pois.size() + " POIs encontrados.");
+            });
+        }).start();
+    }
+
+
+
     private void setupAutocomplete() {
         // Aplica autocomplete a todos os campos que precisam
         setupFieldAutocomplete(pesquisaField);
@@ -406,8 +534,26 @@ public class MapViewer extends Application {
         });
     }
 
+    private void showPoisOnMap(List<POI> pois) {
+        // remover marcadores antigos
+        for (Marker m : poiMarkers) {
+            mapView.removeMarker(m);
+        }
+        poiMarkers.clear();
 
-    
+        for (POI poi : pois) {
+            Coordinate coord = new Coordinate(
+                    poi.getCoordinate().getLatitude(),
+                    poi.getCoordinate().getLongitude()
+            );
 
+            Marker marker = Marker.createProvided(Marker.Provided.ORANGE);
 
+            marker.setPosition(coord);
+            marker.setVisible(true);
+
+            poiMarkers.add(marker);
+            mapView.addMarker(marker);
+        }
+    }
 }
