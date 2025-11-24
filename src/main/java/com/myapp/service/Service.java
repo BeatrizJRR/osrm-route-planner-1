@@ -199,4 +199,46 @@ public class Service {
         }
         return results;
     }
+
+    public Route getRouteWithWaypoints(Point originPoint, List<Point> waypointPoints, TransportMode mode) {
+        try {
+            // Ask OSRM for a full multi-stop route
+            String routeJson = osrmClient.getRouteJsonWithWaypoints(originPoint, waypointPoints, mode);
+
+            JsonObject root = JsonParser.parseString(routeJson).getAsJsonObject();
+            if (!root.has("routes")) {
+                System.err.println("[RouteService] JSON sem 'routes'");
+                return null;
+            }
+
+            JsonArray routes = root.getAsJsonArray("routes");
+            if (routes.size() == 0) {
+                System.err.println("[RouteService] Nenhuma rota encontrada");
+                return null;
+            }
+
+            JsonObject firstRoute = routes.get(0).getAsJsonObject();
+            double distanceKm = firstRoute.get("distance").getAsDouble() / 1000.0;
+            long durationSec = Math.round(firstRoute.get("duration").getAsDouble());
+
+            List<Point> path = new ArrayList<>();
+            JsonArray coordsArray = firstRoute
+                    .getAsJsonObject("geometry")
+                    .getAsJsonArray("coordinates");
+
+            for (JsonElement el : coordsArray) {
+                JsonArray coord = el.getAsJsonArray();
+                double lon = coord.get(0).getAsDouble();
+                double lat = coord.get(1).getAsDouble();
+                path.add(new Point(lat, lon, null));
+            }
+
+            return new Route(path, distanceKm, durationSec, mode, new ArrayList<>());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

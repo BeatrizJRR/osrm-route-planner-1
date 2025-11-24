@@ -10,6 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -40,6 +41,44 @@ public class OSRMClient {
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body(); 
     }
+
+    public String getRouteJsonWithWaypoints(Point origin, List<Point> waypoints, TransportMode mode)
+        throws IOException, InterruptedException {
+
+        String profile = switch (mode) {
+            case CAR -> "driving";
+            case BIKE -> "cycling";
+            case FOOT -> "walking";
+            default -> "driving";
+        };
+
+        StringBuilder url = new StringBuilder("http://router.project-osrm.org/route/v1/");
+        url.append(profile).append("/");
+
+        // Origin
+        url.append(origin.getLongitude()).append(",").append(origin.getLatitude());
+
+        // Waypoints
+        for (Point wp : waypoints) {
+            url.append(";")
+                    .append(wp.getLongitude())
+                    .append(",")
+                    .append(wp.getLatitude());
+        }
+
+        // Full geometry and overview
+        url.append("?overview=full&geometries=geojson");
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url.toString()))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+
+        return response.body();
+    }
+
 
     
 }
