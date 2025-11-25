@@ -171,9 +171,13 @@ public class MapViewer extends Application {
 
         // ROUTE SUMMARY
         Label lblResumo = new Label("📊 Resumo da Rota");
+        lblResumo.setUnderline(true);
+        lblResumo.setStyle("-fx-font-weight: bold");
 
         // POI FILTER
         Label lblPOI = new Label("📍 Tipo de Ponto de Interesse");
+        lblPOI.setUnderline(true);
+        lblPOI.setStyle("-fx-font-weight: bold");
         poiFilterBox.getItems().addAll(
                 "Nenhum", "Restaurante", "Café", "Fast Food", "Bar", "Sanitários",
                 "ATM", "Combustível", "Farmácia", "Hospital", "Estacionamento", "Banco",
@@ -196,6 +200,8 @@ public class MapViewer extends Application {
 
         // ELEVATION
         Label lblElevation = new Label("📈 Perfil Altimétrico");
+        lblElevation.setUnderline(true);
+        lblElevation.setStyle("-fx-font-weight: bold");
         Button btnElevation = new Button("📊 Mostrar Elevação");
         btnElevation.getStyleClass().add("btn-info-outline");
         btnElevation.setMaxWidth(Double.MAX_VALUE);
@@ -203,6 +209,8 @@ public class MapViewer extends Application {
 
         // EXPORT
         Label lblExport = new Label("📤 Exportar");
+        lblExport.setUnderline(true);
+        lblExport.setStyle("-fx-font-weight: bold");
         HBox exportButtons = new HBox(8);
         Button btnJson = new Button("📄 JSON");
         btnJson.getStyleClass().add("btn-export");
