@@ -60,24 +60,30 @@ public class MapViewer extends Application {
 
         // --- SIDEBAR ---
         VBox sidebar = buildSidebarUI();
+        sidebar.getStyleClass().add("sidebar");
 
         // Wrap sidebar in ScrollPane
         ScrollPane sidebarScroll = new ScrollPane(sidebar);
+        sidebarScroll.getStyleClass().add("sidebar-scroll");
         sidebarScroll.setFitToWidth(true);
         sidebarScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         sidebarScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        sidebarScroll.setMaxWidth(360);
+        sidebarScroll.setPadding(new Insets(10));
+        sidebarScroll.setTranslateX(20);
+        sidebarScroll.setTranslateY(20);
 
         // --- MAP CONTAINER ---
-        StackPane mapContainer = new StackPane(mapView);
-        mapContainer.setAlignment(Pos.CENTER);
+        StackPane mapWrapper = new StackPane(mapView);
+        mapWrapper.setStyle("-fx-background-color: #ddd;");
 
         // --- INIT MAP ---
         initMap();
 
-        // --- ROOT LAYOUT ---
-        BorderPane root = new BorderPane();
-        root.setLeft(sidebarScroll);
-        root.setCenter(mapContainer);
+        // --- ROOT LAYOUT (Floating Sidebar) ---
+        StackPane root = new StackPane();
+        StackPane.setAlignment(sidebarScroll, Pos.TOP_LEFT);
+        root.getChildren().addAll(mapWrapper, sidebarScroll);
 
         Scene scene = new Scene(root, 1350, 800);
         scene.getStylesheets().add(getClass().getResource("/mapstyle.css").toExternalForm());
@@ -106,6 +112,8 @@ public class MapViewer extends Application {
 
         // WAYPOINT LIST
         Label lblStops = new Label("🛑 Paragens");
+        lblStops.setStyle("-fx-font-weight: bold");
+        lblStops.setUnderline(true);
         Button btnClearStops = new Button("🔄 Limpar Paragens");
         btnClearStops.getStyleClass().add("btn-danger-outline");
         btnClearStops.setMaxWidth(Double.MAX_VALUE);

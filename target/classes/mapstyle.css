@@ -2,26 +2,42 @@
 /* SIDEBAR STYLES */
 /* ============================================================ */
 .sidebar {
-    -fx-background-color: #f4f4f4;
+    -fx-background-color: white;
     -fx-pref-width: 360px;
     -fx-padding: 20px;
     -fx-spacing: 15px;
-    -fx-background-radius: 15px;
+    -fx-background-radius: 18px;
 }
 
 .sidebar-scroll {
-    -fx-background-color: transparent;
-    -fx-background-radius: 15px;
-    -fx-border-radius: 15px;
+    -fx-background-color: white;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    /* Sombra em camadas aplicada ao ScrollPane para não ser cortada */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 28, 0.35, 0, 0),
+                dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0.2, 0, 2);
 }
 
-.sidebar-scroll .viewport {
+.sidebar-scroll > .viewport {
     -fx-background-color: transparent;
-    -fx-background-radius: 15px;
+    -fx-background-radius: 18px;
 }
 
-.sidebar-scroll .scroll-bar {
-    -fx-background-radius: 15px;
+.sidebar-scroll > .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.sidebar-scroll > .scroll-bar:vertical > .track {
+    -fx-background-color: transparent;
+}
+
+.sidebar-scroll > .scroll-bar:vertical > .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 10px;
+}
+
+.sidebar-scroll > .scroll-bar:vertical > .thumb:hover {
+    -fx-background-color: #999999;
 }
 
 /* ============================================================ */
@@ -214,6 +230,84 @@
 }
 
 /* ============================================================ */
+/* COMBOBOX STYLES (POI Filter) */
+/* ============================================================ */
+.sidebar .combo-box {
+    -fx-background-color: rgb(207, 205, 205);
+    -fx-background-radius: 6px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 6px;
+    -fx-padding: 8px 12px;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box:hover {
+    -fx-border-color: #999999;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box:focused {
+    -fx-border-color: #141414;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box .list-cell {
+    -fx-padding: 8px 12px;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+/* Hover sobre cada item dentro do dropdown (popup) */
+.sidebar .combo-box .list-cell:hover {
+    -fx-background-color: #d9f8e4; /* verde claro para hover */
+    -fx-text-fill: #000000;
+}
+
+/* Item selecionado na lista */
+.sidebar .combo-box .list-cell:selected {
+    -fx-background-color: transparent; /* cor principal selecionado */
+    -fx-text-fill: #000000;
+}
+
+/* Selecionado + hover (sobre o item já selecionado) */
+.sidebar .combo-box .list-cell:selected:hover {
+    -fx-background-color: #2fcf65; /* ligeira variação */
+    -fx-text-fill: #000000;
+}
+
+/* Estilos equivalentes para o popup interno da ComboBox */
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #d9f8e4;
+    -fx-text-fill: #000000;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+.combo-box-popup .list-view .list-cell:selected:hover {
+    -fx-background-color: #2fcf65;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 8px 0 0;
+}
+
+.sidebar .combo-box .arrow {
+    -fx-background-color: #191818;
+}
+
+.sidebar .combo-box:hover .arrow {
+    -fx-background-color: #201f1f;
+}
+
+/* ============================================================ */
 /* POI LIST STYLES */
 /* ============================================================ */
 .poi-list-container {
@@ -240,8 +334,8 @@
 }
 
 .poi-entry:hover {
-    -fx-background-color: #ffe4b3;
-    -fx-border-color: #ff8c00;
+    -fx-background-color: #fff0f0;
+    -fx-border-color: #3498db;
     -fx-border-width: 0 0 1 0;
 }
 
