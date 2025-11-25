@@ -149,6 +149,11 @@ public class MapViewer extends Application {
         poiListUI.setPadding(new Insets(5));
         poiListUI.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #ddd; -fx-border-radius: 3;");
 
+        // ELEVATION
+        Label lblElevation = new Label("📈 Perfil Altimétrico");
+        Button btnElevation = new Button("Mostrar Elevação");
+        btnElevation.setOnAction(e -> handleShowElevation());
+        
         // EXPORT
         Label lblExport = new Label("📤 Exportar");
         Button btnJson = new Button("Exportar JSON");
@@ -174,6 +179,8 @@ public class MapViewer extends Application {
                 new Separator(),
                 lblPOI, poiFilterBox, btnSearchPOIs, poiSummaryLabel,
                 poiListScroll,
+                new Separator(),
+                lblElevation, btnElevation,
                 new Separator(),
                 lblExport, btnJson, btnGpx,
                 new Separator(),
@@ -535,6 +542,132 @@ public class MapViewer extends Application {
         }
     }
 
+    // ============================================================
+    // ✅ ELEVATION PROFILE
+    // ============================================================
+    private void handleShowElevation() {
+        if (lastRoute == null) {
+            showAlert("Erro", "Calcule uma rota primeiro.");
+            return;
+        }
+        
+        Alert loadingAlert = new Alert(Alert.AlertType.INFORMATION);
+        loadingAlert.setTitle("Perfil Altimétrico");
+        loadingAlert.setHeaderText("A obter dados de elevação...");
+        loadingAlert.setContentText("Por favor aguarde...");
+        loadingAlert.show();
+        
+        new Thread(() -> {
+            var profile = service.getElevationProfile(lastRoute);
+            
+            Platform.runLater(() -> {
+                loadingAlert.close();
+                
+                if (profile == null) {
+                    showAlert("Erro", "Não foi possível obter dados de elevação.");
+                    return;
+                }
+                
+                showElevationChart(profile);
+            });
+        }).start();
+    }
+    
+    private void showElevationChart(com.myapp.model.ElevationProfile profile) {
+        Stage chartStage = new Stage();
+        chartStage.setTitle("Perfil Altimétrico da Rota");
+        
+        VBox root = new VBox(15);
+        root.setPadding(new Insets(20));
+        
+        // Estatísticas
+        Label stats = new Label(String.format(
+            "Elevação Máxima: %.0fm | Elevação Mínima: %.0fm | Subida Total: %.0fm | Descida Total: %.0fm",
+            profile.getMaxElevation(), profile.getMinElevation(), 
+            profile.getTotalAscent(), profile.getTotalDescent()
+        ));
+        stats.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+        
+        // Canvas para desenhar gráfico
+        javafx.scene.canvas.Canvas canvas = new javafx.scene.canvas.Canvas(800, 400);
+        var gc = canvas.getGraphicsContext2D();
+        
+        // Fundo
+        gc.setFill(javafx.scene.paint.Color.WHITE);
+        gc.fillRect(0, 0, 800, 400);
+        
+        // Dados
+        var elevations = profile.getElevations();
+        var distances = profile.getDistances();
+        
+        if (elevations.isEmpty()) return;
+        
+        // Margens
+        double marginLeft = 60, marginRight = 20, marginTop = 30, marginBottom = 50;
+        double chartWidth = 800 - marginLeft - marginRight;
+        double chartHeight = 400 - marginTop - marginBottom;
+        
+        // Escala
+        double maxDist = distances.get(distances.size() - 1);
+        double maxElev = profile.getMaxElevation();
+        double minElev = profile.getMinElevation();
+        double elevRange = maxElev - minElev;
+        if (elevRange < 10) elevRange = 10; // Evitar divisão por zero
+        
+        // Eixos
+        gc.setStroke(javafx.scene.paint.Color.BLACK);
+        gc.setLineWidth(2);
+        gc.strokeLine(marginLeft, marginTop, marginLeft, marginTop + chartHeight); // Y
+        gc.strokeLine(marginLeft, marginTop + chartHeight, marginLeft + chartWidth, marginTop + chartHeight); // X
+        
+        // Labels eixos
+        gc.setFill(javafx.scene.paint.Color.BLACK);
+        gc.fillText("Elevação (m)", 5, marginTop + chartHeight / 2);
+        gc.fillText("Distância (km)", marginLeft + chartWidth / 2 - 40, marginTop + chartHeight + 40);
+        
+        // Desenhar perfil
+        gc.setStroke(javafx.scene.paint.Color.BLUE);
+        gc.setLineWidth(2);
+        
+        for (int i = 0; i < elevations.size() - 1; i++) {
+            double x1 = marginLeft + (distances.get(i) / maxDist) * chartWidth;
+            double y1 = marginTop + chartHeight - ((elevations.get(i) - minElev) / elevRange) * chartHeight;
+            double x2 = marginLeft + (distances.get(i + 1) / maxDist) * chartWidth;
+            double y2 = marginTop + chartHeight - ((elevations.get(i + 1) - minElev) / elevRange) * chartHeight;
+            
+            gc.strokeLine(x1, y1, x2, y2);
+        }
+        
+        // Marcadores no eixo X
+        gc.setFill(javafx.scene.paint.Color.BLACK);
+        for (int i = 0; i <= 5; i++) {
+            double dist = (maxDist / 5) * i;
+            double x = marginLeft + (dist / maxDist) * chartWidth;
+            gc.fillText(String.format("%.1f", dist), x - 10, marginTop + chartHeight + 20);
+        }
+        
+        // Marcadores no eixo Y
+        for (int i = 0; i <= 5; i++) {
+            double elev = minElev + (elevRange / 5) * i;
+            double y = marginTop + chartHeight - (i / 5.0) * chartHeight;
+            gc.fillText(String.format("%.0f", elev), marginLeft - 50, y + 5);
+        }
+        
+        root.getChildren().addAll(stats, canvas);
+        
+        Scene scene = new Scene(root, 850, 500);
+        chartStage.setScene(scene);
+        chartStage.show();
+    }
+    
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
     // ============================================================
     // ✅ RESET
     // ============================================================

@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.myapp.api.ElevationClient;
 import com.myapp.api.NominatimClient;
 import com.myapp.api.OSRMClient;
 import com.myapp.api.OverpassClient;
+import com.myapp.model.ElevationProfile;
 import com.myapp.model.POI;
 import com.myapp.model.Point;
 import com.myapp.model.Route;
@@ -22,6 +24,7 @@ public class Service {
     private final OSRMClient osrmClient = new OSRMClient();
     private final OverpassClient overpassClient = new OverpassClient();
     private final NominatimClient nominatimClient = new NominatimClient();
+    private final ElevationClient elevationClient = new ElevationClient();
 
     public Route getRoute(Point origin, Point destination, TransportMode mode) {
         try {
@@ -307,6 +310,69 @@ public class Service {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         
         return R * c;
+    }
+    
+    /**
+     * Obter perfil de elevação para uma rota
+     * Amostra pontos ao longo da rota para não sobrecarregar a API
+     */
+    public ElevationProfile getElevationProfile(Route route) {
+        if (route == null || route.getRoutePoints().isEmpty()) return null;
+        
+        List<Point> points = route.getRoutePoints();
+        
+        // Amostrar pontos (máximo 100 para não sobrecarregar API)
+        int sampleRate = Math.max(1, points.size() / 100);
+        List<Point> sampledPoints = new ArrayList<>();
+        for (int i = 0; i < points.size(); i += sampleRate) {
+            sampledPoints.add(points.get(i));
+        }
+        // Garantir que o último ponto está incluído
+        if (!sampledPoints.contains(points.get(points.size() - 1))) {
+            sampledPoints.add(points.get(points.size() - 1));
+        }
+        
+        // Construir string de localizações para a API
+        StringBuilder locations = new StringBuilder();
+        for (int i = 0; i < sampledPoints.size(); i++) {
+            Point p = sampledPoints.get(i);
+            locations.append(p.getLatitude()).append(",").append(p.getLongitude());
+            if (i < sampledPoints.size() - 1) {
+                locations.append("|");
+            }
+        }
+        
+        try {
+            String json = elevationClient.getElevations(locations.toString());
+            return parseElevationProfile(json, sampledPoints);
+        } catch (Exception e) {
+            System.err.println("[Elevation] Erro ao obter elevações: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    private ElevationProfile parseElevationProfile(String json, List<Point> points) {
+        List<Double> elevations = new ArrayList<>();
+        List<Double> distances = new ArrayList<>();
+        
+        JsonObject root = JsonParser.parseString(json).getAsJsonObject();
+        JsonArray results = root.getAsJsonArray("results");
+        
+        double accumulatedDistance = 0.0;
+        distances.add(0.0);
+        
+        for (int i = 0; i < results.size(); i++) {
+            JsonObject result = results.get(i).getAsJsonObject();
+            double elevation = result.get("elevation").getAsDouble();
+            elevations.add(elevation);
+            
+            if (i > 0) {
+                accumulatedDistance += calculateDistance(points.get(i - 1), points.get(i));
+                distances.add(accumulatedDistance);
+            }
+        }
+        
+        return new ElevationProfile(elevations, distances);
     }
 
 }
