@@ -1,30 +1,266 @@
+/* ============================================================ */
+/* SIDEBAR STYLES */
+/* ============================================================ */
 .sidebar {
     -fx-background-color: #f4f4f4;
-    -fx-pref-width: 300px;
+    -fx-pref-width: 360px;
     -fx-padding: 20px;
     -fx-spacing: 15px;
+    -fx-background-radius: 15px;
 }
 
-.sidebar .label {
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
+.sidebar-scroll {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
 }
 
+.sidebar-scroll .viewport {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15px;
+}
+
+.sidebar-scroll .scroll-bar {
+    -fx-background-radius: 15px;
+}
+
+/* ============================================================ */
+/* BUTTON STYLES - Default */
+/* ============================================================ */
 .sidebar Button {
-    -fx-padding: 6px 10px;
-    -fx-background-color: #2a72d4;
+    -fx-padding: 10px 15px;
+    -fx-background-color: #3498db;
     -fx-text-fill: white;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 6px;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
 }
 
 .sidebar Button:hover {
-    -fx-background-color: #1f5fb2;
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
 }
 
+.sidebar Button:pressed {
+    -fx-background-color: #1c6396;
+    -fx-translate-y: 1px;
+}
+
+/* Primary Action Buttons (Main actions) */
+.btn-primary {
+    -fx-background-color: #27ae60;
+    -fx-font-size: 14px;
+    -fx-padding: 12px 20px;
+    -fx-font-weight: bold;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #229954;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #1e8449;
+}
+
+/* Secondary Action Buttons (Search, Add) */
+.btn-secondary {
+    -fx-background-color: #3498db;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Warning/Delete Buttons */
+.btn-danger {
+    -fx-background-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #c0392b;
+}
+
+.btn-danger:pressed {
+    -fx-background-color: #a93226;
+}
+
+/* Info Buttons (Show, Display) */
+.btn-info {
+    -fx-background-color: #9b59b6;
+}
+
+.btn-info:hover {
+    -fx-background-color: #8e44ad;
+}
+
+.btn-info:pressed {
+    -fx-background-color: #7d3c98;
+}
+
+/* Export Buttons */
+.btn-export {
+    -fx-background-color: #f39c12;
+}
+
+.btn-export:hover {
+    -fx-background-color: #e67e22;
+}
+
+.btn-export:pressed {
+    -fx-background-color: #d35400;
+}
+
+/* Small Remove Buttons */
+.btn-remove-small {
+    -fx-background-color: #e74c3c;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 11px;
+}
+
+.btn-remove-small:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* Outline variant for info button (purple border, no fill) */
+.btn-info-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #8e44ad;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #8e44ad;
+    -fx-font-weight: 600;
+}
+
+.btn-info-outline:hover {
+    -fx-background-color: rgba(142,68,173,0.08);
+}
+
+.btn-info-outline:pressed {
+    -fx-background-color: rgba(142,68,173,0.18);
+}
+
+/* Outline variant for danger button (red border, no fill) */
+.btn-danger-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #e74c3c;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #e74c3c;
+    -fx-font-weight: 600;
+}
+
+.btn-danger-outline:hover {
+    -fx-background-color: rgba(231,76,60,0.08);
+}
+
+.btn-danger-outline:pressed {
+    -fx-background-color: rgba(231,76,60,0.18);
+}
+
+/* Outline variant for secondary button (blue border, no fill) */
+.btn-secondary-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: 600;
+}
+
+.btn-secondary-outline:hover {
+    -fx-background-color: rgba(52,152,219,0.08);
+}
+
+.btn-secondary-outline:pressed {
+    -fx-background-color: rgba(52,152,219,0.18);
+}
+
+/* ============================================================ */
+/* TOGGLE BUTTON STYLES (Transport Mode) */
+/* ============================================================ */
+.toggle-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: 600;
+    -fx-padding: 10px 5px;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-min-width: 95px;
+}
+
+.toggle-button:hover {
+    -fx-background-color: rgba(52,152,219,0.08);
+}
+
+.toggle-button:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+.toggle-button:selected:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* ============================================================ */
+/* MAP CONTAINER */
+/* ============================================================ */
 .map-container {
     -fx-background-color: #ddd;
 }
 
+/* ============================================================ */
+/* POI LIST STYLES */
+/* ============================================================ */
+.poi-list-container {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 3;
+}
+
+.poi-label-text {
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff8c00;
+}
+
+.poi-category-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: #666;
+}
+
+.poi-entry {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+}
+
+.poi-entry:hover {
+    -fx-background-color: #ffe4b3;
+    -fx-border-color: #ff8c00;
+    -fx-border-width: 0 0 1 0;
+}
+
+.poi-empty-label {
+    -fx-text-fill: #888;
+    -fx-font-style: italic;
+}
+
+/* ============================================================ */
+/* ELEVATION CHART STYLES */
+/* ============================================================ */
+.elevation-stats-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+/* ============================================================ */
+/* GENERAL LABEL STYLES */
+/* ============================================================ */
 .label {
     -fx-wrap-text: true;
 }

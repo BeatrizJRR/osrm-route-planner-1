@@ -42,13 +42,14 @@ public class MapViewer extends Application {
     private VBox poiListUI = new VBox(5);
 
     private Label routeSummaryLabel = new Label("Defina origem e pontos de paragem...");
-    private Label poiSummaryLabel = new Label("POIs: 0");
+    private Label poiSummaryLabel = new Label("Pontos de Interesse: 0");
 
-    private ComboBox<TransportMode> modeBox = new ComboBox<>();
     private ComboBox<String> poiFilterBox = new ComboBox<>();
 
     private Point lastSearchPoint = null;
     private Route lastRoute = null;
+
+    private TransportMode selectedMode = TransportMode.CAR;
 
     private final Service service = new Service();
     private ContextMenu suggestionsMenu = new ContextMenu();
@@ -59,7 +60,7 @@ public class MapViewer extends Application {
 
         // --- SIDEBAR ---
         VBox sidebar = buildSidebarUI();
-        
+
         // Wrap sidebar in ScrollPane
         ScrollPane sidebarScroll = new ScrollPane(sidebar);
         sidebarScroll.setFitToWidth(true);
@@ -79,6 +80,7 @@ public class MapViewer extends Application {
         root.setCenter(mapContainer);
 
         Scene scene = new Scene(root, 1350, 800);
+        scene.getStylesheets().add(getClass().getResource("/mapstyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
@@ -89,18 +91,24 @@ public class MapViewer extends Application {
     private VBox buildSidebarUI() {
         VBox sidebar = new VBox(20);
         sidebar.setPadding(new Insets(20));
-        sidebar.setPrefWidth(330);
+        sidebar.setPrefWidth(360);
 
         // ORIGIN
         Label lblOrigem = new Label("📍 Origem");
+        lblOrigem.setUnderline(true);
+        lblOrigem.setStyle("-fx-font-weight: bold");
         origemField = new TextField();
         origemField.setPromptText("Introduzir localização...");
-        Button btnSetOrigem = new Button("Definir Origem");
+        Button btnSetOrigem = new Button("📍 Definir Origem");
+        btnSetOrigem.getStyleClass().add("btn-secondary");
+        btnSetOrigem.setMaxWidth(Double.MAX_VALUE);
         btnSetOrigem.setOnAction(e -> handleSetOrigem());
 
         // WAYPOINT LIST
         Label lblStops = new Label("🛑 Paragens");
-        Button btnClearStops = new Button("Limpar Paragens");
+        Button btnClearStops = new Button("🔄 Limpar Paragens");
+        btnClearStops.getStyleClass().add("btn-danger-outline");
+        btnClearStops.setMaxWidth(Double.MAX_VALUE);
         btnClearStops.setOnAction(e -> clearWaypoints());
 
         waypointListUI.setPadding(new Insets(5));
@@ -109,61 +117,111 @@ public class MapViewer extends Application {
         Label lblSearch = new Label("🔍 Pesquisa");
         pesquisaField = new TextField();
         pesquisaField.setPromptText("Pesquisar local...");
-        Button btnPesquisar = new Button("Pesquisar");
+        Button btnPesquisar = new Button("🔍 Pesquisar");
+        btnPesquisar.getStyleClass().add("btn-secondary");
+        btnPesquisar.setMaxWidth(Double.MAX_VALUE);
         btnPesquisar.setOnAction(e -> handlePesquisar());
 
-        Button btnAddSearchAsStop = new Button("Adicionar como Paragem");
+        Button btnAddSearchAsStop = new Button("➕ Adicionar como Paragem");
+        btnAddSearchAsStop.getStyleClass().add("btn-secondary-outline");
+        btnAddSearchAsStop.setMaxWidth(Double.MAX_VALUE);
         btnAddSearchAsStop.setOnAction(e -> addLastSearchAsWaypoint());
 
         setupAutocomplete();
 
         // MODE
-        Label lblMode = new Label("🚗 Modo");
-        modeBox.getItems().setAll(TransportMode.values());
-        modeBox.setValue(TransportMode.CAR);
+        Label lblMode = new Label("Modo de Transporte");
+        lblMode.setUnderline(true);
+        lblMode.setStyle("-fx-font-weight: bold");
 
-        Button btnCalcular = new Button("Calcular Rota");
+        ToggleGroup modeGroup = new ToggleGroup();
+
+        ToggleButton btnCar = new ToggleButton("🚗 Carro");
+        btnCar.setToggleGroup(modeGroup);
+        btnCar.setSelected(true);
+        btnCar.setMaxWidth(Double.MAX_VALUE);
+        btnCar.setUserData(TransportMode.CAR);
+
+        ToggleButton btnBike = new ToggleButton("🚲 Bicicleta");
+        btnBike.setToggleGroup(modeGroup);
+        btnBike.setMaxWidth(Double.MAX_VALUE);
+        btnBike.setUserData(TransportMode.BIKE);
+
+        ToggleButton btnFoot = new ToggleButton("🚶 A Pé");
+        btnFoot.setToggleGroup(modeGroup);
+        btnFoot.setMaxWidth(Double.MAX_VALUE);
+        btnFoot.setUserData(TransportMode.FOOT);
+
+        modeGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (newToggle != null) {
+                selectedMode = (TransportMode) newToggle.getUserData();
+            }
+        });
+
+        HBox modeButtons = new HBox(8);
+        HBox.setHgrow(btnCar, Priority.ALWAYS);
+        HBox.setHgrow(btnBike, Priority.ALWAYS);
+        HBox.setHgrow(btnFoot, Priority.ALWAYS);
+        modeButtons.getChildren().addAll(btnCar, btnBike, btnFoot);
+
+        Button btnCalcular = new Button("🚀 Calcular Rota");
+        btnCalcular.getStyleClass().add("btn-primary");
+        btnCalcular.setMaxWidth(Double.MAX_VALUE);
         btnCalcular.setOnAction(e -> calculateRoute());
 
         // ROUTE SUMMARY
         Label lblResumo = new Label("📊 Resumo da Rota");
 
         // POI FILTER
-        Label lblPOI = new Label("📍 Tipo de POI");
+        Label lblPOI = new Label("📍 Tipo de Ponto de Interesse");
         poiFilterBox.getItems().addAll(
-                "Nenhum", "Restaurant", "Cafe", "Fast Food", "Bar", "Toilets",
-                "ATM", "Fuel", "Pharmacy", "Hospital", "Parking", "Bank",
-                "Supermarket", "Bakery", "Mall", "Convenience Store",
-                "Hotel", "Museum", "Attraction"
-        );
+                "Nenhum", "Restaurante", "Café", "Fast Food", "Bar", "Sanitários",
+                "ATM", "Combustível", "Farmácia", "Hospital", "Estacionamento", "Banco",
+                "Supermercado", "Padaria", "Shopping", "Loja de Conveniência",
+                "Hotel", "Museu", "Atração Turística");
         poiFilterBox.setValue("Nenhum");
 
-        Button btnSearchPOIs = new Button("Pesquisar POIs");
+        Button btnSearchPOIs = new Button("🔎 Pesquisar Pontos de Interesse");
+        btnSearchPOIs.getStyleClass().add("btn-secondary-outline");
+        btnSearchPOIs.setMaxWidth(Double.MAX_VALUE);
         btnSearchPOIs.setOnAction(e -> handleSearchPois());
-        
+
         // POI LIST
         ScrollPane poiListScroll = new ScrollPane(poiListUI);
         poiListScroll.setFitToWidth(true);
         poiListScroll.setPrefHeight(150);
         poiListScroll.setMaxHeight(200);
         poiListUI.setPadding(new Insets(5));
-        poiListUI.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #ddd; -fx-border-radius: 3;");
+        poiListUI.getStyleClass().add("poi-list-container");
 
         // ELEVATION
         Label lblElevation = new Label("📈 Perfil Altimétrico");
-        Button btnElevation = new Button("Mostrar Elevação");
+        Button btnElevation = new Button("📊 Mostrar Elevação");
+        btnElevation.getStyleClass().add("btn-info-outline");
+        btnElevation.setMaxWidth(Double.MAX_VALUE);
         btnElevation.setOnAction(e -> handleShowElevation());
-        
+
         // EXPORT
         Label lblExport = new Label("📤 Exportar");
-        Button btnJson = new Button("Exportar JSON");
+        HBox exportButtons = new HBox(8);
+        Button btnJson = new Button("📄 JSON");
+        btnJson.getStyleClass().add("btn-export");
+        btnJson.setMaxWidth(Double.MAX_VALUE);
         btnJson.setOnAction(e -> handleExportJson());
 
-        Button btnGpx = new Button("Exportar GPX");
+        Button btnGpx = new Button("🗺️ GPX");
+        btnGpx.getStyleClass().add("btn-export");
+        btnGpx.setMaxWidth(Double.MAX_VALUE);
         btnGpx.setOnAction(e -> handleExportGpx());
 
+        HBox.setHgrow(btnJson, Priority.ALWAYS);
+        HBox.setHgrow(btnGpx, Priority.ALWAYS);
+        exportButtons.getChildren().addAll(btnJson, btnGpx);
+
         // RESET
-        Button btnReset = new Button("Limpar Tudo");
+        Button btnReset = new Button("🔄 Limpar Tudo");
+        btnReset.getStyleClass().add("btn-danger");
+        btnReset.setMaxWidth(Double.MAX_VALUE);
         btnReset.setOnAction(e -> resetAll());
 
         sidebar.getChildren().addAll(
@@ -173,7 +231,7 @@ public class MapViewer extends Application {
                 new Separator(),
                 lblSearch, pesquisaField, btnPesquisar, btnAddSearchAsStop,
                 new Separator(),
-                lblMode, modeBox, btnCalcular,
+                lblMode, modeButtons, btnCalcular,
                 new Separator(),
                 lblResumo, routeSummaryLabel,
                 new Separator(),
@@ -182,10 +240,9 @@ public class MapViewer extends Application {
                 new Separator(),
                 lblElevation, btnElevation,
                 new Separator(),
-                lblExport, btnJson, btnGpx,
+                lblExport, exportButtons,
                 new Separator(),
-                btnReset
-        );
+                btnReset);
 
         return sidebar;
     }
@@ -197,8 +254,7 @@ public class MapViewer extends Application {
         mapView.initialize(Configuration.builder()
                 .projection(Projection.WEB_MERCATOR)
                 .showZoomControls(true)
-                .build()
-        );
+                .build());
 
         mapView.initializedProperty().addListener((obs, old, initialized) -> {
             if (initialized) {
@@ -207,8 +263,10 @@ public class MapViewer extends Application {
 
                 mapView.addEventHandler(MapViewEvent.MAP_CLICKED, event -> {
                     Coordinate c = event.getCoordinate();
-                    if (originMarker == null) setOrigin(c);
-                    else addWaypoint(c);
+                    if (originMarker == null)
+                        setOrigin(c);
+                    else
+                        addWaypoint(c);
                 });
             }
         });
@@ -218,7 +276,8 @@ public class MapViewer extends Application {
     // ✅ ORIGIN
     // ============================================================
     private void setOrigin(Coordinate c) {
-        if (originMarker != null) mapView.removeMarker(originMarker);
+        if (originMarker != null)
+            mapView.removeMarker(originMarker);
 
         originMarker = Marker.createProvided(Marker.Provided.RED)
                 .setPosition(c)
@@ -230,11 +289,13 @@ public class MapViewer extends Application {
 
     private void handleSetOrigem() {
         String input = origemField.getText().trim();
-        if (input.isEmpty()) return;
+        if (input.isEmpty())
+            return;
 
         new Thread(() -> {
             Point result = service.getGeocodeFromLocationString(input);
-            if (result == null) return;
+            if (result == null)
+                return;
 
             Platform.runLater(() -> {
                 Coordinate c = new Coordinate(result.getLatitude(), result.getLongitude());
@@ -274,7 +335,8 @@ public class MapViewer extends Application {
             row.setAlignment(Pos.CENTER_LEFT);
 
             Label label = new Label((i + 1) + " - Paragem");
-            Button removeBtn = new Button("Remover");
+            Button removeBtn = new Button("✖ Remover");
+            removeBtn.getStyleClass().add("btn-remove-small");
 
             removeBtn.setOnAction(e -> {
                 removeWaypoint(index);
@@ -301,7 +363,8 @@ public class MapViewer extends Application {
     }
 
     private void addLastSearchAsWaypoint() {
-        if (lastSearchPoint == null) return;
+        if (lastSearchPoint == null)
+            return;
         Coordinate c = new Coordinate(lastSearchPoint.getLatitude(), lastSearchPoint.getLongitude());
         addWaypoint(c);
     }
@@ -315,12 +378,13 @@ public class MapViewer extends Application {
             return;
         }
 
-        if (currentRouteLine != null) mapView.removeCoordinateLine(currentRouteLine);
+        if (currentRouteLine != null)
+            mapView.removeCoordinateLine(currentRouteLine);
 
         Point origin = new Point(originMarker.getPosition().getLatitude(),
                 originMarker.getPosition().getLongitude(), null);
 
-        Route route = service.getRouteWithWaypoints(origin, waypointPoints, modeBox.getValue());
+        Route route = service.getRouteWithWaypoints(origin, waypointPoints, selectedMode);
 
         if (route == null || route.getRoutePoints().isEmpty()) {
             routeSummaryLabel.setText("Erro ao calcular rota.");
@@ -344,8 +408,7 @@ public class MapViewer extends Application {
                 String.format("Distância: %.2f km | Tempo: %d min | Paragens: %d",
                         route.getDistanceKm(),
                         route.getDurationSec() / 60,
-                        waypointPoints.size())
-        );
+                        waypointPoints.size()));
     }
 
     // ============================================================
@@ -353,11 +416,13 @@ public class MapViewer extends Application {
     // ============================================================
     private void handlePesquisar() {
         String query = pesquisaField.getText().trim();
-        if (query.isEmpty()) return;
+        if (query.isEmpty())
+            return;
 
         new Thread(() -> {
             Point result = service.getGeocodeFromLocationString(query);
-            if (result == null) return;
+            if (result == null)
+                return;
 
             lastSearchPoint = result;
 
@@ -425,11 +490,11 @@ public class MapViewer extends Application {
 
         if (selected.equals("Nenhum")) {
             clearPOIsFromMap();
-            poiSummaryLabel.setText("POIs: 0");
+            poiSummaryLabel.setText("Pontos de Interesse: 0");
             return;
         }
 
-        poiSummaryLabel.setText("A procurar POIs...");
+        poiSummaryLabel.setText("A procurar Pontos de Interesse...");
         poiListUI.getChildren().clear();
 
         new Thread(() -> {
@@ -440,7 +505,7 @@ public class MapViewer extends Application {
                 currentPOIs.addAll(pois);
                 showPoisOnMap(pois);
                 updatePOIList(pois);
-                poiSummaryLabel.setText("POIs: " + pois.size());
+                poiSummaryLabel.setText("Pontos de Interesse: " + pois.size());
             });
         }).start();
     }
@@ -452,8 +517,7 @@ public class MapViewer extends Application {
             POI poi = pois.get(i);
             Coordinate coord = new Coordinate(
                     poi.getCoordinate().getLatitude(),
-                    poi.getCoordinate().getLongitude()
-            );
+                    poi.getCoordinate().getLongitude());
 
             Marker marker = Marker.createProvided(Marker.Provided.ORANGE)
                     .setPosition(coord)
@@ -461,59 +525,55 @@ public class MapViewer extends Application {
 
             poiMarkers.add(marker);
             mapView.addMarker(marker);
-            
+
             // Adicionar label ao marker
-            marker.attachLabel(new MapLabel(poi.getName() != null ? poi.getName() : "POI #" + (i+1))
+            marker.attachLabel(new MapLabel(poi.getName() != null ? poi.getName() : "Ponto de Interesse #" + (i + 1))
                     .setCssClass("poi-label"));
         }
     }
-    
+
     private void updatePOIList(List<POI> pois) {
         poiListUI.getChildren().clear();
-        
+
         if (pois.isEmpty()) {
-            Label emptyLabel = new Label("Nenhum POI encontrado");
-            emptyLabel.setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
+            Label emptyLabel = new Label("Nenhum Ponto de Interesse encontrado");
+            emptyLabel.getStyleClass().add("poi-empty-label");
             poiListUI.getChildren().add(emptyLabel);
             return;
         }
-        
+
         for (int i = 0; i < pois.size(); i++) {
             POI poi = pois.get(i);
-            
+
             String name = poi.getName() != null ? poi.getName() : "Sem nome";
             String category = poi.getCategory() != null ? poi.getCategory() : "Desconhecido";
-            
+
             Label poiLabel = new Label("● " + name);
-            poiLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #ff8c00;");
-            
+            poiLabel.getStyleClass().add("poi-label-text");
+
             Label categoryLabel = new Label("   " + category);
-            categoryLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666;");
-            
+            categoryLabel.getStyleClass().add("poi-category-label");
+
             VBox poiEntry = new VBox(2, poiLabel, categoryLabel);
             poiEntry.setPadding(new Insets(3, 5, 3, 5));
-            poiEntry.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0; -fx-cursor: hand;");
-            
+            poiEntry.getStyleClass().add("poi-entry");
+
             // Click para centrar no mapa
             poiEntry.setOnMouseClicked(e -> {
                 Coordinate coord = new Coordinate(
-                    poi.getCoordinate().getLatitude(),
-                    poi.getCoordinate().getLongitude()
-                );
+                        poi.getCoordinate().getLatitude(),
+                        poi.getCoordinate().getLongitude());
                 mapView.setCenter(coord);
                 mapView.setZoom(15);
             });
-            
-            // Hover effect
-            poiEntry.setOnMouseEntered(e -> poiEntry.setStyle("-fx-background-color: #ffe4b3; -fx-border-color: #ff8c00; -fx-border-width: 0 0 1 0; -fx-cursor: hand;"));
-            poiEntry.setOnMouseExited(e -> poiEntry.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0; -fx-cursor: hand;"));
-            
+
             poiListUI.getChildren().add(poiEntry);
         }
     }
 
     private void clearPOIsFromMap() {
-        for (Marker m : poiMarkers) mapView.removeMarker(m);
+        for (Marker m : poiMarkers)
+            mapView.removeMarker(m);
         poiMarkers.clear();
         currentPOIs.clear();
         poiListUI.getChildren().clear();
@@ -523,7 +583,8 @@ public class MapViewer extends Application {
     // ✅ EXPORT
     // ============================================================
     private void handleExportJson() {
-        if (lastRoute == null) return;
+        if (lastRoute == null)
+            return;
 
         try {
             RouteExporter.exportToJson(lastRoute, "route.json");
@@ -533,7 +594,8 @@ public class MapViewer extends Application {
     }
 
     private void handleExportGpx() {
-        if (lastRoute == null) return;
+        if (lastRoute == null)
+            return;
 
         try {
             RouteExporter.exportToGPX(lastRoute, "route.gpx");
@@ -550,94 +612,95 @@ public class MapViewer extends Application {
             showAlert("Erro", "Calcule uma rota primeiro.");
             return;
         }
-        
+
         Alert loadingAlert = new Alert(Alert.AlertType.INFORMATION);
         loadingAlert.setTitle("Perfil Altimétrico");
         loadingAlert.setHeaderText("A obter dados de elevação...");
         loadingAlert.setContentText("Por favor aguarde...");
         loadingAlert.show();
-        
+
         new Thread(() -> {
             var profile = service.getElevationProfile(lastRoute);
-            
+
             Platform.runLater(() -> {
                 loadingAlert.close();
-                
+
                 if (profile == null) {
                     showAlert("Erro", "Não foi possível obter dados de elevação.");
                     return;
                 }
-                
+
                 showElevationChart(profile);
             });
         }).start();
     }
-    
+
     private void showElevationChart(com.myapp.model.ElevationProfile profile) {
         Stage chartStage = new Stage();
         chartStage.setTitle("Perfil Altimétrico da Rota");
-        
+
         VBox root = new VBox(15);
         root.setPadding(new Insets(20));
-        
+
         // Estatísticas
         Label stats = new Label(String.format(
-            "Elevação Máxima: %.0fm | Elevação Mínima: %.0fm | Subida Total: %.0fm | Descida Total: %.0fm",
-            profile.getMaxElevation(), profile.getMinElevation(), 
-            profile.getTotalAscent(), profile.getTotalDescent()
-        ));
-        stats.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
-        
+                "Elevação Máxima: %.0fm | Elevação Mínima: %.0fm | Subida Total: %.0fm | Descida Total: %.0fm",
+                profile.getMaxElevation(), profile.getMinElevation(),
+                profile.getTotalAscent(), profile.getTotalDescent()));
+        stats.getStyleClass().add("elevation-stats-label");
+
         // Canvas para desenhar gráfico
         javafx.scene.canvas.Canvas canvas = new javafx.scene.canvas.Canvas(800, 400);
         var gc = canvas.getGraphicsContext2D();
-        
+
         // Fundo
         gc.setFill(javafx.scene.paint.Color.WHITE);
         gc.fillRect(0, 0, 800, 400);
-        
+
         // Dados
         var elevations = profile.getElevations();
         var distances = profile.getDistances();
-        
-        if (elevations.isEmpty()) return;
-        
+
+        if (elevations.isEmpty())
+            return;
+
         // Margens
         double marginLeft = 60, marginRight = 20, marginTop = 30, marginBottom = 50;
         double chartWidth = 800 - marginLeft - marginRight;
         double chartHeight = 400 - marginTop - marginBottom;
-        
+
         // Escala
         double maxDist = distances.get(distances.size() - 1);
         double maxElev = profile.getMaxElevation();
         double minElev = profile.getMinElevation();
         double elevRange = maxElev - minElev;
-        if (elevRange < 10) elevRange = 10; // Evitar divisão por zero
-        
+        if (elevRange < 10)
+            elevRange = 10; // Evitar divisão por zero
+
         // Eixos
         gc.setStroke(javafx.scene.paint.Color.BLACK);
         gc.setLineWidth(2);
         gc.strokeLine(marginLeft, marginTop, marginLeft, marginTop + chartHeight); // Y
         gc.strokeLine(marginLeft, marginTop + chartHeight, marginLeft + chartWidth, marginTop + chartHeight); // X
-        
+
         // Labels eixos
         gc.setFill(javafx.scene.paint.Color.BLACK);
         gc.fillText("Elevação (m)", 5, marginTop + chartHeight / 2);
         gc.fillText("Distância (km)", marginLeft + chartWidth / 2 - 40, marginTop + chartHeight + 40);
-        
+
         // Desenhar perfil
         gc.setStroke(javafx.scene.paint.Color.BLUE);
         gc.setLineWidth(2);
-        
+
         for (int i = 0; i < elevations.size() - 1; i++) {
             double x1 = marginLeft + (distances.get(i) / maxDist) * chartWidth;
             double y1 = marginTop + chartHeight - ((elevations.get(i) - minElev) / elevRange) * chartHeight;
             double x2 = marginLeft + (distances.get(i + 1) / maxDist) * chartWidth;
             double y2 = marginTop + chartHeight - ((elevations.get(i + 1) - minElev) / elevRange) * chartHeight;
-            
+
             gc.strokeLine(x1, y1, x2, y2);
         }
-        
+
         // Marcadores no eixo X
         gc.setFill(javafx.scene.paint.Color.BLACK);
         for (int i = 0; i <= 5; i++) {
@@ -645,21 +708,21 @@ public class MapViewer extends Application {
             double x = marginLeft + (dist / maxDist) * chartWidth;
             gc.fillText(String.format("%.1f", dist), x - 10, marginTop + chartHeight + 20);
         }
-        
+
         // Marcadores no eixo Y
         for (int i = 0; i <= 5; i++) {
             double elev = minElev + (elevRange / 5) * i;
             double y = marginTop + chartHeight - (i / 5.0) * chartHeight;
             gc.fillText(String.format("%.0f", elev), marginLeft - 50, y + 5);
         }
-        
+
         root.getChildren().addAll(stats, canvas);
-        
+
         Scene scene = new Scene(root, 850, 500);
         chartStage.setScene(scene);
         chartStage.show();
     }
-    
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -667,24 +730,26 @@ public class MapViewer extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
     // ============================================================
     // ✅ RESET
     // ============================================================
     private void resetAll() {
-        if (originMarker != null) mapView.removeMarker(originMarker);
+        if (originMarker != null)
+            mapView.removeMarker(originMarker);
         originMarker = null;
 
         clearWaypoints();
         clearPOIsFromMap();
 
-        if (currentRouteLine != null) mapView.removeCoordinateLine(currentRouteLine);
+        if (currentRouteLine != null)
+            mapView.removeCoordinateLine(currentRouteLine);
         currentRouteLine = null;
 
         origemField.setText("");
         pesquisaField.setText("");
         routeSummaryLabel.setText("Defina origem e pontos de paragem...");
-        poiSummaryLabel.setText("POIs: 0");
+        poiSummaryLabel.setText("Pontos de Interesse: 0");
 
         mapView.setCenter(new Coordinate(38.7223, -9.1393));
         mapView.setZoom(10);
