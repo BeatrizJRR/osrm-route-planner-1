@@ -33,11 +33,13 @@ public class MapViewer extends Application {
     private final List<Point> waypointPoints = new ArrayList<>();
     private final List<Marker> waypointMarkers = new ArrayList<>();
     private final List<Marker> poiMarkers = new ArrayList<>();
+    private final List<POI> currentPOIs = new ArrayList<>();
 
     // --- UI ---
     private TextField origemField;
     private TextField pesquisaField;
     private VBox waypointListUI = new VBox(8);
+    private VBox poiListUI = new VBox(5);
 
     private Label routeSummaryLabel = new Label("Defina origem e pontos de paragem...");
     private Label poiSummaryLabel = new Label("POIs: 0");
@@ -57,6 +59,12 @@ public class MapViewer extends Application {
 
         // --- SIDEBAR ---
         VBox sidebar = buildSidebarUI();
+        
+        // Wrap sidebar in ScrollPane
+        ScrollPane sidebarScroll = new ScrollPane(sidebar);
+        sidebarScroll.setFitToWidth(true);
+        sidebarScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sidebarScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         // --- MAP CONTAINER ---
         StackPane mapContainer = new StackPane(mapView);
@@ -67,7 +75,7 @@ public class MapViewer extends Application {
 
         // --- ROOT LAYOUT ---
         BorderPane root = new BorderPane();
-        root.setLeft(sidebar);
+        root.setLeft(sidebarScroll);
         root.setCenter(mapContainer);
 
         Scene scene = new Scene(root, 1350, 800);
@@ -132,6 +140,14 @@ public class MapViewer extends Application {
 
         Button btnSearchPOIs = new Button("Pesquisar POIs");
         btnSearchPOIs.setOnAction(e -> handleSearchPois());
+        
+        // POI LIST
+        ScrollPane poiListScroll = new ScrollPane(poiListUI);
+        poiListScroll.setFitToWidth(true);
+        poiListScroll.setPrefHeight(150);
+        poiListScroll.setMaxHeight(200);
+        poiListUI.setPadding(new Insets(5));
+        poiListUI.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #ddd; -fx-border-radius: 3;");
 
         // EXPORT
         Label lblExport = new Label("📤 Exportar");
@@ -157,6 +173,7 @@ public class MapViewer extends Application {
                 lblResumo, routeSummaryLabel,
                 new Separator(),
                 lblPOI, poiFilterBox, btnSearchPOIs, poiSummaryLabel,
+                poiListScroll,
                 new Separator(),
                 lblExport, btnJson, btnGpx,
                 new Separator(),
@@ -406,12 +423,16 @@ public class MapViewer extends Application {
         }
 
         poiSummaryLabel.setText("A procurar POIs...");
+        poiListUI.getChildren().clear();
 
         new Thread(() -> {
             List<POI> pois = service.getPOIsAlongRoute(lastRoute, selected);
 
             Platform.runLater(() -> {
+                currentPOIs.clear();
+                currentPOIs.addAll(pois);
                 showPoisOnMap(pois);
+                updatePOIList(pois);
                 poiSummaryLabel.setText("POIs: " + pois.size());
             });
         }).start();
@@ -420,7 +441,8 @@ public class MapViewer extends Application {
     private void showPoisOnMap(List<POI> pois) {
         clearPOIsFromMap();
 
-        for (POI poi : pois) {
+        for (int i = 0; i < pois.size(); i++) {
+            POI poi = pois.get(i);
             Coordinate coord = new Coordinate(
                     poi.getCoordinate().getLatitude(),
                     poi.getCoordinate().getLongitude()
@@ -432,12 +454,62 @@ public class MapViewer extends Application {
 
             poiMarkers.add(marker);
             mapView.addMarker(marker);
+            
+            // Adicionar label ao marker
+            marker.attachLabel(new MapLabel(poi.getName() != null ? poi.getName() : "POI #" + (i+1))
+                    .setCssClass("poi-label"));
+        }
+    }
+    
+    private void updatePOIList(List<POI> pois) {
+        poiListUI.getChildren().clear();
+        
+        if (pois.isEmpty()) {
+            Label emptyLabel = new Label("Nenhum POI encontrado");
+            emptyLabel.setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
+            poiListUI.getChildren().add(emptyLabel);
+            return;
+        }
+        
+        for (int i = 0; i < pois.size(); i++) {
+            POI poi = pois.get(i);
+            
+            String name = poi.getName() != null ? poi.getName() : "Sem nome";
+            String category = poi.getCategory() != null ? poi.getCategory() : "Desconhecido";
+            
+            Label poiLabel = new Label("● " + name);
+            poiLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #ff8c00;");
+            
+            Label categoryLabel = new Label("   " + category);
+            categoryLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666;");
+            
+            VBox poiEntry = new VBox(2, poiLabel, categoryLabel);
+            poiEntry.setPadding(new Insets(3, 5, 3, 5));
+            poiEntry.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0; -fx-cursor: hand;");
+            
+            // Click para centrar no mapa
+            poiEntry.setOnMouseClicked(e -> {
+                Coordinate coord = new Coordinate(
+                    poi.getCoordinate().getLatitude(),
+                    poi.getCoordinate().getLongitude()
+                );
+                mapView.setCenter(coord);
+                mapView.setZoom(15);
+            });
+            
+            // Hover effect
+            poiEntry.setOnMouseEntered(e -> poiEntry.setStyle("-fx-background-color: #ffe4b3; -fx-border-color: #ff8c00; -fx-border-width: 0 0 1 0; -fx-cursor: hand;"));
+            poiEntry.setOnMouseExited(e -> poiEntry.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0; -fx-cursor: hand;"));
+            
+            poiListUI.getChildren().add(poiEntry);
         }
     }
 
     private void clearPOIsFromMap() {
         for (Marker m : poiMarkers) mapView.removeMarker(m);
         poiMarkers.clear();
+        currentPOIs.clear();
+        poiListUI.getChildren().clear();
     }
 
     // ============================================================

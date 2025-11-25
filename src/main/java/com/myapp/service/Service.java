@@ -65,7 +65,6 @@ public class Service {
         List<Point> points = route.getRoutePoints();
 
         int size = points.size();
-        int radius = 250;
 
         String tag = switch (type) {
             case "Restaurant" -> "amenity=restaurant";
@@ -94,28 +93,78 @@ public class Service {
 
         if (tag == null) return List.of(); // segurança
 
-        int checkpoints = 30; // evenly spaced points
+        // Nova estratégia: dividir rota em SEGMENTOS IGUAIS e pegar poucos POIs de cada
+        // Garante distribuição uniforme ao longo de TODA a rota
+        
+        int numSegments = 10; // Dividir rota em 10 segmentos
+        List<Point> selectedCheckpoints = new ArrayList<>();
+        
+        for (int i = 0; i < numSegments; i++) {
+            // Calcular índice do ponto médio de cada segmento
+            int index = (i * size) / numSegments + (size / numSegments / 2);
+            if (index >= size) index = size - 1;
+            selectedCheckpoints.add(points.get(index));
+        }
+        
+        int checkpoints = selectedCheckpoints.size();
+        System.out.println("[POI Search] Rota dividida em " + numSegments + " segmentos iguais para garantir distribuição uniforme.");
+
+        long startTime = System.currentTimeMillis();
+        long maxDuration = 15000; // 15 segundos total
 
         for (int i = 0; i < checkpoints; i++) {
-            int index = (int) ((i / (double) checkpoints) * size);
-            Point p = points.get(index);
-
-            String ql = String.format(Locale.US, """
-            [out:json][timeout:25];
-            (
-            node[%s](around:%d,%f,%f);
-            );
-            out center 20;
-            """, tag, radius, p.getLatitude(), p.getLongitude());
+            // Timeout
+            long elapsed = System.currentTimeMillis() - startTime;
+            if (elapsed > maxDuration) {
+                System.out.println("[POI Search] Timeout " + (elapsed/1000.0) + "s. POIs coletados: " + result.size());
+                break;
+            }
+            
+            Point p = selectedCheckpoints.get(i);
+            
+            System.out.println("[POI Search] Segmento " + (i+1) + "/" + checkpoints + 
+                             " (lat=" + String.format("%.4f", p.getLatitude()) + 
+                             ", lon=" + String.format("%.4f", p.getLongitude()) + ")");
 
             try {
+                // Delay para rate limit
+                if (i > 0) {
+                    Thread.sleep(550);
+                }
+                
+                // Usar raio grande desde início para áreas rurais
+                // Limite de 2 POIs garante distribuição mesmo em áreas urbanas
+                int searchRadius = 1500; // 1.5km - raio grande para cobrir áreas rurais
+                
+                String ql = String.format(Locale.US, """
+                [out:json][timeout:5];
+                node[%s](around:%d,%f,%f);
+                out body 2;
+                """, tag, searchRadius, p.getLatitude(), p.getLongitude());
+                
                 String json = overpassClient.postOverpass(ql);
-                List<POI> chunkPois = parseOverpassPOIs(json);
-                result.addAll(chunkPois);
+                
+                if (json != null && !json.trim().isEmpty() && !json.contains("error") && !json.contains("<")) {
+                    List<POI> chunkPois = parseOverpassPOIs(json);
+                    
+                    if (!chunkPois.isEmpty()) {
+                        System.out.println("[POI Search] Segmento " + (i+1) + " - ✓ " + chunkPois.size() + " POIs | Total: " + (result.size() + chunkPois.size()));
+                        result.addAll(chunkPois);
+                    } else {
+                        System.out.println("[POI Search] Segmento " + (i+1) + " - 0 POIs");
+                    }
+                } else {
+                    System.out.println("[POI Search] Segmento " + (i+1) + " - resposta inválida");
+                }
 
-                if (result.size() > 80) break;
-
-            } catch (Exception ignored) {}
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            } catch (com.google.gson.JsonSyntaxException e) {
+                System.out.println("[POI Search] Segmento " + (i+1) + " - erro JSON, pulando");
+            } catch (Exception e) {
+                System.out.println("[POI Search] Segmento " + (i+1) + " - erro: " + e.getClass().getSimpleName());
+            }
         }
 
 
@@ -130,8 +179,9 @@ public class Service {
         }
 
         // Aplicar limite final
-        if (unique.size() > 150) {  
-            return unique.subList(0, 150);
+        System.out.println("[POI Search] Total de POIs únicos: " + unique.size() + " (de " + result.size() + " brutos)");
+        if (unique.size() > 100) {  
+            return unique.subList(0, 100);
         }
 
         return unique;
@@ -239,6 +289,24 @@ public class Service {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    // Calcular distância em km entre dois pontos usando fórmula de Haversine
+    private double calculateDistance(Point p1, Point p2) {
+        final double R = 6371.0; // Raio da Terra em km
+        
+        double lat1 = Math.toRadians(p1.getLatitude());
+        double lat2 = Math.toRadians(p2.getLatitude());
+        double dLat = Math.toRadians(p2.getLatitude() - p1.getLatitude());
+        double dLon = Math.toRadians(p2.getLongitude() - p1.getLongitude());
+        
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                   Math.cos(lat1) * Math.cos(lat2) *
+                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        
+        return R * c;
     }
 
 }
