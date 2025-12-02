@@ -85,7 +85,78 @@
         </configuration>
       </plugin>
 
+      <!-- Javadoc plugin: generate API docs under site/apidocs and relax doclint -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <configuration>
+          <!-- Place javadocs inside the Maven site output directory -->
+          <reportOutputDirectory>${project.build.directory}/site</reportOutputDirectory>
+          <destDir>apidocs</destDir>
+          <!-- Avoid strict HTML checks; our PT-PT docs use code literals -->
+          <doclint>all,-reference</doclint>
+          <additionalJOptions>
+            <additionalJOption>-Xdoclint:none</additionalJOption>
+          </additionalJOptions>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <source>${maven.compiler.release}</source>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Maven Site plugin: ensure site generation works consistently -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.12.1</version>
+      </plugin>
+
     </plugins>
   </build>
+
+  <!-- Site reports: include Javadoc and project info in the generated site -->
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.5.0</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>summary</report>
+              <report>dependencies</report>
+              <report>dependency-info</report>
+              <report>licenses</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <configuration>
+          <reportOutputDirectory>${project.build.directory}/site</reportOutputDirectory>
+          <destDir>apidocs</destDir>
+          <doclint>all,-reference</doclint>
+          <additionalJOptions>
+            <additionalJOption>-Xdoclint:none</additionalJOption>
+          </additionalJOptions>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <source>${maven.compiler.release}</source>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>

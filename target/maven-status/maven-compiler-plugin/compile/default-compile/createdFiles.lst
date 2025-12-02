@@ -1,6 +1,8 @@
 com\myapp\api\OSRMClient.class
 com\myapp\model\Point.class
 com\myapp\model\TransportMode.class
+com\myapp\utils\App.class
+com\myapp\utils\RouteExporter.class
 com\myapp\api\NominatimClient.class
 com\myapp\api\OverpassClient.class
 com\myapp\api\ElevationClient.class
@@ -8,7 +10,5 @@ com\myapp\model\Route.class
 com\myapp\ui\MapViewer.class
 com\myapp\model\ElevationProfile.class
 com\myapp\model\POI.class
-com\myapp\model\RouteExporter.class
-com\myapp\model\App.class
 com\myapp\api\OSRMClient$1.class
 com\myapp\service\Service.class

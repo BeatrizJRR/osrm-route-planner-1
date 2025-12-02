@@ -19,6 +19,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * Serviço de alto nível que integra os clientes de API (OSRM, Overpass,
+ * Nominatim e Open-Elevation) para fornecer funcionalidades de
+ * roteamento, geocodificação, recolha de POIs e perfil de elevação.
+ *
+ * Este serviço converte respostas JSON das APIs em modelos da aplicação.
+ */
 public class Service {
 
     private final OSRMClient osrmClient = new OSRMClient();
@@ -26,6 +33,15 @@ public class Service {
     private final NominatimClient nominatimClient = new NominatimClient();
     private final ElevationClient elevationClient = new ElevationClient();
 
+    /**
+     * Obtém uma rota entre dois pontos usando a OSRM e converte o resultado
+     * num objeto {@link Route} com distância, duração e pontos do percurso.
+     *
+     * @param origin      ponto de origem
+     * @param destination ponto de destino
+     * @param mode        modo de transporte
+     * @return {@link Route} construída a partir da resposta OSRM, ou {@code null} em caso de erro
+     */
     public Route getRoute(Point origin, Point destination, TransportMode mode) {
         try {
             String route = osrmClient.getRouteJson(origin, destination, mode);
@@ -62,6 +78,14 @@ public class Service {
         }
     }
 
+    /**
+     * Pesquisa pontos de interesse (POIs) ao longo de uma rota, distribuindo
+     * consultas por segmentos uniformes com recurso à Overpass API.
+     *
+     * @param route rota sobre a qual pesquisar
+     * @param type  tipo de POI (ex.: "Restaurante", "Hotel") mapeado para tags Overpass
+     * @return lista de POIs únicos encontrados (limitada a 100)
+     */
     public List<POI> getPOIsAlongRoute(Route route, String type) {
         if (route == null || route.getRoutePoints().isEmpty())
             return List.of();
@@ -197,6 +221,12 @@ public class Service {
         return unique;
     }
 
+    /**
+     * Converte a resposta JSON da Overpass em objetos {@link POI}.
+     *
+     * @param json resposta JSON da Overpass
+     * @return lista de POIs parseados
+     */
     private List<POI> parseOverpassPOIs(String json) {
         List<POI> pois = new ArrayList<>();
         JsonObject root = JsonParser.parseString(json).getAsJsonObject();
@@ -230,6 +260,13 @@ public class Service {
         return pois;
     }
 
+    /**
+     * Geocodifica uma string de localização usando Nominatim e devolve um
+     * {@link Point} com coordenadas e nome de exibição.
+     *
+     * @param query texto a geocodificar (endereço ou local)
+     * @return ponto correspondente ou {@code null} se não houver resultados
+     */
     public Point getGeocodeFromLocationString(String query) {
         try {
             String json = nominatimClient.searchJson(query);
@@ -248,6 +285,12 @@ public class Service {
         }
     }
 
+    /**
+     * Pesquisa várias localizações pelo texto fornecido usando Nominatim.
+     *
+     * @param query termo de pesquisa
+     * @return lista de pontos encontrados (pode estar vazia)
+     */
     public List<Point> searchLocations(String query) {
         List<Point> results = new ArrayList<>();
         try {
@@ -266,6 +309,14 @@ public class Service {
         return results;
     }
 
+    /**
+     * Obtém uma rota com pontos intermédios (waypoints) usando a OSRM.
+     *
+     * @param originPoint    ponto de origem
+     * @param waypointPoints lista de waypoints (na ordem de passagem)
+     * @param mode           modo de transporte
+     * @return {@link Route} construída a partir da resposta OSRM, ou {@code null} em caso de erro
+     */
     public Route getRouteWithWaypoints(Point originPoint, List<Point> waypointPoints, TransportMode mode) {
         try {
             // Ask OSRM for a full multi-stop route
@@ -326,8 +377,11 @@ public class Service {
     }
 
     /**
-     * Obter perfil de elevação para uma rota
-     * Amostra pontos ao longo da rota para não sobrecarregar a API
+     * Obtém o perfil de elevação para uma rota.
+     * Amostra pontos ao longo da rota para não sobrecarregar a API.
+     *
+     * @param route rota para a qual obter o perfil de elevação
+     * @return perfil de elevação ou {@code null} em caso de erro
      */
     public ElevationProfile getElevationProfile(Route route) {
         if (route == null || route.getRoutePoints().isEmpty())
@@ -365,6 +419,14 @@ public class Service {
         }
     }
 
+    /**
+     * Converte a resposta JSON da Open-Elevation em {@link ElevationProfile}
+     * calculando também as distâncias acumuladas entre pontos amostrados.
+     *
+     * @param json   resposta JSON da Open-Elevation
+     * @param points pontos amostrados correspondentes ao pedido
+     * @return perfil de elevação com métricas agregadas
+     */
     private ElevationProfile parseElevationProfile(String json, List<Point> points) {
         List<Double> elevations = new ArrayList<>();
         List<Double> distances = new ArrayList<>();

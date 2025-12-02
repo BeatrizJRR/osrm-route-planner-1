@@ -3,9 +3,9 @@ package com.myapp.ui;
 import com.myapp.model.POI;
 import com.myapp.model.Point;
 import com.myapp.model.Route;
-import com.myapp.model.RouteExporter;
 import com.myapp.model.TransportMode;
 import com.myapp.service.Service;
+import com.myapp.utils.RouteExporter;
 import com.sothawo.mapjfx.*;
 
 import javafx.application.Application;
