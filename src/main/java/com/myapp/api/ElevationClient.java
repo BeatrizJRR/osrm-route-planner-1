@@ -13,8 +13,19 @@ public class ElevationClient {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
 
     /**
-     * Obter elevações para múltiplos pontos
-     * @param locations String no formato "lat1,lon1|lat2,lon2|..."
+     * Cliente para a API Open-Elevation.
+     *
+     * Endpoint utilizado:
+     * - GET {@code /api/v1/lookup?locations=lat,lon|lat,lon|...}
+     *   Referência: https://open-elevation.com/
+     */
+    /**
+     * Obtém elevações para múltiplos pontos.
+     *
+     * @param locations string no formato {@code lat1,lon1|lat2,lon2|...}
+     * @return resposta JSON da Open-Elevation
+     * @throws IOException erro de I/O ao comunicar
+     * @throws InterruptedException se a thread for interrompida
      */
     public String getElevations(String locations) throws IOException, InterruptedException {
         // URL encode do parâmetro locations

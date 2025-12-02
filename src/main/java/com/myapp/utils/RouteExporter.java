@@ -1,14 +1,39 @@
-package com.myapp.model;
+package com.myapp.utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.myapp.model.POI;
+import com.myapp.model.Point;
+import com.myapp.model.Route;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Utilitário para exportação de rotas para formatos comuns.
+ *
+ * Atualmente suporta exportação para JSON e GPX.
+ */
 public class RouteExporter {
 
-    /** Exporta a rota para JSON */
+    /**
+     * Exporta a rota para um ficheiro JSON.
+     *
+     * Estrutura gerada:
+     * <pre>
+     * {
+     *   "distance_km": number,
+     *   "duration_sec": number,
+     *   "mode": string,
+     *   "route_points": [ { "lat": number, "lon": number }, ... ],
+     *   "pois": [ { "name": string, "category": string, "lat": number, "lon": number }, ... ]
+     * }
+     * </pre>
+     *
+     * @param route    a rota a exportar
+     * @param filePath caminho do ficheiro de saída
+     * @throws IOException quando ocorre erro de escrita
+     */
     public static void exportToJson(Route route, String filePath) throws IOException {
         JsonObject root = new JsonObject();
 
@@ -43,7 +68,16 @@ public class RouteExporter {
         }
     }
 
-    /** Exporta a rota para GPX */
+    /**
+     * Exporta a rota para um ficheiro GPX (versão 1.1).
+     *
+     * É gerado um segmento de trilho (trkseg) com um ponto (trkpt) por cada
+     * coordenada da rota.
+     *
+     * @param route    a rota a exportar
+     * @param filePath caminho do ficheiro de saída
+     * @throws IOException quando ocorre erro de escrita
+     */
     public static void exportToGPX(Route route, String filePath) throws IOException {
         StringBuilder gpx = new StringBuilder();
         gpx.append("""

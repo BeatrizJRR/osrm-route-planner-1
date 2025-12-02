@@ -14,10 +14,30 @@ import java.util.List;
 import java.util.Locale;
 
 
+/**
+ * Cliente para a API OSRM (Open Source Routing Machine).
+ *
+ * Endpoints utilizados:
+ * - GET {@code /route/v1/{profile}/{coordinates}} com parâmetros {@code overview=full} e {@code geometries=geojson}.
+ *   Referência: https://project-osrm.org/docs/v5.27.0/api/#route-service
+ */
 public class OSRMClient {
     private static final String BASE_URL = "https://router.project-osrm.org/route/v1/";
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
 
+    /**
+     * Obtém uma rota simples entre origem e destino no formato JSON da OSRM.
+     *
+     * Mapeamento para OSRM: GET
+     * {@code /route/v1/{profile}/{lon,lat;lon,lat}?overview=full&geometries=geojson}
+     *
+     * @param origin      ponto de origem
+     * @param destination ponto de destino
+     * @param mode        modo de transporte (perfil OSRM: driving/cycling/walking)
+     * @return resposta JSON devolvida pela OSRM
+     * @throws IOException            erro de I/O ao comunicar
+     * @throws InterruptedException   se a thread for interrompida durante o pedido
+     */
     public String getRouteJson(Point origin, Point destination, TransportMode mode) throws IOException, InterruptedException {
         String profile = switch (mode) {
             case BIKE -> "bike";
@@ -42,6 +62,19 @@ public class OSRMClient {
         return response.body(); 
     }
 
+    /**
+     * Obtém uma rota com pontos intermédios (waypoints) no formato JSON da OSRM.
+     *
+     * Mapeamento para OSRM: GET
+     * {@code /route/v1/{profile}/{lon,lat;lon,lat;...}?overview=full&geometries=geojson}
+     *
+     * @param origin    ponto de origem
+     * @param waypoints lista de pontos intermédios na ordem desejada
+     * @param mode      modo de transporte (perfil OSRM)
+     * @return resposta JSON devolvida pela OSRM
+     * @throws IOException          erro de I/O ao comunicar
+     * @throws InterruptedException se a thread for interrompida
+     */
     public String getRouteJsonWithWaypoints(Point origin, List<Point> waypoints, TransportMode mode)
         throws IOException, InterruptedException {
 
@@ -77,8 +110,5 @@ public class OSRMClient {
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
 
         return response.body();
-    }
-
-
-    
+    }   
 }
