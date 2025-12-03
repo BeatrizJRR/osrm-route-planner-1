@@ -7,10 +7,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 
 
 /**
  * Cliente para a API Nominatim (geocodificação OpenStreetMap).
+ *
+ * Papel na arquitetura MVC:
+ * - Camada API (infra): resolve geocodificação, isolando dependência externa.
+ * - Service (Controller) usa este cliente para obter coordenadas.
+ * - Model armazena resultados estruturados; UI consome via Service.
  *
  * Endpoint utilizado:
  * - GET {@code /search?q={query}&format=json&limit=1}
@@ -18,7 +24,17 @@ import java.nio.charset.StandardCharsets;
  */
 public class NominatimClient {
     private static final String BASE_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
-    private static final HttpClient CLIENT = HttpClient.newHttpClient();
+
+    private static final String HEADER_USER_AGENT = "User-Agent";
+    private static final String HEADER_ACCEPT_LANGUAGE = "Accept-Language";
+    private static final String USER_AGENT_VALUE = "ProjetoADS/1.0";
+    private static final String ACCEPT_LANGUAGE_PT_PT = "pt-PT";
+    private static final String QUERY_FORMAT_JSON_LIMIT_1 = "&format=json&limit=1";
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
+    private static final HttpClient CLIENT = HttpClient.newBuilder()
+            .connectTimeout(DEFAULT_TIMEOUT)
+            .build();
 
     /**
      * Executa uma pesquisa de geocodificação e devolve o resultado em JSON.
@@ -32,11 +48,12 @@ public class NominatimClient {
      */
     public String searchJson(String query) throws IOException, InterruptedException {
         String encoded = URLEncoder.encode(query, StandardCharsets.UTF_8);
-        String url = BASE_SEARCH_URL + "?q=" + encoded + "&format=json&limit=1";
+        String url = BASE_SEARCH_URL + "?q=" + encoded + QUERY_FORMAT_JSON_LIMIT_1;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("User-Agent", "ProjetoADS/1.0")
-                .header("Accept-Language", "pt-PT")
+            .timeout(DEFAULT_TIMEOUT)
+            .header(HEADER_USER_AGENT, USER_AGENT_VALUE)
+            .header(HEADER_ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_PT_PT)
                 .GET()
                 .build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());

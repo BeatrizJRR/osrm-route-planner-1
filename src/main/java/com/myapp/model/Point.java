@@ -2,6 +2,11 @@ package com.myapp.model;
 
 /**
  * Representa um ponto geográfico com latitude, longitude e um nome opcional.
+ *
+ * Papel na arquitetura MVC:
+ * - Model: entidade de dados imutável que armazena coordenadas.
+ * - Usado por Service (Controller) para cálculos e transformações.
+ * - UI (View) consome via Service; este modelo não contém lógica de apresentação.
  * <p>
  * A latitude e a longitude são guardadas em graus decimais usando o datum WGS84.
  * O {@code name} pode ser {@code null} para indicar um ponto sem nome.

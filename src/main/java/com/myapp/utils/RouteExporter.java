@@ -12,6 +12,11 @@ import java.io.IOException;
 /**
  * Utilitário para exportação de rotas para formatos comuns.
  *
+ * Papel na arquitetura MVC:
+ * - Utils: fornece operações de I/O e serialização, independente de lógica de negócio.
+ * - Consumido pela UI (View) quando o utilizador exporta uma rota.
+ * - Trabalha com modelos (Route, Point, POI) mas não os modifica.
+ *
  * Atualmente suporta exportação para JSON e GPX.
  */
 public class RouteExporter {

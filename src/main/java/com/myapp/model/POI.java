@@ -2,6 +2,11 @@ package com.myapp.model;
 
 /**
  * Representa um Ponto de Interesse (POI) com nome, categoria e coordenada.
+ *
+ * Papel na arquitetura MVC:
+ * - Model: entidade de dados imutável que representa um POI.
+ * - Service (Controller) cria POIs a partir de dados da Overpass API.
+ * - UI (View) renderiza POIs no mapa; este modelo não contém lógica de UI.
  * <p>
  * O POI pode ser usado para anotar locais relevantes ao longo de uma rota,
  * como monumentos, serviços, alertas ou referências de navegação.
