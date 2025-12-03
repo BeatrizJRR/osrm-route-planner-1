@@ -6,6 +6,11 @@ import java.util.List;
  * Representa o perfil de elevação ao longo de uma rota, incluindo amostras de
  * altitude, distâncias acumuladas e estatísticas como máximos, mínimos, subida
  * total e descida total.
+ *
+ * Papel na arquitetura MVC:
+ * - Model: agrega dados de elevação processados pelo Service (Controller).
+ * - Service obtém dados da ElevationClient API e constrói este modelo.
+ * - UI (View) renderiza gráficos e estatísticas; este modelo encapsula cálculos.
  * <p>
  * As unidades são: elevação em metros (m) e distância acumulada em quilómetros (km).
  */

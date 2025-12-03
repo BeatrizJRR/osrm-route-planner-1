@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -23,7 +24,43 @@ import com.sothawo.mapjfx.event.MapViewEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Interface gráfica (View) principal da aplicação de planeamento de rotas.
+ *
+ * Papel na arquitetura MVC:
+ * - View (UI): apresenta mapa interativo, formulários e controlos ao utilizador.
+ * - Consome Service (Controller) para obter rotas, POIs, geocodificação e elevação.
+ * - Renderiza modelos (Route, Point, POI) no mapa; não contém lógica de negócio.
+ *
+ * Utiliza JavaFX e mapjfx para renderização de mapas e marcadores.
+ */
 public class MapViewer extends Application {
+
+    // UI Layout constants
+    private static final int SIDEBAR_WIDTH = 360;
+    private static final int SIDEBAR_SPACING = 20;
+    private static final int SIDEBAR_PADDING = 20;
+    private static final int SIDEBAR_TRANSLATE_OFFSET = 20;
+    private static final int SIDEBAR_SCROLL_PADDING = 10;
+    private static final int WINDOW_WIDTH = 1350;
+    private static final int WINDOW_HEIGHT = 800;
+    private static final int POI_LIST_PREF_HEIGHT = 150;
+    private static final int POI_LIST_MAX_HEIGHT = 200;
+    private static final int WAYPOINT_ROW_SPACING = 10;
+    private static final int ELEVATION_DIALOG_SPACING = 15;
+
+    // Map constants
+    private static final double DEFAULT_MAP_CENTER_LAT = 38.7223;
+    private static final double DEFAULT_MAP_CENTER_LON = -9.1393;
+    private static final int DEFAULT_MAP_ZOOM = 10;
+    private static final int LOCATION_ZOOM = 14;
+    private static final int POI_ZOOM = 15;
+
+    // Time conversion
+    private static final long SECONDS_PER_MINUTE = 60L;
+    
+    // Autocomplete debounce
+    private static final long AUTOCOMPLETE_DEBOUNCE_MS = 500L;
 
     // --- MAP ELEMENTS ---
     private final MapView mapView = new MapView();
@@ -53,6 +90,9 @@ public class MapViewer extends Application {
 
     private final Service service = new Service();
     private ContextMenu suggestionsMenu = new ContextMenu();
+    
+    // Debounce timer for autocomplete
+    private javafx.animation.Timeline debounceTimer;
 
     @Override
     public void start(Stage stage) {
@@ -68,10 +108,11 @@ public class MapViewer extends Application {
         sidebarScroll.setFitToWidth(true);
         sidebarScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         sidebarScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        sidebarScroll.setMaxWidth(360);
-        sidebarScroll.setPadding(new Insets(10));
-        sidebarScroll.setTranslateX(20);
-        sidebarScroll.setTranslateY(20);
+        sidebarScroll.setMaxWidth(SIDEBAR_WIDTH);
+        sidebarScroll.setPadding(new Insets(SIDEBAR_SCROLL_PADDING));
+        sidebarScroll.setTranslateX(SIDEBAR_TRANSLATE_OFFSET);
+        sidebarScroll.setTranslateY(SIDEBAR_TRANSLATE_OFFSET);
+        sidebarScroll.setPickOnBounds(false); // Allow clicks through transparent areas
 
         // --- MAP CONTAINER ---
         StackPane mapWrapper = new StackPane(mapView);
@@ -85,7 +126,7 @@ public class MapViewer extends Application {
         StackPane.setAlignment(sidebarScroll, Pos.TOP_LEFT);
         root.getChildren().addAll(mapWrapper, sidebarScroll);
 
-        Scene scene = new Scene(root, 1350, 800);
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         scene.getStylesheets().add(getClass().getResource("/mapstyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
@@ -95,9 +136,9 @@ public class MapViewer extends Application {
     // ✅ UI CONSTRUCTION
     // ============================================================
     private VBox buildSidebarUI() {
-        VBox sidebar = new VBox(20);
-        sidebar.setPadding(new Insets(20));
-        sidebar.setPrefWidth(360);
+        VBox sidebar = new VBox(SIDEBAR_SPACING);
+        sidebar.setPadding(new Insets(SIDEBAR_PADDING));
+        sidebar.setPrefWidth(SIDEBAR_WIDTH);
 
         // ORIGIN
         Label lblOrigem = new Label("📍 Origem");
@@ -201,8 +242,8 @@ public class MapViewer extends Application {
         // POI LIST
         ScrollPane poiListScroll = new ScrollPane(poiListUI);
         poiListScroll.setFitToWidth(true);
-        poiListScroll.setPrefHeight(150);
-        poiListScroll.setMaxHeight(200);
+        poiListScroll.setPrefHeight(POI_LIST_PREF_HEIGHT);
+        poiListScroll.setMaxHeight(POI_LIST_MAX_HEIGHT);
         poiListUI.setPadding(new Insets(5));
         poiListUI.getStyleClass().add("poi-list-container");
 
@@ -274,8 +315,8 @@ public class MapViewer extends Application {
 
         mapView.initializedProperty().addListener((obs, old, initialized) -> {
             if (initialized) {
-                mapView.setCenter(new Coordinate(38.7223, -9.1393));
-                mapView.setZoom(10);
+                mapView.setCenter(new Coordinate(DEFAULT_MAP_CENTER_LAT, DEFAULT_MAP_CENTER_LON));
+                mapView.setZoom(DEFAULT_MAP_ZOOM);
 
                 mapView.addEventHandler(MapViewEvent.MAP_CLICKED, event -> {
                     Coordinate c = event.getCoordinate();
@@ -318,7 +359,7 @@ public class MapViewer extends Application {
                 setOrigin(c);
                 origemField.setText(result.getName());
                 mapView.setCenter(c);
-                mapView.setZoom(14);
+                mapView.setZoom(LOCATION_ZOOM);
             });
         }).start();
     }
@@ -347,7 +388,7 @@ public class MapViewer extends Application {
         for (int i = 0; i < waypointPoints.size(); i++) {
             int index = i;
 
-            HBox row = new HBox(10);
+            HBox row = new HBox(WAYPOINT_ROW_SPACING);
             row.setAlignment(Pos.CENTER_LEFT);
 
             Label label = new Label((i + 1) + " - Paragem");
@@ -423,7 +464,7 @@ public class MapViewer extends Application {
         routeSummaryLabel.setText(
                 String.format("Distância: %.2f km | Tempo: %d min | Paragens: %d",
                         route.getDistanceKm(),
-                        route.getDurationSec() / 60,
+                        route.getDurationSec() / SECONDS_PER_MINUTE,
                         waypointPoints.size()));
     }
 
@@ -445,7 +486,7 @@ public class MapViewer extends Application {
             Platform.runLater(() -> {
                 Coordinate c = new Coordinate(result.getLatitude(), result.getLongitude());
                 mapView.setCenter(c);
-                mapView.setZoom(14);
+                mapView.setZoom(LOCATION_ZOOM);
             });
         }).start();
     }
@@ -457,40 +498,62 @@ public class MapViewer extends Application {
 
     private void setupFieldAutocomplete(TextField field) {
         field.textProperty().addListener((obs, oldText, newText) -> {
+            // Cancel previous timer if exists
+            if (debounceTimer != null) {
+                debounceTimer.stop();
+            }
+            
             if (newText.isBlank()) {
                 suggestionsMenu.hide();
                 return;
             }
+            
+            // Only search if text is longer than 2 characters
+            if (newText.length() < 3) {
+                suggestionsMenu.hide();
+                return;
+            }
 
-            new Thread(() -> {
-                try {
-                    List<Point> results = service.searchLocations(newText);
-
-                    Platform.runLater(() -> {
-                        suggestionsMenu.getItems().clear();
-
-                        for (Point p : results) {
-                            MenuItem item = new MenuItem(p.getName());
-                            item.setOnAction(e -> {
-                                field.setText(p.getName());
-                                lastSearchPoint = p;
-                                suggestionsMenu.hide();
-                            });
-                            suggestionsMenu.getItems().add(item);
-                        }
-
-                        if (!results.isEmpty()) {
-                            suggestionsMenu.show(field, Side.BOTTOM, 0, 0);
-                        } else {
-                            suggestionsMenu.hide();
-                        }
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            // Create new debounce timer
+            debounceTimer = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(
+                    javafx.util.Duration.millis(AUTOCOMPLETE_DEBOUNCE_MS),
+                    event -> performAutocompleteSearch(field, newText)
+                )
+            );
+            debounceTimer.play();
         });
+    }
+    
+    private void performAutocompleteSearch(TextField field, String query) {
+        new Thread(() -> {
+            try {
+                List<Point> results = service.searchLocations(query);
+
+                Platform.runLater(() -> {
+                    suggestionsMenu.getItems().clear();
+
+                    for (Point p : results) {
+                        MenuItem item = new MenuItem(p.getName());
+                        item.setOnAction(e -> {
+                            field.setText(p.getName());
+                            lastSearchPoint = p;
+                            suggestionsMenu.hide();
+                        });
+                        suggestionsMenu.getItems().add(item);
+                    }
+
+                    if (!results.isEmpty()) {
+                        suggestionsMenu.show(field, Side.BOTTOM, 0, 0);
+                    } else {
+                        suggestionsMenu.hide();
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     // ============================================================
@@ -519,6 +582,13 @@ public class MapViewer extends Application {
             Platform.runLater(() -> {
                 currentPOIs.clear();
                 currentPOIs.addAll(pois);
+                
+                // Add POIs to route for export
+                if (lastRoute != null) {
+                    lastRoute.getPois().clear();
+                    lastRoute.getPois().addAll(pois);
+                }
+                
                 showPoisOnMap(pois);
                 updatePOIList(pois);
                 poiSummaryLabel.setText("Pontos de Interesse: " + pois.size());
@@ -563,14 +633,21 @@ public class MapViewer extends Application {
 
             String name = poi.getName() != null ? poi.getName() : "Sem nome";
             String category = poi.getCategory() != null ? poi.getCategory() : "Desconhecido";
+            String address = String.format("%.4f, %.4f", 
+                poi.getCoordinate().getLatitude(), 
+                poi.getCoordinate().getLongitude());
 
             Label poiLabel = new Label("● " + name);
             poiLabel.getStyleClass().add("poi-label-text");
 
             Label categoryLabel = new Label("   " + category);
             categoryLabel.getStyleClass().add("poi-category-label");
+            
+            Label addressLabel = new Label("   " + address);
+            addressLabel.getStyleClass().add("poi-category-label");
+            addressLabel.setStyle("-fx-font-size: 9px; -fx-text-fill: #666;");
 
-            VBox poiEntry = new VBox(2, poiLabel, categoryLabel);
+            VBox poiEntry = new VBox(2, poiLabel, categoryLabel, addressLabel);
             poiEntry.setPadding(new Insets(3, 5, 3, 5));
             poiEntry.getStyleClass().add("poi-entry");
 
@@ -580,7 +657,7 @@ public class MapViewer extends Application {
                         poi.getCoordinate().getLatitude(),
                         poi.getCoordinate().getLongitude());
                 mapView.setCenter(coord);
-                mapView.setZoom(15);
+                mapView.setZoom(POI_ZOOM);
             });
 
             poiListUI.getChildren().add(poiEntry);
@@ -602,10 +679,22 @@ public class MapViewer extends Application {
         if (lastRoute == null)
             return;
 
-        try {
-            RouteExporter.exportToJson(lastRoute, "route.json");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar Rota como JSON");
+        fileChooser.setInitialFileName("route.json");
+        fileChooser.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json")
+        );
+        
+        java.io.File file = fileChooser.showSaveDialog(mapView.getScene().getWindow());
+        if (file != null) {
+            try {
+                RouteExporter.exportToJson(lastRoute, file.getAbsolutePath());
+                showAlert("Exportação bem-sucedida", "Rota guardada em: " + file.getAbsolutePath());
+            } catch (Exception ex) {
+                showAlert("Erro na exportação", "Não foi possível guardar o ficheiro: " + ex.getMessage());
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -613,10 +702,22 @@ public class MapViewer extends Application {
         if (lastRoute == null)
             return;
 
-        try {
-            RouteExporter.exportToGPX(lastRoute, "route.gpx");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar Rota como GPX");
+        fileChooser.setInitialFileName("route.gpx");
+        fileChooser.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("GPX files (*.gpx)", "*.gpx")
+        );
+        
+        java.io.File file = fileChooser.showSaveDialog(mapView.getScene().getWindow());
+        if (file != null) {
+            try {
+                RouteExporter.exportToGPX(lastRoute, file.getAbsolutePath());
+                showAlert("Exportação bem-sucedida", "Rota guardada em: " + file.getAbsolutePath());
+            } catch (Exception ex) {
+                showAlert("Erro na exportação", "Não foi possível guardar o ficheiro: " + ex.getMessage());
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -655,7 +756,7 @@ public class MapViewer extends Application {
         Stage chartStage = new Stage();
         chartStage.setTitle("Perfil Altimétrico da Rota");
 
-        VBox root = new VBox(15);
+        VBox root = new VBox(ELEVATION_DIALOG_SPACING);
         root.setPadding(new Insets(20));
 
         // Estatísticas
