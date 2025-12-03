@@ -8,6 +8,7 @@ import com.myapp.service.Service;
 import com.myapp.utils.RouteExporter;
 import com.sothawo.mapjfx.*;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -454,42 +455,74 @@ public class MapViewer extends Application {
         setupFieldAutocomplete(pesquisaField);
         setupFieldAutocomplete(origemField);
     }
-
+    
     private void setupFieldAutocomplete(TextField field) {
+        // Cria uma pausa de 400ms. O código dentro do setOnFinished só corre
+        // se passarem 400ms sem ninguém tocar no teclado.
+        PauseTransition pause = new PauseTransition(javafx.util.Duration.millis(400));
+
         field.textProperty().addListener((obs, oldText, newText) -> {
+            // Esconde o menu se estiver vazio
             if (newText.isBlank()) {
                 suggestionsMenu.hide();
                 return;
             }
 
-            new Thread(() -> {
-                try {
-                    List<Point> results = service.searchLocations(newText);
+            //Sempre que uma tecla é premida, REINICIA o temporizador.
+            pause.setOnFinished(event -> {
+                
+                // Guardamos o texto atual para verificar depois
+                String queryAtRequestTime = field.getText().trim();
+                
+                if (queryAtRequestTime.length() < 3) return;
 
-                    Platform.runLater(() -> {
-                        suggestionsMenu.getItems().clear();
+                new Thread(() -> {
+                    try {
+                        List<Point> results = service.searchLocations(queryAtRequestTime);
 
-                        for (Point p : results) {
-                            MenuItem item = new MenuItem(p.getName());
-                            item.setOnAction(e -> {
-                                field.setText(p.getName());
-                                lastSearchPoint = p;
+                        Platform.runLater(() -> {
+                            if (!field.getText().trim().equals(queryAtRequestTime)) {
+                                return;
+                            }
+
+                            suggestionsMenu.getItems().clear();
+
+                            for (Point p : results) {
+                                MenuItem item = new MenuItem(p.getName());
+                                item.setOnAction(e -> {
+                                    // Desliga o listener temporariamente para não disparar nova pesquisa ao clicar
+                                    field.setText(p.getName());
+                                    lastSearchPoint = p;
+                                    suggestionsMenu.hide();
+                                });
+                                suggestionsMenu.getItems().add(item);
+                            }
+
+                            if (!results.isEmpty()) {
+                                // Mostra o menu apenas se o campo ainda tiver foco
+                                if(field.isFocused()) {
+                                    suggestionsMenu.show(field, Side.BOTTOM, 0, 0);
+                                }
+                            } else {
                                 suggestionsMenu.hide();
-                            });
-                            suggestionsMenu.getItems().add(item);
-                        }
+                            }
+                        });
 
-                        if (!results.isEmpty()) {
-                            suggestionsMenu.show(field, Side.BOTTOM, 0, 0);
-                        } else {
-                            suggestionsMenu.hide();
-                        }
-                    });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            });
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            // Inicia a contagem decrescente
+            pause.playFromStart();
+        });
+        
+        // Esconde o menu se o utilizador clicar fora
+        field.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) {
+                suggestionsMenu.hide();
+            }
         });
     }
 
