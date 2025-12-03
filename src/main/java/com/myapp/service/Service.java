@@ -24,9 +24,24 @@ import com.google.gson.JsonParser;
  * Nominatim e Open-Elevation) para fornecer funcionalidades de
  * roteamento, geocodificação, recolha de POIs e perfil de elevação.
  *
+ * Papel na arquitetura MVC:
+ * - Controller/Service: orquestra chamadas às APIs, aplica regras e transforma dados.
+ * - Model: contém entidades (`Route`, `Point`, `POI`, `ElevationProfile`).
+ * - UI (View): consome métodos deste serviço para apresentar dados.
+ *
  * Este serviço converte respostas JSON das APIs em modelos da aplicação.
  */
 public class Service {
+
+    // Constants to avoid magic numbers/strings
+    private static final int DEFAULT_POI_SEGMENTS = 10;
+    private static final long OVERPASS_RATE_LIMIT_SLEEP_MS = 550L;
+    private static final int OVERPASS_SEARCH_RADIUS_M = 1500;
+    private static final int OVERPASS_QUERY_TIMEOUT_S = 5;
+    private static final long POI_SEARCH_MAX_DURATION_MS = 15_000L;
+    private static final double DUPLICATE_COORD_THRESHOLD_DEG = 0.00001;
+    private static final int MAX_UNIQUE_POIS = 100;
+    private static final int MAX_ELEVATION_SAMPLES = 100;
 
     private final OSRMClient osrmClient = new OSRMClient();
     private final OverpassClient overpassClient = new OverpassClient();
@@ -126,7 +141,7 @@ public class Service {
         // Nova estratégia: dividir rota em SEGMENTOS IGUAIS e pegar poucos POIs de cada
         // Garante distribuição uniforme ao longo de TODA a rota
 
-        int numSegments = 10; // Dividir rota em 10 segmentos
+        int numSegments = DEFAULT_POI_SEGMENTS; // Dividir rota em segmentos iguais
         List<Point> selectedCheckpoints = new ArrayList<>();
 
         for (int i = 0; i < numSegments; i++) {
@@ -142,7 +157,7 @@ public class Service {
                 + " segmentos iguais para garantir distribuição uniforme.");
 
         long startTime = System.currentTimeMillis();
-        long maxDuration = 15000; // 15 segundos total
+        long maxDuration = POI_SEARCH_MAX_DURATION_MS; // limite global para pesquisa de POIs
 
         for (int i = 0; i < checkpoints; i++) {
             // Timeout
@@ -162,18 +177,18 @@ public class Service {
             try {
                 // Delay para rate limit
                 if (i > 0) {
-                    Thread.sleep(550);
+                    Thread.sleep(OVERPASS_RATE_LIMIT_SLEEP_MS);
                 }
 
                 // Usar raio grande desde início para áreas rurais
                 // Limite de 2 POIs garante distribuição mesmo em áreas urbanas
-                int searchRadius = 1500; // 1.5km - raio grande para cobrir áreas rurais
+                int searchRadius = OVERPASS_SEARCH_RADIUS_M; // raio grande para cobrir áreas rurais
 
                 String ql = String.format(Locale.US, """
-                        [out:json][timeout:5];
+                    [out:json][timeout:%d];
                         node[%s](around:%d,%f,%f);
                         out body 2;
-                        """, tag, searchRadius, p.getLatitude(), p.getLongitude());
+                    """, OVERPASS_QUERY_TIMEOUT_S, tag, searchRadius, p.getLatitude(), p.getLongitude());
 
                 String json = overpassClient.postOverpass(ql);
 
@@ -204,9 +219,9 @@ public class Service {
         // Remover duplicados (coordenadas iguais)
         List<POI> unique = new ArrayList<>();
         for (POI poi : result) {
-            boolean exists = unique.stream().anyMatch(
-                    x -> Math.abs(x.getCoordinate().getLatitude() - poi.getCoordinate().getLatitude()) < 0.00001 &&
-                            Math.abs(x.getCoordinate().getLongitude() - poi.getCoordinate().getLongitude()) < 0.00001);
+                boolean exists = unique.stream().anyMatch(
+                    x -> Math.abs(x.getCoordinate().getLatitude() - poi.getCoordinate().getLatitude()) < DUPLICATE_COORD_THRESHOLD_DEG &&
+                        Math.abs(x.getCoordinate().getLongitude() - poi.getCoordinate().getLongitude()) < DUPLICATE_COORD_THRESHOLD_DEG);
             if (!exists)
                 unique.add(poi);
         }
@@ -214,8 +229,8 @@ public class Service {
         // Aplicar limite final
         System.out
                 .println("[POI Search] Total de POIs únicos: " + unique.size() + " (de " + result.size() + " brutos)");
-        if (unique.size() > 100) {
-            return unique.subList(0, 100);
+        if (unique.size() > MAX_UNIQUE_POIS) {
+            return unique.subList(0, MAX_UNIQUE_POIS);
         }
 
         return unique;
@@ -389,8 +404,8 @@ public class Service {
 
         List<Point> points = route.getRoutePoints();
 
-        // Amostrar pontos (máximo 100 para não sobrecarregar API)
-        int sampleRate = Math.max(1, points.size() / 100);
+        // Amostrar pontos (máximo configurado para não sobrecarregar API)
+        int sampleRate = Math.max(1, points.size() / MAX_ELEVATION_SAMPLES);
         List<Point> sampledPoints = new ArrayList<>();
         for (int i = 0; i < points.size(); i += sampleRate) {
             sampledPoints.add(points.get(i));

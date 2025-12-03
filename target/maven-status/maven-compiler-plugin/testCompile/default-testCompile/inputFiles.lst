@@ -1,1 +1,11 @@
+<<<<<<< HEAD
 C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner\src\test\java\com\myapp\AppTest.java
+=======
+C:\Users\Frederico\Desktop\ADS\osrm-route-planner\src\test\java\com\myapp\AppTest.java
+C:\Users\Frederico\Desktop\ADS\osrm-route-planner\src\test\java\com\myapp\model\ElevationProfileTest.java
+C:\Users\Frederico\Desktop\ADS\osrm-route-planner\src\test\java\com\myapp\model\PointTest.java
+C:\Users\Frederico\Desktop\ADS\osrm-route-planner\src\test\java\com\myapp\model\POITest.java
+C:\Users\Frederico\Desktop\ADS\osrm-route-planner\src\test\java\com\myapp\model\RouteTest.java
+C:\Users\Frederico\Desktop\ADS\osrm-route-planner\src\test\java\com\myapp\service\ServiceTest.java
+C:\Users\Frederico\Desktop\ADS\osrm-route-planner\src\test\java\com\myapp\utils\RouteExporterTest.java
+>>>>>>> 0b633cca90cbbe77d39654d88d810800eb087ec6

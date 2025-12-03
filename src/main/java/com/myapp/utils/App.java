@@ -6,6 +6,10 @@ import javafx.application.Application;
 /**
  * Ponto de entrada da aplicação.
  *
+ * Papel na arquitetura MVC:
+ * - Utils: bootstrap da aplicação; não contém lógica MVC.
+ * - Lança a UI (View) através do JavaFX Application framework.
+ *
  * Responsável por iniciar a aplicação JavaFX através da classe {@link MapViewer}.
  */
 public class App {
