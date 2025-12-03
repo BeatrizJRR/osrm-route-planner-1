@@ -133,9 +133,7 @@ public class MapViewer extends Application {
         stage.show();
     }
 
-    // ============================================================
-    // ✅ UI CONSTRUCTION
-    // ============================================================
+    
     private VBox buildSidebarUI() {
         VBox sidebar = new VBox(SIDEBAR_SPACING);
         sidebar.setPadding(new Insets(SIDEBAR_PADDING));
@@ -305,9 +303,9 @@ public class MapViewer extends Application {
         return sidebar;
     }
 
-    // ============================================================
-    // ✅ MAP & CLICK BEHAVIOR
-    // ============================================================
+    /**
+     * Inicializa o mapa e define eventos iniciais.
+     */
     private void initMap() {
         mapView.initialize(Configuration.builder()
                 .projection(Projection.WEB_MERCATOR)
@@ -330,9 +328,10 @@ public class MapViewer extends Application {
         });
     }
 
-    // ============================================================
-    // ✅ ORIGIN
-    // ============================================================
+    /**
+     * Define a origem no mapa e atualiza o marcador.
+     * @param c
+     */
     private void setOrigin(Coordinate c) {
         if (originMarker != null)
             mapView.removeMarker(originMarker);
@@ -365,9 +364,10 @@ public class MapViewer extends Application {
         }).start();
     }
 
-    // ============================================================
-    // ✅ WAYPOINTS
-    // ============================================================
+    /**
+     * Adiciona um ponto de paragem (waypoint) no mapa.
+     * @param c
+     */
     private void addWaypoint(Coordinate c) {
         Point p = new Point(c.getLatitude(), c.getLongitude(), null);
 
@@ -383,6 +383,9 @@ public class MapViewer extends Application {
         updateWaypointUI();
     }
 
+    /**
+     * Atualiza a lista de paragens (waypoints) na UI.
+     */
     private void updateWaypointUI() {
         waypointListUI.getChildren().clear();
 
@@ -406,6 +409,10 @@ public class MapViewer extends Application {
         }
     }
 
+    /**
+     * Remove um ponto de paragem (waypoint) pelo índice.
+     * @param index
+     */
     private void removeWaypoint(int index) {
         mapView.removeMarker(waypointMarkers.get(index));
         waypointMarkers.remove(index);
@@ -427,9 +434,9 @@ public class MapViewer extends Application {
         addWaypoint(c);
     }
 
-    // ============================================================
-    // ✅ ROUTE
-    // ============================================================
+    /**
+     * Calcula a rota com a origem e paragens definidas.
+     */
     private void calculateRoute() {
         if (originMarker == null) {
             routeSummaryLabel.setText("Defina uma origem.");
@@ -469,9 +476,9 @@ public class MapViewer extends Application {
                         waypointPoints.size()));
     }
 
-    // ============================================================
-    // ✅ SEARCH
-    // ============================================================
+    /**
+     * Pesquisa a localização introduzida no campo de pesquisa e centra o mapa.
+     */
     private void handlePesquisar() {
         String query = pesquisaField.getText().trim();
         if (query.isEmpty())
@@ -492,11 +499,18 @@ public class MapViewer extends Application {
         }).start();
     }
 
+    /**
+     * Configura o sistema de autocompletar para os campos de texto.
+     */
     private void setupAutocomplete() {
         setupFieldAutocomplete(pesquisaField);
         setupFieldAutocomplete(origemField);
     }
     
+    /**
+     * Configura o autocompletar para um campo de texto específico.
+     * @param field
+     */
     private void setupFieldAutocomplete(TextField field) {
         // Cria uma pausa de 400ms. O código dentro do setOnFinished só corre
         // se passarem 400ms sem ninguém tocar no teclado.
@@ -567,9 +581,9 @@ public class MapViewer extends Application {
         });
     }
 
-    // ============================================================
-    // ✅ POIs
-    // ============================================================
+    /**
+     * Pesquisa Pontos de Interesse ao longo da rota atual.
+     */
     private void handleSearchPois() {
         if (lastRoute == null) {
             poiSummaryLabel.setText("Calcula a rota primeiro.");
@@ -607,6 +621,10 @@ public class MapViewer extends Application {
         }).start();
     }
 
+    /**
+     * Mostra os Pontos de Interesse no mapa.
+     * @param pois
+     */
     private void showPoisOnMap(List<POI> pois) {
         clearPOIsFromMap();
 
@@ -629,6 +647,10 @@ public class MapViewer extends Application {
         }
     }
 
+    /**
+     * Atualiza a lista de Pontos de Interesse na UI.
+     * @param pois
+     */
     private void updatePOIList(List<POI> pois) {
         poiListUI.getChildren().clear();
 
@@ -675,6 +697,9 @@ public class MapViewer extends Application {
         }
     }
 
+    /**
+     * Remove todos os Pontos de Interesse do mapa.
+     */
     private void clearPOIsFromMap() {
         for (Marker m : poiMarkers)
             mapView.removeMarker(m);
@@ -683,9 +708,9 @@ public class MapViewer extends Application {
         poiListUI.getChildren().clear();
     }
 
-    // ============================================================
-    // ✅ EXPORT
-    // ============================================================
+    /**
+     * Exporta a rota atual para ficheiro JSON.
+     */
     private void handleExportJson() {
         if (lastRoute == null)
             return;
@@ -709,6 +734,9 @@ public class MapViewer extends Application {
         }
     }
 
+    /**
+     * Exporta a rota atual para ficheiro GPX.
+     */
     private void handleExportGpx() {
         if (lastRoute == null)
             return;
@@ -732,9 +760,9 @@ public class MapViewer extends Application {
         }
     }
 
-    // ============================================================
-    // ✅ ELEVATION PROFILE
-    // ============================================================
+    /**
+     *  Mostra o perfil altimétrico da rota atual.
+     */
     private void handleShowElevation() {
         if (lastRoute == null) {
             showAlert("Erro", "Calcule uma rota primeiro.");
@@ -763,6 +791,10 @@ public class MapViewer extends Application {
         }).start();
     }
 
+    /**
+     * Mostra o gráfico do perfil altimétrico.
+     * @param profile
+     */
     private void showElevationChart(com.myapp.model.ElevationProfile profile) {
         Stage chartStage = new Stage();
         chartStage.setTitle("Perfil Altimétrico da Rota");
@@ -851,6 +883,11 @@ public class MapViewer extends Application {
         chartStage.show();
     }
 
+    /**
+     * Mostra um alerta com título e mensagem.
+     * @param title
+     * @param message
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -859,9 +896,9 @@ public class MapViewer extends Application {
         alert.showAndWait();
     }
 
-    // ============================================================
-    // ✅ RESET
-    // ============================================================
+    /**
+     * Reseta todos os dados e o mapa para o estado inicial.
+     */
     private void resetAll() {
         if (originMarker != null)
             mapView.removeMarker(originMarker);
