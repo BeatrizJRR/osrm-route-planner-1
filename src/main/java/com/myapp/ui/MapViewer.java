@@ -95,6 +95,8 @@ public class MapViewer extends Application {
     // Debounce timer for autocomplete
     private javafx.animation.Timeline debounceTimer;
 
+    private final com.myapp.utils.HistoryManager historyManager = new com.myapp.utils.HistoryManager();
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("Planeador de Rotas");
@@ -255,6 +257,12 @@ public class MapViewer extends Application {
         btnElevation.setMaxWidth(Double.MAX_VALUE);
         btnElevation.setOnAction(e -> handleShowElevation());
 
+        // HISTORY
+        Button btnHistory = new Button("📜 Ver Histórico");
+        btnHistory.getStyleClass().add("btn-info-outline"); // Ou o teu estilo preferido
+        btnHistory.setMaxWidth(Double.MAX_VALUE);
+        btnHistory.setOnAction(e -> showHistoryDialog());
+
         // EXPORT
         Label lblExport = new Label("📤 Exportar");
         lblExport.setUnderline(true);
@@ -296,6 +304,8 @@ public class MapViewer extends Application {
                 new Separator(),
                 lblElevation, btnElevation,
                 new Separator(),
+                btnHistory,
+                new Separator(),
                 lblExport, exportButtons,
                 new Separator(),
                 btnReset);
@@ -322,7 +332,7 @@ public class MapViewer extends Application {
                     if (originMarker == null)
                         setOrigin(c);
                     else
-                        addWaypoint(c);
+                        addWaypoint(c, null);
                 });
             }
         });
@@ -368,8 +378,8 @@ public class MapViewer extends Application {
      * Adiciona um ponto de paragem (waypoint) no mapa.
      * @param c
      */
-    private void addWaypoint(Coordinate c) {
-        Point p = new Point(c.getLatitude(), c.getLongitude(), null);
+    private void addWaypoint(Coordinate c, String name) {
+        Point p = new Point(c.getLatitude(), c.getLongitude(), name);
 
         waypointPoints.add(p);
 
@@ -431,7 +441,7 @@ public class MapViewer extends Application {
         if (lastSearchPoint == null)
             return;
         Coordinate c = new Coordinate(lastSearchPoint.getLatitude(), lastSearchPoint.getLongitude());
-        addWaypoint(c);
+        addWaypoint(c, lastSearchPoint.getName());
     }
 
     /**
@@ -445,9 +455,16 @@ public class MapViewer extends Application {
 
         if (currentRouteLine != null)
             mapView.removeCoordinateLine(currentRouteLine);
+        
+        String originName = origemField.getText();
+        
+        if (originName != null && originName.isBlank()) originName = null;
 
-        Point origin = new Point(originMarker.getPosition().getLatitude(),
-                originMarker.getPosition().getLongitude(), null);
+        Point origin = new Point(
+            originMarker.getPosition().getLatitude(),
+            originMarker.getPosition().getLongitude(), 
+            originName
+        );
 
         Route route = service.getRouteWithWaypoints(origin, waypointPoints, selectedMode);
 
@@ -468,6 +485,18 @@ public class MapViewer extends Application {
         mapView.setExtent(Extent.forCoordinates(coords));
 
         lastRoute = route;
+
+        
+        if (!waypointPoints.isEmpty()) {
+        Point destination = waypointPoints.get(waypointPoints.size() - 1);
+        List<Point> savedWaypoints = new ArrayList<>(waypointPoints);
+        com.myapp.model.HistoryEntry entry = new com.myapp.model.HistoryEntry(
+            origin, destination, savedWaypoints, selectedMode
+        );
+        
+        historyManager.addEntry(entry);
+        System.out.println("Rota adicionada ao histórico.");
+        }
 
         routeSummaryLabel.setText(
                 String.format("Distância: %.2f km | Tempo: %d min | Paragens: %d",
@@ -512,31 +541,30 @@ public class MapViewer extends Application {
      * @param field
      */
     private void setupFieldAutocomplete(TextField field) {
-        // Cria uma pausa de 400ms. O código dentro do setOnFinished só corre
-        // se passarem 400ms sem ninguém tocar no teclado.
         PauseTransition pause = new PauseTransition(javafx.util.Duration.millis(400));
 
         field.textProperty().addListener((obs, oldText, newText) -> {
-            //Esconde o menu se estiver vazio
-            if (newText.isBlank()) {
+            if (newText == null || newText.isBlank()) {
                 suggestionsMenu.hide();
                 return;
             }
 
-            // Sempre que uma tecla é premida, REINICIA o temporizador.
             pause.setOnFinished(event -> {
+                String queryAtRequestTime = field.getText(); // Pode ser null se mudou entretanto
                 
-                // Guardamos o texto atual para verificar depois
-                String queryAtRequestTime = field.getText().trim();
+                // Outra verificação de segurança
+                if (queryAtRequestTime == null || queryAtRequestTime.trim().length() < 3) return;
                 
-                if (queryAtRequestTime.length() < 3) return;
+                final String queryFinal = queryAtRequestTime.trim();
 
                 new Thread(() -> {
                     try {
-                        List<Point> results = service.searchLocations(queryAtRequestTime);
+                        List<Point> results = service.searchLocations(queryFinal);
 
                         Platform.runLater(() -> {
-                            if (!field.getText().trim().equals(queryAtRequestTime)) {
+                            // Verificar se o texto mudou ou ficou null entretanto
+                            String currentText = field.getText();
+                            if (currentText == null || !currentText.trim().equals(queryFinal)) {
                                 return;
                             }
 
@@ -545,7 +573,6 @@ public class MapViewer extends Application {
                             for (Point p : results) {
                                 MenuItem item = new MenuItem(p.getName());
                                 item.setOnAction(e -> {
-                                    // Desliga o listener temporariamente para não disparar nova pesquisa ao clicar
                                     field.setText(p.getName());
                                     lastSearchPoint = p;
                                     suggestionsMenu.hide();
@@ -554,7 +581,6 @@ public class MapViewer extends Application {
                             }
 
                             if (!results.isEmpty()) {
-                                // Mostra o menu apenas se o campo ainda tiver foco
                                 if(field.isFocused()) {
                                     suggestionsMenu.show(field, Side.BOTTOM, 0, 0);
                                 }
@@ -569,11 +595,9 @@ public class MapViewer extends Application {
                 }).start();
             });
 
-            // Inicia a contagem decrescente
             pause.playFromStart();
         });
-        
-        // Esconde o menu se o utilizador clicar fora
+
         field.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) {
                 suggestionsMenu.hide();
@@ -918,5 +942,86 @@ public class MapViewer extends Application {
 
         mapView.setCenter(new Coordinate(38.7223, -9.1393));
         mapView.setZoom(10);
+    }
+
+    private void showHistoryDialog() {
+    Stage historyStage = new Stage();
+    historyStage.setTitle("Histórico de Rotas");
+
+    ListView<com.myapp.model.HistoryEntry> listView = new ListView<>();
+    listView.getItems().addAll(historyManager.getHistory());
+
+    // Botão para carregar a rota selecionada
+    Button btnLoad = new Button("Carregar Rota");
+    btnLoad.setDisable(true);
+    btnLoad.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+
+    // Botão para limpar histórico
+    Button btnClear = new Button("Limpar Histórico");
+    btnClear.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+    
+    listView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+        btnLoad.setDisable(newVal == null);
+    });
+
+    // Ação de carregar
+    btnLoad.setOnAction(e -> {
+        com.myapp.model.HistoryEntry entry = listView.getSelectionModel().getSelectedItem();
+        if (entry != null) {
+            loadRouteFromHistory(entry);
+            historyStage.close();
+        }
+    });
+    
+    // Ação de duplo clique na lista também carrega
+    listView.setOnMouseClicked(e -> {
+        if (e.getClickCount() == 2 && listView.getSelectionModel().getSelectedItem() != null) {
+            loadRouteFromHistory(listView.getSelectionModel().getSelectedItem());
+            historyStage.close();
+        }
+    });
+
+    // Ação de limpar
+    btnClear.setOnAction(e -> {
+        historyManager.clearHistory();
+        listView.getItems().clear();
+    });
+
+    HBox buttons = new HBox(10, btnLoad, btnClear);
+    buttons.setAlignment(Pos.CENTER);
+    buttons.setPadding(new Insets(10));
+
+    VBox root = new VBox(10, new Label("As tuas rotas recentes:"), listView, buttons);
+    root.setPadding(new Insets(15));
+    
+    Scene scene = new Scene(root, 400, 500);
+    historyStage.setScene(scene);
+    historyStage.show();
+}
+
+    /**
+     * Reconstrói a UI e o Mapa a partir de um item do histórico
+     */
+    private void loadRouteFromHistory(com.myapp.model.HistoryEntry entry) {
+        resetAll();
+
+        if (entry.getOrigin() != null) {
+        Coordinate originCoord = new Coordinate(entry.getOrigin().getLatitude(), entry.getOrigin().getLongitude());
+        setOrigin(originCoord);
+        String name = entry.getOrigin().getName();
+        origemField.setText(name != null ? name : ""); 
+    }
+
+        if (entry.getWaypoints() != null) {
+            for (Point wp : entry.getWaypoints()) {
+                addWaypoint(new Coordinate(wp.getLatitude(), wp.getLongitude()), wp.getName());
+            }
+        }
+        
+        if (entry.getMode() != null) {
+            selectedMode = entry.getMode();
+        }
+
+        Platform.runLater(this::calculateRoute);
     }
 }

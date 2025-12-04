@@ -13,11 +13,18 @@ package com.myapp.model;
  */
 public class Point {
     /** A latitude em graus decimais. */
-    private final double latitude;
+    private double latitude;
     /** A longitude em graus decimais. */
-    private final double longitude;
+    private double longitude;
     /** Um nome legível para o ponto; pode ser {@code null}. */
-    private final String name;
+    private String name;
+
+    /**
+     * Construtor vazio OBRIGATÓRIO para o Gson.
+     * O Gson cria o objeto usando este construtor e depois preenche as variáveis.
+     */
+    public Point() {
+    }
 
     /**
      * Cria um novo {@link Point}.

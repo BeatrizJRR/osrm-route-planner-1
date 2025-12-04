@@ -1,0 +1,144 @@
+[
+  {
+    "origin": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.7420882,
+      "longitude": -9.1689132,
+      "name": "Jardim Zoológico, Praça Marechal Humberto Delgado, São Domingos de Benfica, Lisboa, 1500-423, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.758959,
+        "longitude": -9.2365233,
+        "name": "Amadora, Lisboa, Portugal"
+      },
+      {
+        "latitude": 38.7420882,
+        "longitude": -9.1689132,
+        "name": "Jardim Zoológico, Praça Marechal Humberto Delgado, São Domingos de Benfica, Lisboa, 1500-423, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "04/12/2025 03:02",
+    "description": "Amadora, Lisboa, Portugal ➔ Jardim Zoológico, Praça Marechal Humberto Delgado, São Domingos de Benfica, Lisboa, 1500-423, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.758959,
+        "longitude": -9.2365233,
+        "name": "Amadora, Lisboa, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "04/12/2025 03:01",
+    "description": "Amadora, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7481712,
+      "longitude": -9.1994775,
+      "name": "Benfica, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.758959,
+        "longitude": -9.2365233,
+        "name": "Amadora, Lisboa, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "04/12/2025 03:00",
+    "description": "Benfica, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7481712,
+      "longitude": -9.1994775,
+      "name": "Benfica, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.7556379,
+      "longitude": -9.2818905,
+      "name": "Massamá, Massamá e Monte Abraão, Sintra, Lisboa, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.758959,
+        "longitude": -9.2365233,
+        "name": "Amadora, Lisboa, Portugal"
+      },
+      {
+        "latitude": 38.7556379,
+        "longitude": -9.2818905,
+        "name": "Massamá, Massamá e Monte Abraão, Sintra, Lisboa, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "04/12/2025 03:00",
+    "description": "Benfica, Lisboa, Portugal ➔ Massamá, Massamá e Monte Abraão, Sintra, Lisboa, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7481712,
+      "longitude": -9.1994775,
+      "name": "Benfica, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.758959,
+        "longitude": -9.2365233,
+        "name": "Amadora, Lisboa, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "04/12/2025 02:59",
+    "description": "Benfica, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.758959,
+        "longitude": -9.2365233,
+        "name": "Amadora, Lisboa, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "04/12/2025 02:56",
+    "description": "Amadora, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
+  }
+]
