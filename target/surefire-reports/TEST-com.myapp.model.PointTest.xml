@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="com.myapp.model.PointTest" time="0.006" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="com.myapp.model.PointTest" time="0.01" tests="4" errors="0" skipped="0" failures="2">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\Frederico\Desktop\ADS\osrm-route-planner\target\test-classes;C:\Users\Frederico\Desktop\ADS\osrm-route-planner\target\classes;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\com\sothawo\mapjfx\3.0.0\mapjfx-3.0.0.jar;C:\Users\Frederico\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\Frederico\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Frederico\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\Frederico\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;C:\Users\Frederico\.m2\repository\org\mockito\mockito-core\5.7.0\mockito-core-5.7.0.jar;C:\Users\Frederico\.m2\repository\net\bytebuddy\byte-buddy\1.14.9\byte-buddy-1.14.9.jar;C:\Users\Frederico\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.9\byte-buddy-agent-1.14.9.jar;C:\Users\Frederico\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\Frederico\.m2\repository\org\mockito\mockito-junit-jupiter\5.7.0\mockito-junit-jupiter-5.7.0.jar;"/>
+    <property name="java.class.path" value="C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner\target\test-classes;C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner\target\classes;C:\Users\pedro\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1-win.jar;C:\Users\pedro\.m2\repository\com\sothawo\mapjfx\3.0.0\mapjfx-3.0.0.jar;C:\Users\pedro\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\pedro\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\pedro\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\pedro\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\pedro\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;C:\Users\pedro\.m2\repository\org\mockito\mockito-core\5.7.0\mockito-core-5.7.0.jar;C:\Users\pedro\.m2\repository\net\bytebuddy\byte-buddy\1.14.9\byte-buddy-1.14.9.jar;C:\Users\pedro\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.9\byte-buddy-agent-1.14.9.jar;C:\Users\pedro\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\pedro\.m2\repository\org\mockito\mockito-junit-jupiter\5.7.0\mockito-junit-jupiter-5.7.0.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -13,44 +13,44 @@
     <property name="os.name" value="Windows 11"/>
     <property name="java.vm.specification.version" value="25"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="user.country" value="US"/>
+    <property name="user.country" value="PT"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-25\bin"/>
-    <property name="sun.java.command" value="C:\Users\Frederico\AppData\Local\Temp\surefire13976817498740880122\surefirebooter-20251203174442010_3.jar C:\Users\Frederico\AppData\Local\Temp\surefire13976817498740880122 2025-12-03T17-44-41_902-jvmRun1 surefire-20251203174442010_1tmp surefire_0-20251203174442010_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\pedro\AppData\Local\Temp\surefire12600453253089009110\surefirebooter-20251204125116054_3.jar C:\Users\pedro\AppData\Local\Temp\surefire12600453253089009110 2025-12-04T12-51-15_638-jvmRun1 surefire-20251204125116054_1tmp surefire_0-20251204125116054_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\Frederico\Desktop\ADS\osrm-route-planner\target\test-classes;C:\Users\Frederico\Desktop\ADS\osrm-route-planner\target\classes;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1.jar;C:\Users\Frederico\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1-win.jar;C:\Users\Frederico\.m2\repository\com\sothawo\mapjfx\3.0.0\mapjfx-3.0.0.jar;C:\Users\Frederico\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\Frederico\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Frederico\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\Frederico\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\Frederico\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;C:\Users\Frederico\.m2\repository\org\mockito\mockito-core\5.7.0\mockito-core-5.7.0.jar;C:\Users\Frederico\.m2\repository\net\bytebuddy\byte-buddy\1.14.9\byte-buddy-1.14.9.jar;C:\Users\Frederico\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.9\byte-buddy-agent-1.14.9.jar;C:\Users\Frederico\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\Frederico\.m2\repository\org\mockito\mockito-junit-jupiter\5.7.0\mockito-junit-jupiter-5.7.0.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner\target\test-classes;C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner\target\classes;C:\Users\pedro\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1-win.jar;C:\Users\pedro\.m2\repository\com\sothawo\mapjfx\3.0.0\mapjfx-3.0.0.jar;C:\Users\pedro\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\pedro\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\pedro\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\pedro\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\pedro\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;C:\Users\pedro\.m2\repository\org\mockito\mockito-core\5.7.0\mockito-core-5.7.0.jar;C:\Users\pedro\.m2\repository\net\bytebuddy\byte-buddy\1.14.9\byte-buddy-1.14.9.jar;C:\Users\pedro\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.9\byte-buddy-agent-1.14.9.jar;C:\Users\pedro\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\pedro\.m2\repository\org\mockito\mockito-junit-jupiter\5.7.0\mockito-junit-jupiter-5.7.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
-    <property name="user.home" value="C:\Users\Frederico"/>
-    <property name="user.language" value="en"/>
+    <property name="user.home" value="C:\Users\pedro"/>
+    <property name="user.language" value="pt"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="java.version.date" value="2025-10-21"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-25"/>
     <property name="file.separator" value="\"/>
-    <property name="basedir" value="C:\Users\Frederico\Desktop\ADS\osrm-route-planner"/>
+    <property name="basedir" value="C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Frederico\AppData\Local\Temp\surefire13976817498740880122\surefirebooter-20251203174442010_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\pedro\AppData\Local\Temp\surefire12600453253089009110\surefirebooter-20251204125116054_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="25.0.1+8-LTS-27"/>
-    <property name="user.name" value="Frederico"/>
+    <property name="user.name" value="pedro"/>
     <property name="stdout.encoding" value="Cp1252"/>
     <property name="path.separator" value=";"/>
     <property name="os.version" value="10.0"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="localRepository" value="C:\Users\Frederico\.m2\repository"/>
+    <property name="localRepository" value="C:\Users\pedro\.m2\repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="java.io.tmpdir" value="C:\Users\FREDER~1\AppData\Local\Temp\"/>
+    <property name="java.io.tmpdir" value="C:\Users\pedro\AppData\Local\Temp\"/>
     <property name="java.version" value="25.0.1"/>
-    <property name="user.dir" value="C:\Users\Frederico\Desktop\ADS\osrm-route-planner"/>
+    <property name="user.dir" value="C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="native.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-25\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;c:\Users\Frederico\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;c:\Users\Frederico\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\copilotCli;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\OpenSSL-Win64\bin;C:\Program Files\Maven\apache-maven-3.9.11\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\cloudflared\;C:\Users\Frederico\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\Frederico\AppData\Local\Programs\Python\Python313\;C:\Users\Frederico\AppData\Local\Microsoft\WindowsApps;C:\Users\Frederico\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files (x86)\Nmap;C:\Program Files\OpenSSL-Win64\bin;C:\Users\Frederico\AppData\Local\Microsoft\WinGet\Packages\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe;c:\Users\Frederico\.vscode\extensions\vscjava.vscode-java-debug-0.58.3\bundled\scripts\noConfigScripts;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-25\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;c:\Users\pedro\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\copilotCli;c:\Users\pedro\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;C:\Program Files\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Tools\apache-maven-3.9.11\bin;C:\Users\pedro\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\pedro\AppData\Local\Programs\Python\Python313\;C:\Users\pedro\AppData\Local\Programs\Python\Launcher\;C:\Users\pedro\AppData\Local\Microsoft\WindowsApps;C:\Users\pedro\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files (x86)\Nmap;C:\Users\pedro\AppData\Local\Microsoft\WinGet\Packages\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe;c:\Users\pedro\.vscode\extensions\vscjava.vscode-java-debug-0.58.3\bundled\scripts\noConfigScripts;."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="stderr.encoding" value="Cp1252"/>
     <property name="java.vendor" value="Oracle Corporation"/>
@@ -59,8 +59,34 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="toString_usesQuestionMarkForNullName" classname="com.myapp.model.PointTest" time="0.002"/>
+  <testcase name="toString_usesQuestionMarkForNullName" classname="com.myapp.model.PointTest" time="0.003">
+    <failure message="expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:179)
+	at com.myapp.model.PointTest.toString_usesQuestionMarkForNullName(PointTest.java:45)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></failure>
+  </testcase>
   <testcase name="constructor_storesLatitudeLongitudeAndName" classname="com.myapp.model.PointTest" time="0.001"/>
-  <testcase name="constructor_allowsNullName" classname="com.myapp.model.PointTest" time="0.001"/>
-  <testcase name="toString_includesNameAndCoordinates" classname="com.myapp.model.PointTest" time="0.001"/>
+  <testcase name="constructor_allowsNullName" classname="com.myapp.model.PointTest" time="0.0"/>
+  <testcase name="toString_includesNameAndCoordinates" classname="com.myapp.model.PointTest" time="0.001">
+    <failure message="expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:179)
+	at com.myapp.model.PointTest.toString_includesNameAndCoordinates(PointTest.java:34)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></failure>
+  </testcase>
 </testsuite>

@@ -482,11 +482,30 @@ public class MapViewer extends Application {
                 .setVisible(true);
 
         mapView.addCoordinateLine(currentRouteLine);
-        mapView.setExtent(Extent.forCoordinates(coords));
+
+        try {
+                        // Se a rota for muito curta (< 10 metros) ou tiver apenas 1 ponto único
+                        if (route.getDistanceKm() < 0.01 || coords.size() <= 1) {
+                            
+                            // É o mesmo local: Centra apenas e dá zoom manual seguro
+                            mapView.setCenter(coords.get(0));
+                            mapView.setZoom(17);
+                        } else {
+                            
+                            // Rota normal: Ajusta o zoom automaticamente
+                            mapView.setExtent(Extent.forCoordinates(coords));
+                        }
+                    } catch (Exception ex) {
+                        // Fallback de segurança máxima: se o zoom falhar, não deixa o ecrã branco
+                        System.err.println("Erro crítico ao ajustar zoom: " + ex.getMessage());
+                        if (!coords.isEmpty()) {
+                            mapView.setCenter(coords.get(0));
+                            mapView.setZoom(10);
+                        }
+                    }
 
         lastRoute = route;
 
-        
         if (!waypointPoints.isEmpty()) {
         Point destination = waypointPoints.get(waypointPoints.size() - 1);
         List<Point> savedWaypoints = new ArrayList<>(waypointPoints);

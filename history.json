@@ -1,30 +1,96 @@
 [
   {
     "origin": {
+      "latitude": -22.6926543,
+      "longitude": -43.2464762,
+      "name": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil"
+    },
+    "destination": {
+      "latitude": -22.6926543,
+      "longitude": -43.2464762,
+      "name": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil"
+    },
+    "waypoints": [
+      {
+        "latitude": -22.6926543,
+        "longitude": -43.2464762,
+        "name": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 03:12",
+    "description": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil ➔ Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": -22.6926543,
+      "longitude": -43.2464762,
+      "name": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil"
+    },
+    "destination": {
+      "latitude": -22.6926543,
+      "longitude": -43.2464762,
+      "name": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil"
+    },
+    "waypoints": [
+      {
+        "latitude": -22.6926543,
+        "longitude": -43.2464762,
+        "name": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 03:12",
+    "description": "Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil ➔ Rua Maria Do Camo Lisbo, Campos Elíseos, Campos Elyseos, Duque de Caxias, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 25221-133, Brasil (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 39.841623,
+      "longitude": 42.9766258,
+      "name": "Tezeren, Ağrı Merkez, Ağrı, Doğu Anadolu Bölgesi, Turquia"
+    },
+    "destination": {
       "latitude": 38.758959,
       "longitude": -9.2365233,
       "name": "Amadora, Lisboa, Portugal"
-    },
-    "destination": {
-      "latitude": 38.7420882,
-      "longitude": -9.1689132,
-      "name": "Jardim Zoológico, Praça Marechal Humberto Delgado, São Domingos de Benfica, Lisboa, 1500-423, Portugal"
     },
     "waypoints": [
       {
         "latitude": 38.758959,
         "longitude": -9.2365233,
         "name": "Amadora, Lisboa, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 03:11",
+    "description": "Tezeren, Ağrı Merkez, Ağrı, Doğu Anadolu Bölgesi, Turquia ➔ Amadora, Lisboa, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 41.4363303,
+      "longitude": -7.5917163,
+      "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 41.4363303,
+        "longitude": -7.5917163,
+        "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
       },
       {
-        "latitude": 38.7420882,
-        "longitude": -9.1689132,
-        "name": "Jardim Zoológico, Praça Marechal Humberto Delgado, São Domingos de Benfica, Lisboa, 1500-423, Portugal"
+        "latitude": 41.4363303,
+        "longitude": -7.5917163,
+        "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
       }
     ],
     "mode": "CAR",
-    "timestamp": "04/12/2025 03:02",
-    "description": "Amadora, Lisboa, Portugal ➔ Jardim Zoológico, Praça Marechal Humberto Delgado, São Domingos de Benfica, Lisboa, 1500-423, Portugal (CAR)"
+    "timestamp": "06/12/2025 16:17",
+    "description": "Amadora, Lisboa, Portugal ➔ Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal (CAR)"
   },
   {
     "origin": {
@@ -33,91 +99,25 @@
       "name": "Amadora, Lisboa, Portugal"
     },
     "destination": {
-      "latitude": 38.758959,
-      "longitude": -9.2365233,
-      "name": "Amadora, Lisboa, Portugal"
+      "latitude": 51.5074456,
+      "longitude": -0.1277653,
+      "name": "Grande Londres, Inglaterra, Reino Unido"
     },
     "waypoints": [
       {
-        "latitude": 38.758959,
-        "longitude": -9.2365233,
-        "name": "Amadora, Lisboa, Portugal"
-      }
-    ],
-    "mode": "CAR",
-    "timestamp": "04/12/2025 03:01",
-    "description": "Amadora, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
-  },
-  {
-    "origin": {
-      "latitude": 38.7481712,
-      "longitude": -9.1994775,
-      "name": "Benfica, Lisboa, Portugal"
-    },
-    "destination": {
-      "latitude": 38.758959,
-      "longitude": -9.2365233,
-      "name": "Amadora, Lisboa, Portugal"
-    },
-    "waypoints": [
-      {
-        "latitude": 38.758959,
-        "longitude": -9.2365233,
-        "name": "Amadora, Lisboa, Portugal"
-      }
-    ],
-    "mode": "CAR",
-    "timestamp": "04/12/2025 03:00",
-    "description": "Benfica, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
-  },
-  {
-    "origin": {
-      "latitude": 38.7481712,
-      "longitude": -9.1994775,
-      "name": "Benfica, Lisboa, Portugal"
-    },
-    "destination": {
-      "latitude": 38.7556379,
-      "longitude": -9.2818905,
-      "name": "Massamá, Massamá e Monte Abraão, Sintra, Lisboa, Portugal"
-    },
-    "waypoints": [
-      {
-        "latitude": 38.758959,
-        "longitude": -9.2365233,
-        "name": "Amadora, Lisboa, Portugal"
+        "latitude": 41.4363303,
+        "longitude": -7.5917163,
+        "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
       },
       {
-        "latitude": 38.7556379,
-        "longitude": -9.2818905,
-        "name": "Massamá, Massamá e Monte Abraão, Sintra, Lisboa, Portugal"
+        "latitude": 51.5074456,
+        "longitude": -0.1277653,
+        "name": "Grande Londres, Inglaterra, Reino Unido"
       }
     ],
     "mode": "CAR",
-    "timestamp": "04/12/2025 03:00",
-    "description": "Benfica, Lisboa, Portugal ➔ Massamá, Massamá e Monte Abraão, Sintra, Lisboa, Portugal (CAR)"
-  },
-  {
-    "origin": {
-      "latitude": 38.7481712,
-      "longitude": -9.1994775,
-      "name": "Benfica, Lisboa, Portugal"
-    },
-    "destination": {
-      "latitude": 38.758959,
-      "longitude": -9.2365233,
-      "name": "Amadora, Lisboa, Portugal"
-    },
-    "waypoints": [
-      {
-        "latitude": 38.758959,
-        "longitude": -9.2365233,
-        "name": "Amadora, Lisboa, Portugal"
-      }
-    ],
-    "mode": "CAR",
-    "timestamp": "04/12/2025 02:59",
-    "description": "Benfica, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
+    "timestamp": "06/12/2025 16:17",
+    "description": "Amadora, Lisboa, Portugal ➔ Grande Londres, Inglaterra, Reino Unido (CAR)"
   },
   {
     "origin": {
@@ -126,19 +126,68 @@
       "name": "Amadora, Lisboa, Portugal"
     },
     "destination": {
+      "latitude": 41.4363303,
+      "longitude": -7.5917163,
+      "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 41.4363303,
+        "longitude": -7.5917163,
+        "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "06/12/2025 16:17",
+    "description": "Amadora, Lisboa, Portugal ➔ Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal (CAR)"
+  },
+  {
+    "origin": {
       "latitude": 38.758959,
       "longitude": -9.2365233,
       "name": "Amadora, Lisboa, Portugal"
     },
+    "destination": {
+      "latitude": 41.4363303,
+      "longitude": -7.5917163,
+      "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
+    },
     "waypoints": [
       {
-        "latitude": 38.758959,
-        "longitude": -9.2365233,
-        "name": "Amadora, Lisboa, Portugal"
+        "latitude": 41.4363303,
+        "longitude": -7.5917163,
+        "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
+      },
+      {
+        "latitude": 41.4363303,
+        "longitude": -7.5917163,
+        "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
       }
     ],
     "mode": "CAR",
-    "timestamp": "04/12/2025 02:56",
-    "description": "Amadora, Lisboa, Portugal ➔ Amadora, Lisboa, Portugal (CAR)"
+    "timestamp": "06/12/2025 16:17",
+    "description": "Amadora, Lisboa, Portugal ➔ Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.758959,
+      "longitude": -9.2365233,
+      "name": "Amadora, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 41.4363303,
+      "longitude": -7.5917163,
+      "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 41.4363303,
+        "longitude": -7.5917163,
+        "name": "Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "06/12/2025 16:16",
+    "description": "Amadora, Lisboa, Portugal ➔ Vreia de Jales, Vila Pouca de Aguiar, Vila Real, 5450-341, Portugal (CAR)"
   }
 ]
