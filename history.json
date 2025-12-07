@@ -1,6 +1,181 @@
 [
   {
     "origin": {
+      "latitude": 38.93839968155254,
+      "longitude": -9.329500805664065
+    },
+    "destination": {
+      "latitude": 38.70086831141484,
+      "longitude": -9.418764721679688
+    },
+    "waypoints": [
+      {
+        "latitude": 38.70086831141484,
+        "longitude": -9.418764721679688
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 11:32",
+    "description": "null ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": -22.8710506,
+      "longitude": -43.4716976,
+      "name": "Rua Portugal, Bairro Nova AlianÁa, Bangu, Rio de Janeiro, Regi„o Geogr·fica Imediata do Rio de Janeiro, Regi„o Metropolitana do Rio de Janeiro, Regi„o Geogr·fica Intermedi·ria do Rio de Janeiro, Rio de Janeiro, Regi„o Sudeste, 21840-600, Brasil"
+    },
+    "destination": {
+      "latitude": 38.9394678496258,
+      "longitude": -9.22375739746094
+    },
+    "waypoints": [
+      {
+        "latitude": 38.9394678496258,
+        "longitude": -9.22375739746094
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 11:31",
+    "description": "Rua Portugal, Bairro Nova AlianÁa, Bangu, Rio de Janeiro, Regi„o Geogr·fica Imediata do Rio de Janeiro, Regi„o Metropolitana do Rio de Janeiro, Regi„o Geogr·fica Intermedi·ria do Rio de Janeiro, Rio de Janeiro, Regi„o Sudeste, 21840-600, Brasil ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.79511967053932,
+      "longitude": -9.45721687011719
+    },
+    "destination": {
+      "latitude": 38.9394678496258,
+      "longitude": -9.22375739746094
+    },
+    "waypoints": [
+      {
+        "latitude": 38.9394678496258,
+        "longitude": -9.22375739746094
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 11:30",
+    "description": "null ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.8839017762823,
+      "longitude": -9.111147534179688
+    },
+    "destination": {
+      "latitude": 38.841129047089254,
+      "longitude": -9.306154858398438
+    },
+    "waypoints": [
+      {
+        "latitude": 38.841129047089254,
+        "longitude": -9.306154858398438
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 11:30",
+    "description": "null ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.8839017762823,
+      "longitude": -9.111147534179688
+    },
+    "destination": {
+      "latitude": 38.841129047089254,
+      "longitude": -9.306154858398438
+    },
+    "waypoints": [
+      {
+        "latitude": 38.841129047089254,
+        "longitude": -9.306154858398438
+      }
+    ],
+    "mode": "FOOT",
+    "timestamp": "07/12/2025 11:28",
+    "description": "null ? null (FOOT)"
+  },
+  {
+    "origin": {
+      "latitude": 38.8839017762823,
+      "longitude": -9.111147534179688
+    },
+    "destination": {
+      "latitude": 38.841129047089254,
+      "longitude": -9.306154858398438
+    },
+    "waypoints": [
+      {
+        "latitude": 38.841129047089254,
+        "longitude": -9.306154858398438
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 11:28",
+    "description": "null ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.8839017762823,
+      "longitude": -9.111147534179688
+    },
+    "destination": {
+      "latitude": 38.841129047089254,
+      "longitude": -9.306154858398438
+    },
+    "waypoints": [
+      {
+        "latitude": 38.841129047089254,
+        "longitude": -9.306154858398438
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 11:27",
+    "description": "null ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.8839017762823,
+      "longitude": -9.111147534179688
+    },
+    "destination": {
+      "latitude": 38.841129047089254,
+      "longitude": -9.306154858398438
+    },
+    "waypoints": [
+      {
+        "latitude": 38.841129047089254,
+        "longitude": -9.306154858398438
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "07/12/2025 11:27",
+    "description": "null ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7904338,
+      "longitude": -9.1792617,
+      "name": "Odivelas, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.8308741,
+      "longitude": -9.1684512,
+      "name": "Loures, Lisboa, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.8308741,
+        "longitude": -9.1684512,
+        "name": "Loures, Lisboa, Portugal"
+      }
+    ],
+    "mode": "BIKE",
+    "timestamp": "07/12/2025 11:25",
+    "description": "Odivelas, Lisboa, Portugal ? Loures, Lisboa, Portugal (BIKE)"
+  },
+  {
+    "origin": {
       "latitude": -22.6926543,
       "longitude": -43.2464762,
       "name": "Rua Maria Do Camo Lisbo, Campos El√≠seos, Campos Elyseos, Duque de Caxias, Regi√£o Geogr√°fica Imediata do Rio de Janeiro, Regi√£o Metropolitana do Rio de Janeiro, Regi√£o Geogr√°fica Intermedi√°ria do Rio de Janeiro, Rio de Janeiro, Regi√£o Sudeste, 25221-133, Brasil"

@@ -25,7 +25,8 @@ import com.google.gson.JsonParser;
  * roteamento, geocodificação, recolha de POIs e perfil de elevação.
  *
  * Papel na arquitetura MVC:
- * - Controller/Service: orquestra chamadas às APIs, aplica regras e transforma dados.
+ * - Controller/Service: orquestra chamadas às APIs, aplica regras e transforma
+ * dados.
  * - Model: contém entidades (`Route`, `Point`, `POI`, `ElevationProfile`).
  * - UI (View): consome métodos deste serviço para apresentar dados.
  *
@@ -33,7 +34,7 @@ import com.google.gson.JsonParser;
  */
 public class Service {
 
-    // Constants to avoid magic numbers/strings
+    // Constantes para evitar números/strings mágicos
     private static final int DEFAULT_POI_SEGMENTS = 10;
     private static final long OVERPASS_RATE_LIMIT_SLEEP_MS = 550L;
     private static final int OVERPASS_SEARCH_RADIUS_M = 1500;
@@ -55,7 +56,8 @@ public class Service {
      * @param origin      ponto de origem
      * @param destination ponto de destino
      * @param mode        modo de transporte
-     * @return {@link Route} construída a partir da resposta OSRM, ou {@code null} em caso de erro
+     * @return {@link Route} construída a partir da resposta OSRM, ou {@code null}
+     *         em caso de erro
      */
     public Route getRoute(Point origin, Point destination, TransportMode mode) {
         try {
@@ -98,7 +100,8 @@ public class Service {
      * consultas por segmentos uniformes com recurso à Overpass API.
      *
      * @param route rota sobre a qual pesquisar
-     * @param type  tipo de POI (ex.: "Restaurante", "Hotel") mapeado para tags Overpass
+     * @param type  tipo de POI (ex.: "Restaurante", "Hotel") mapeado para tags
+     *              Overpass
      * @return lista de POIs únicos encontrados (limitada a 100)
      */
     public List<POI> getPOIsAlongRoute(Route route, String type) {
@@ -185,10 +188,10 @@ public class Service {
                 int searchRadius = OVERPASS_SEARCH_RADIUS_M; // raio grande para cobrir áreas rurais
 
                 String ql = String.format(Locale.US, """
-                    [out:json][timeout:%d];
-                        node[%s](around:%d,%f,%f);
-                        out body 2;
-                    """, OVERPASS_QUERY_TIMEOUT_S, tag, searchRadius, p.getLatitude(), p.getLongitude());
+                        [out:json][timeout:%d];
+                            node[%s](around:%d,%f,%f);
+                            out body 2;
+                        """, OVERPASS_QUERY_TIMEOUT_S, tag, searchRadius, p.getLatitude(), p.getLongitude());
 
                 String json = overpassClient.postOverpass(ql);
 
@@ -219,9 +222,13 @@ public class Service {
         // Remover duplicados (coordenadas iguais)
         List<POI> unique = new ArrayList<>();
         for (POI poi : result) {
-                boolean exists = unique.stream().anyMatch(
-                    x -> Math.abs(x.getCoordinate().getLatitude() - poi.getCoordinate().getLatitude()) < DUPLICATE_COORD_THRESHOLD_DEG &&
-                        Math.abs(x.getCoordinate().getLongitude() - poi.getCoordinate().getLongitude()) < DUPLICATE_COORD_THRESHOLD_DEG);
+            boolean exists = unique.stream().anyMatch(
+                    x -> Math
+                            .abs(x.getCoordinate().getLatitude()
+                                    - poi.getCoordinate().getLatitude()) < DUPLICATE_COORD_THRESHOLD_DEG
+                            &&
+                            Math.abs(x.getCoordinate().getLongitude()
+                                    - poi.getCoordinate().getLongitude()) < DUPLICATE_COORD_THRESHOLD_DEG);
             if (!exists)
                 unique.add(poi);
         }
@@ -330,11 +337,12 @@ public class Service {
      * @param originPoint    ponto de origem
      * @param waypointPoints lista de waypoints (na ordem de passagem)
      * @param mode           modo de transporte
-     * @return {@link Route} construída a partir da resposta OSRM, ou {@code null} em caso de erro
+     * @return {@link Route} construída a partir da resposta OSRM, ou {@code null}
+     *         em caso de erro
      */
     public Route getRouteWithWaypoints(Point originPoint, List<Point> waypointPoints, TransportMode mode) {
         try {
-            // Ask OSRM for a full multi-stop route
+            // Pergunta à OSRM por uma rota completa com múltiplas paragens
             String routeJson = osrmClient.getRouteJsonWithWaypoints(originPoint, waypointPoints, mode);
 
             JsonObject root = JsonParser.parseString(routeJson).getAsJsonObject();

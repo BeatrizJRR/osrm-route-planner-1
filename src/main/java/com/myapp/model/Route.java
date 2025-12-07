@@ -3,27 +3,29 @@ package com.myapp.model;
 import java.util.List;
 
 /**
- * Representa um percurso/rota calculado, incluindo pontos do trajeto, distância,
+ * Representa um percurso/rota calculado, incluindo pontos do trajeto,
+ * distância,
  * duração estimada, modo de transporte e pontos de interesse (POIs) associados.
  *
  * Papel na arquitetura MVC:
  * - Model: agrega dados da rota processados pelo Service (Controller).
  * - Service constrói instâncias de Route a partir de respostas das APIs.
- * - UI (View) apresenta rotas ao utilizador; pode invocar `addPOI` para enriquecer dados.
- * <p>
+ * - UI (View) apresenta rotas ao utilizador; pode invocar `addPOI` para
+ * enriquecer dados.
+ * 
  * Os pontos da rota estão em ordem sequencial, descrevendo o caminho desde a
  * origem até ao destino.
  */
 public class Route {
-    /** Lista sequencial dos pontos que compõem a rota. */
+    // Lista sequencial dos pontos que compõem a rota.
     private final List<Point> routePoints;
-    /** Distância total da rota em quilómetros. */
+    // Distância total da rota em quilómetros.
     private final double distanceKm;
-    /** Duração estimada da rota em segundos. */
+    // Duração estimada da rota em segundos.
     private final long durationSec;
-    /** Modo de transporte utilizado para o cálculo da rota. */
+    // Modo de transporte utilizado para o cálculo da rota.
     private final TransportMode mode;
-    /** Pontos de interesse associados à rota. */
+    // Pontos de interesse associados à rota.
     private final List<POI> pois;
 
     /**

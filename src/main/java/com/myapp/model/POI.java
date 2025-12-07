@@ -7,16 +7,16 @@ package com.myapp.model;
  * - Model: entidade de dados imutável que representa um POI.
  * - Service (Controller) cria POIs a partir de dados da Overpass API.
  * - UI (View) renderiza POIs no mapa; este modelo não contém lógica de UI.
- * <p>
+ * 
  * O POI pode ser usado para anotar locais relevantes ao longo de uma rota,
  * como monumentos, serviços, alertas ou referências de navegação.
  */
 public class POI {
-    /** Nome legível do ponto de interesse. */
+    // Nome legível do ponto de interesse.
     private final String name;
-    /** Categoria do ponto de interesse (por exemplo: "monumento", "serviço"). */
+    // Categoria do ponto de interesse (por exemplo: "monumento", "serviço").
     private final String category;
-    /** Coordenada do POI representada por um {@link Point}. */
+    // Coordenada do POI representada por um {@link Point}.
     private final Point coordinate;
 
     /**

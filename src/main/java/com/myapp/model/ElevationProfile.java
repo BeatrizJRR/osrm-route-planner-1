@@ -10,22 +10,24 @@ import java.util.List;
  * Papel na arquitetura MVC:
  * - Model: agrega dados de elevação processados pelo Service (Controller).
  * - Service obtém dados da ElevationClient API e constrói este modelo.
- * - UI (View) renderiza gráficos e estatísticas; este modelo encapsula cálculos.
- * <p>
- * As unidades são: elevação em metros (m) e distância acumulada em quilómetros (km).
+ * - UI (View) renderiza gráficos e estatísticas; este modelo encapsula
+ * cálculos.
+ * 
+ * As unidades são: elevação em metros (m) e distância acumulada em quilómetros
+ * (km).
  */
 public class ElevationProfile {
-    /** Lista de elevações em metros (m) para cada amostra do percurso. */
+    // Lista de elevações em metros (m) para cada amostra do percurso.
     private final List<Double> elevations;
-    /** Lista de distâncias acumuladas em quilómetros (km) para cada amostra. */
-    private final List<Double> distances; 
-    /** Maior valor de elevação observado. */
+    // Lista de distâncias acumuladas em quilómetros (km) para cada amostra.
+    private final List<Double> distances;
+    // Maior valor de elevação observado.
     private final double maxElevation;
-    /** Menor valor de elevação observado. */
+    // Menor valor de elevação observado.
     private final double minElevation;
-    /** Subida total ao longo do percurso, em metros (m). */
+    // Subida total ao longo do percurso, em metros (m).
     private final double totalAscent;
-    /** Descida total ao longo do percurso, em metros (m). */
+    // Descida total ao longo do percurso, em metros (m).
     private final double totalDescent;
 
     /**
@@ -33,7 +35,8 @@ public class ElevationProfile {
      * listas fornecidas.
      *
      * @param elevations lista de elevações em metros
-     * @param distances  lista de distâncias acumuladas em quilómetros (mesmo tamanho que {@code elevations})
+     * @param distances  lista de distâncias acumuladas em quilómetros (mesmo
+     *                   tamanho que {@code elevations})
      */
     public ElevationProfile(List<Double> elevations, List<Double> distances) {
         this.elevations = elevations;

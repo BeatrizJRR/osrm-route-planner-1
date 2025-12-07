@@ -10,9 +10,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Gere a persistência do histórico de rotas em ficheiro JSON.
- */
+// Gere a persistência do histórico de rotas em ficheiro JSON.
 public class HistoryManager {
     private static final String FILE_NAME = "history.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -22,9 +20,7 @@ public class HistoryManager {
         this.history = loadHistory();
     }
 
-    /**
-     * Adiciona uma nova entrada e guarda no ficheiro.
-     */
+    // Adiciona uma nova entrada e guarda no ficheiro.
     public void addEntry(HistoryEntry entry) {
         history.add(0, entry); // Adiciona no início (mais recente primeiro)
         saveHistory();
@@ -54,7 +50,8 @@ public class HistoryManager {
         }
 
         try (Reader reader = new FileReader(file)) {
-            Type listType = new TypeToken<ArrayList<HistoryEntry>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<HistoryEntry>>() {
+            }.getType();
             List<HistoryEntry> loaded = GSON.fromJson(reader, listType);
             return loaded != null ? loaded : new ArrayList<>();
         } catch (IOException e) {

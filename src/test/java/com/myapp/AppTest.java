@@ -5,12 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit test for simple App.
+ * Teste unitário para App simples.
  */
 public class AppTest {
 
     /**
-     * Rigorous Test :-)
+     * Teste rigoroso :-)
      */
     @Test
     public void shouldAnswerWithTrue() {

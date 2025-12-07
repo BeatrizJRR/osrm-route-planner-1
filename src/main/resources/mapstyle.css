@@ -1,6 +1,4 @@
-/* ============================================================ */
-/* SIDEBAR STYLES */
-/* ============================================================ */
+/* Estilos do Sidebar */
 .sidebar {
     -fx-background-color: white;
     -fx-pref-width: 360px;
@@ -40,9 +38,8 @@
     -fx-background-color: #999999;
 }
 
-/* ============================================================ */
-/* BUTTON STYLES - Default */
-/* ============================================================ */
+/* Estilo dos Botões - Default */
+
 .sidebar Button {
     -fx-padding: 10px 15px;
     -fx-background-color: #3498db;
@@ -64,7 +61,7 @@
     -fx-translate-y: 1px;
 }
 
-/* Primary Action Buttons (Main actions) */
+/* Botões de Ação Primária (Ações principais) */
 .btn-primary {
     -fx-background-color: #27ae60;
     -fx-font-size: 14px;
@@ -80,7 +77,7 @@
     -fx-background-color: #1e8449;
 }
 
-/* Secondary Action Buttons (Search, Add) */
+/* Botões de Ação Secundária (Pesquisar, Adicionar) */
 .btn-secondary {
     -fx-background-color: #3498db;
 }
@@ -89,7 +86,7 @@
     -fx-background-color: #2980b9;
 }
 
-/* Warning/Delete Buttons */
+/* Botões de Aviso/Eliminar */
 .btn-danger {
     -fx-background-color: #e74c3c;
 }
@@ -102,7 +99,7 @@
     -fx-background-color: #a93226;
 }
 
-/* Info Buttons (Show, Display) */
+/* Botões de Informação (Mostrar, Exibir) */
 .btn-info {
     -fx-background-color: #9b59b6;
 }
@@ -115,7 +112,7 @@
     -fx-background-color: #7d3c98;
 }
 
-/* Export Buttons */
+/* Botões de Exportação */
 .btn-export {
     -fx-background-color: #f39c12;
 }
@@ -128,7 +125,7 @@
     -fx-background-color: #d35400;
 }
 
-/* Small Remove Buttons */
+/* Botões Pequenos de Remoção */
 .btn-remove-small {
     -fx-background-color: #e74c3c;
     -fx-padding: 5px 10px;
@@ -139,7 +136,7 @@
     -fx-background-color: #c0392b;
 }
 
-/* Outline variant for info button (purple border, no fill) */
+/* Variante Outline para botão de informação (borda roxa, sem preenchimento) */
 .btn-info-outline {
     -fx-background-color: transparent;
     -fx-border-color: #8e44ad;
@@ -157,7 +154,7 @@
     -fx-background-color: rgba(142,68,173,0.18);
 }
 
-/* Outline variant for danger button (red border, no fill) */
+/* Variante Outline para botão de aviso (borda vermelha, sem preenchimento) */
 .btn-danger-outline {
     -fx-background-color: transparent;
     -fx-border-color: #e74c3c;
@@ -175,7 +172,7 @@
     -fx-background-color: rgba(231,76,60,0.18);
 }
 
-/* Outline variant for secondary button (blue border, no fill) */
+/* Variante Outline para botão secundário (borda azul, sem preenchimento) */
 .btn-secondary-outline {
     -fx-background-color: transparent;
     -fx-border-color: #3498db;
@@ -193,9 +190,7 @@
     -fx-background-color: rgba(52,152,219,0.18);
 }
 
-/* ============================================================ */
-/* TOGGLE BUTTON STYLES (Transport Mode) */
-/* ============================================================ */
+/* Estilos do Botão Toggle (Modo de Transporte) */
 .toggle-button {
     -fx-background-color: transparent;
     -fx-border-color: #3498db;
@@ -222,16 +217,12 @@
     -fx-background-color: #2980b9;
 }
 
-/* ============================================================ */
-/* MAP CONTAINER */
-/* ============================================================ */
+/* Contêiner do Mapa */
 .map-container {
     -fx-background-color: #ddd;
 }
 
-/* ============================================================ */
-/* COMBOBOX STYLES (POI Filter) */
-/* ============================================================ */
+/* Estilos do ComboBox (Filtro de POI) */
 .sidebar .combo-box {
     -fx-background-color: rgb(207, 205, 205);
     -fx-background-radius: 6px;
@@ -307,9 +298,7 @@
     -fx-background-color: #201f1f;
 }
 
-/* ============================================================ */
-/* POI LIST STYLES */
-/* ============================================================ */
+/* Estilos da Lista de POI */
 .poi-list-container {
     -fx-background-color: #f5f5f5;
     -fx-border-color: #ddd;
@@ -344,17 +333,13 @@
     -fx-font-style: italic;
 }
 
-/* ============================================================ */
-/* ELEVATION CHART STYLES */
-/* ============================================================ */
+/* Estilos do Gráfico de Elevação */
 .elevation-stats-label {
     -fx-font-weight: bold;
     -fx-font-size: 12px;
 }
 
-/* ============================================================ */
-/* GENERAL LABEL STYLES */
-/* ============================================================ */
+/* Estilos Gerais da Label */
 .label {
     -fx-wrap-text: true;
 }

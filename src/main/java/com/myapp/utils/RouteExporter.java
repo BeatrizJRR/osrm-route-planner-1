@@ -13,7 +13,8 @@ import java.io.IOException;
  * Utilitário para exportação de rotas para formatos comuns.
  *
  * Papel na arquitetura MVC:
- * - Utils: fornece operações de I/O e serialização, independente de lógica de negócio.
+ * - Utils: fornece operações de I/O e serialização, independente de lógica de
+ * negócio.
  * - Consumido pela UI (View) quando o utilizador exporta uma rota.
  * - Trabalha com modelos (Route, Point, POI) mas não os modifica.
  *
@@ -25,6 +26,7 @@ public class RouteExporter {
      * Exporta a rota para um ficheiro JSON.
      *
      * Estrutura gerada:
+     * 
      * <pre>
      * {
      *   "distance_km": number,
@@ -56,7 +58,7 @@ public class RouteExporter {
         }
         root.add("route_points", pts);
 
-        // pois
+        // POIs
         JsonArray pois = new JsonArray();
         for (POI poi : route.getPois()) {
             JsonObject o = new JsonObject();
@@ -97,8 +99,7 @@ public class RouteExporter {
             gpx.append(String.format(
                     "      <trkpt lat=\"%.6f\" lon=\"%.6f\"></trkpt>\n",
                     p.getLatitude(),
-                    p.getLongitude()
-            ));
+                    p.getLongitude()));
         }
 
         gpx.append("""

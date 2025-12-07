@@ -6,17 +6,19 @@ package com.myapp.model;
  * Papel na arquitetura MVC:
  * - Model: entidade de dados imutável que armazena coordenadas.
  * - Usado por Service (Controller) para cálculos e transformações.
- * - UI (View) consome via Service; este modelo não contém lógica de apresentação.
- * <p>
- * A latitude e a longitude são guardadas em graus decimais usando o datum WGS84.
+ * - UI (View) consome via Service; este modelo não contém lógica de
+ * apresentação.
+ * 
+ * A latitude e a longitude são guardadas em graus decimais usando o datum
+ * WGS84.
  * O {@code name} pode ser {@code null} para indicar um ponto sem nome.
  */
 public class Point {
-    /** A latitude em graus decimais. */
+    // A latitude em graus decimais.
     private double latitude;
-    /** A longitude em graus decimais. */
+    // A longitude em graus decimais.
     private double longitude;
-    /** Um nome legível para o ponto; pode ser {@code null}. */
+    // Um nome legível para o ponto; pode ser {@code null}.
     private String name;
 
     /**
@@ -29,8 +31,10 @@ public class Point {
     /**
      * Cria um novo {@link Point}.
      *
-     * @param latitude  latitude em graus decimais; positiva para norte, negativa para sul
-     * @param longitude longitude em graus decimais; positiva para este, negativa para oeste
+     * @param latitude  latitude em graus decimais; positiva para norte, negativa
+     *                  para sul
+     * @param longitude longitude em graus decimais; positiva para este, negativa
+     *                  para oeste
      * @param name      nome opcional do ponto; pode ser {@code null}
      */
     public Point(double latitude, double longitude, String name) {
@@ -69,7 +73,8 @@ public class Point {
     @Override
     /**
      * Devolve uma representação textual concisa do ponto no formato
-     * {@code nome(latitude, longitude)}. Se o ponto não tiver nome, é usado {@code ?}.
+     * {@code nome(latitude, longitude)}. Se o ponto não tiver nome, é usado
+     * {@code ?}.
      *
      * @return representação textual deste ponto
      */
