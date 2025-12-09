@@ -1,12 +1,23 @@
 package com.myapp.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.myapp.model.POI;
 import com.myapp.model.Point;
 import com.myapp.model.Route;
 import com.myapp.model.TransportMode;
 import com.myapp.service.Service;
 import com.myapp.utils.RouteExporter;
-import com.sothawo.mapjfx.*;
+import com.sothawo.mapjfx.Configuration;
+import com.sothawo.mapjfx.Coordinate;
+import com.sothawo.mapjfx.CoordinateLine;
+import com.sothawo.mapjfx.Extent;
+import com.sothawo.mapjfx.MapLabel;
+import com.sothawo.mapjfx.MapView;
+import com.sothawo.mapjfx.Marker;
+import com.sothawo.mapjfx.Projection;
+import com.sothawo.mapjfx.event.MapViewEvent;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -15,15 +26,25 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.FileChooser;
-import javafx.scene.layout.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import com.sothawo.mapjfx.event.MapViewEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Interface gráfica (View) principal da aplicação de planeamento de rotas.
@@ -63,9 +84,6 @@ public class MapViewer extends Application {
     // Time conversion
     private static final long SECONDS_PER_MINUTE = 60L;
 
-    // Autocomplete debounce
-    private static final long AUTOCOMPLETE_DEBOUNCE_MS = 500L;
-
     // Map elements
     private final MapView mapView = new MapView();
     private Marker originMarker = null;
@@ -79,13 +97,13 @@ public class MapViewer extends Application {
     // UI
     private TextField origemField;
     private TextField pesquisaField;
-    private VBox waypointListUI = new VBox(8);
-    private VBox poiListUI = new VBox(5);
+    private final VBox waypointListUI = new VBox(8);
+    private final VBox poiListUI = new VBox(5);
 
-    private Label routeSummaryLabel = new Label("Defina origem e pontos de paragem...");
-    private Label poiSummaryLabel = new Label("Pontos de Interesse: 0");
+    private final Label routeSummaryLabel = new Label("Defina origem e pontos de paragem...");
+    private final Label poiSummaryLabel = new Label("Pontos de Interesse: 0");
 
-    private ComboBox<String> poiFilterBox = new ComboBox<>();
+    private final ComboBox<String> poiFilterBox = new ComboBox<>();
 
     private Point lastSearchPoint = null;
     private Route lastRoute = null;
@@ -93,10 +111,7 @@ public class MapViewer extends Application {
     private TransportMode selectedMode = TransportMode.CAR;
 
     private final Service service = new Service();
-    private ContextMenu suggestionsMenu = new ContextMenu();
-
-    // Debounce timer for autocomplete
-    private javafx.animation.Timeline debounceTimer;
+    private final ContextMenu suggestionsMenu = new ContextMenu();
 
     private final com.myapp.utils.HistoryManager historyManager = new com.myapp.utils.HistoryManager();
 

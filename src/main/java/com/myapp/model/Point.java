@@ -1,5 +1,7 @@
 package com.myapp.model;
 
+import java.util.Locale;
+
 /**
  * Representa um ponto geográfico com latitude, longitude e um nome opcional.
  *
@@ -79,6 +81,6 @@ public class Point {
      * @return representação textual deste ponto
      */
     public String toString() {
-        return String.format("%s(%.5f, %.5f)", name == null ? "?" : name, latitude, longitude);
+        return String.format(Locale.US, "%s(%.5f, %.5f)", name == null ? "?" : name, latitude, longitude);
     }
 }

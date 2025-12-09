@@ -1,13 +1,14 @@
 package com.myapp.utils;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Locale;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.myapp.model.POI;
 import com.myapp.model.Point;
 import com.myapp.model.Route;
-
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * Utilitário para exportação de rotas para formatos comuns.
@@ -87,26 +88,22 @@ public class RouteExporter {
      */
     public static void exportToGPX(Route route, String filePath) throws IOException {
         StringBuilder gpx = new StringBuilder();
-        gpx.append("""
-                <?xml version="1.0" encoding="UTF-8"?>
-                <gpx version="1.1" creator="MyApp" xmlns="http://www.topografix.com/GPX/1/1">
-                  <trk>
-                    <name>Route Export</name>
-                    <trkseg>
-                """);
+        gpx.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        gpx.append("<gpx version=\"1.1\" creator=\"MyApp\" xmlns=\"http://www.topografix.com/GPX/1/1\">\n");
+        gpx.append("  <trk>\n");
+        gpx.append("    <name>Route Export</name>\n");
+        gpx.append("    <trkseg>\n");
 
         for (Point p : route.getRoutePoints()) {
-            gpx.append(String.format(
-                    "      <trkpt lat=\"%.6f\" lon=\"%.6f\"></trkpt>\n",
-                    p.getLatitude(),
-                    p.getLongitude()));
+            gpx.append(String.format(Locale.US,
+                "      <trkpt lat=\"%.6f\" lon=\"%.6f\">\n",
+                p.getLatitude(),
+                p.getLongitude()));
         }
 
-        gpx.append("""
-                    </trkseg>
-                  </trk>
-                </gpx>
-                """);
+        gpx.append("    </trkseg>\n");
+        gpx.append("  </trk>\n");
+        gpx.append("</gpx>\n");
 
         try (FileWriter fw = new FileWriter(filePath)) {
             fw.write(gpx.toString());

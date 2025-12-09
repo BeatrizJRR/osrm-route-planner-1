@@ -1,19 +1,19 @@
 package com.myapp.utils;
 
-import com.myapp.model.POI;
-import com.myapp.model.Point;
-import com.myapp.model.Route;
-import com.myapp.model.TransportMode;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import com.myapp.model.POI;
+import com.myapp.model.Point;
+import com.myapp.model.Route;
+import com.myapp.model.TransportMode;
 
 public class RouteExporterTest {
 

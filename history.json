@@ -1,6 +1,28 @@
 [
   {
     "origin": {
+      "latitude": 38.7904338,
+      "longitude": -9.1792617,
+      "name": "Odivelas, Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 38.8308741,
+      "longitude": -9.1684512,
+      "name": "Loures, Lisboa, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 38.8308741,
+        "longitude": -9.1684512,
+        "name": "Loures, Lisboa, Portugal"
+      }
+    ],
+    "mode": "BIKE",
+    "timestamp": "09/12/2025 18:52",
+    "description": "Odivelas, Lisboa, Portugal âž” Loures, Lisboa, Portugal (BIKE)"
+  },
+  {
+    "origin": {
       "latitude": 38.93839968155254,
       "longitude": -9.329500805664065
     },
@@ -22,7 +44,7 @@
     "origin": {
       "latitude": -22.8710506,
       "longitude": -43.4716976,
-      "name": "Rua Portugal, Bairro Nova Aliança, Bangu, Rio de Janeiro, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 21840-600, Brasil"
+      "name": "Rua Portugal, Bairro Nova Alianï¿½a, Bangu, Rio de Janeiro, Regiï¿½o Geogrï¿½fica Imediata do Rio de Janeiro, Regiï¿½o Metropolitana do Rio de Janeiro, Regiï¿½o Geogrï¿½fica Intermediï¿½ria do Rio de Janeiro, Rio de Janeiro, Regiï¿½o Sudeste, 21840-600, Brasil"
     },
     "destination": {
       "latitude": 38.9394678496258,
@@ -36,7 +58,7 @@
     ],
     "mode": "CAR",
     "timestamp": "07/12/2025 11:31",
-    "description": "Rua Portugal, Bairro Nova Aliança, Bangu, Rio de Janeiro, Região Geográfica Imediata do Rio de Janeiro, Região Metropolitana do Rio de Janeiro, Região Geográfica Intermediária do Rio de Janeiro, Rio de Janeiro, Região Sudeste, 21840-600, Brasil ? null (CAR)"
+    "description": "Rua Portugal, Bairro Nova Alianï¿½a, Bangu, Rio de Janeiro, Regiï¿½o Geogrï¿½fica Imediata do Rio de Janeiro, Regiï¿½o Metropolitana do Rio de Janeiro, Regiï¿½o Geogrï¿½fica Intermediï¿½ria do Rio de Janeiro, Rio de Janeiro, Regiï¿½o Sudeste, 21840-600, Brasil ? null (CAR)"
   },
   {
     "origin": {

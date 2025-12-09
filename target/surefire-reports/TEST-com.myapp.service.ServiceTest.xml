@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="com.myapp.service.ServiceTest" time="4.333" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="com.myapp.service.ServiceTest" time="2.622" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -12,12 +12,11 @@
     <property name="user.timezone" value="Europe/Lisbon"/>
     <property name="os.name" value="Windows 11"/>
     <property name="java.vm.specification.version" value="25"/>
-    <property name="user.country" value="PT"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="PT"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-25\bin"/>
-    <property name="sun.java.command" value="C:\Users\pedro\AppData\Local\Temp\surefire10651623403925859482\surefirebooter-20251204125133958_3.jar C:\Users\pedro\AppData\Local\Temp\surefire10651623403925859482 2025-12-04T12-51-33_892-jvmRun1 surefire-20251204125133958_1tmp surefire_0-20251204125133958_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\pedro\AppData\Local\Temp\surefire17072856129797214395\surefirebooter-20251209190302265_3.jar C:\Users\pedro\AppData\Local\Temp\surefire17072856129797214395 2025-12-09T19-03-02_197-jvmRun1 surefire-20251209190302265_1tmp surefire_0-20251209190302265_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="test" value="com.myapp.service.ServiceTest"/>
     <property name="surefire.test.class.path" value="C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner\target\test-classes;C:\Users\pedro\OneDrive - ISCTE-IUL\Documentos\Mestrado\1º Ano\1º Semestre\UC Arquitetura e Design de Software\Projeto\osrm-route-planner\target\classes;C:\Users\pedro\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-controls\21.0.1\javafx-controls-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-graphics\21.0.1\javafx-graphics-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-base\21.0.1\javafx-base-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-web\21.0.1\javafx-web-21.0.1-win.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1.jar;C:\Users\pedro\.m2\repository\org\openjfx\javafx-media\21.0.1\javafx-media-21.0.1-win.jar;C:\Users\pedro\.m2\repository\com\sothawo\mapjfx\3.0.0\mapjfx-3.0.0.jar;C:\Users\pedro\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\pedro\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\pedro\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\pedro\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\pedro\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\pedro\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;C:\Users\pedro\.m2\repository\org\mockito\mockito-core\5.7.0\mockito-core-5.7.0.jar;C:\Users\pedro\.m2\repository\net\bytebuddy\byte-buddy\1.14.9\byte-buddy-1.14.9.jar;C:\Users\pedro\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.9\byte-buddy-agent-1.14.9.jar;C:\Users\pedro\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\pedro\.m2\repository\org\mockito\mockito-junit-jupiter\5.7.0\mockito-junit-jupiter-5.7.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\pedro"/>
@@ -31,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\pedro\AppData\Local\Temp\surefire10651623403925859482\surefirebooter-20251204125133958_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\pedro\AppData\Local\Temp\surefire17072856129797214395\surefirebooter-20251209190302265_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="25.0.1+8-LTS-27"/>
@@ -42,7 +41,6 @@
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="maven.ext.class.path" value="C:\Users\pedro\.vscode\extensions\oracle.oracle-java-24.1.2\nbcode\java\maven-nblib\netbeans-eventspy.jar"/>
     <property name="localRepository" value="C:\Users\pedro\.m2\repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="java.io.tmpdir" value="C:\Users\pedro\AppData\Local\Temp\"/>
@@ -52,7 +50,7 @@
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="native.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-25\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;C:\Program Files\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Tools\apache-maven-3.9.11\bin;C:\Users\pedro\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\pedro\AppData\Local\Programs\Python\Python313\;C:\Users\pedro\AppData\Local\Programs\Python\Launcher\;C:\Users\pedro\AppData\Local\Microsoft\WindowsApps;C:\Users\pedro\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files (x86)\Nmap;C:\Users\pedro\AppData\Local\Microsoft\WinGet\Packages\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe;;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-25\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;c:\Users\pedro\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\copilotCli;c:\Users\pedro\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;C:\Program Files\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Tools\apache-maven-3.9.11\bin;C:\Users\pedro\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\pedro\AppData\Local\Programs\Python\Python313\;C:\Users\pedro\AppData\Local\Programs\Python\Launcher\;C:\Users\pedro\AppData\Local\Microsoft\WindowsApps;C:\Users\pedro\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files (x86)\Nmap;C:\Users\pedro\AppData\Local\Microsoft\WinGet\Packages\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe;c:\Users\pedro\.vscode\extensions\vscjava.vscode-java-debug-0.58.3\bundled\scripts\noConfigScripts;."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="stderr.encoding" value="Cp1252"/>
     <property name="java.vendor" value="Oracle Corporation"/>
@@ -61,10 +59,10 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="getRoute_withValidPoints_returnsRoute" classname="com.myapp.service.ServiceTest" time="0.344"/>
-  <testcase name="searchLocations_withValidQuery_returnsResults" classname="com.myapp.service.ServiceTest" time="1.559"/>
+  <testcase name="getRoute_withValidPoints_returnsRoute" classname="com.myapp.service.ServiceTest" time="0.359"/>
+  <testcase name="searchLocations_withValidQuery_returnsResults" classname="com.myapp.service.ServiceTest" time="0.579"/>
   <testcase name="getElevationProfile_withNullRoute_returnsNull" classname="com.myapp.service.ServiceTest" time="0.0"/>
-  <testcase name="getGeocodeFromLocationString_withValidQuery_returnsPoint" classname="com.myapp.service.ServiceTest" time="1.754"/>
-  <testcase name="getPOIsAlongRoute_withNullRoute_returnsEmptyList" classname="com.myapp.service.ServiceTest" time="0.0"/>
-  <testcase name="getGeocodeFromLocationString_withInvalidQuery_returnsNull" classname="com.myapp.service.ServiceTest" time="0.561"/>
+  <testcase name="getGeocodeFromLocationString_withValidQuery_returnsPoint" classname="com.myapp.service.ServiceTest" time="0.887"/>
+  <testcase name="getPOIsAlongRoute_withNullRoute_returnsEmptyList" classname="com.myapp.service.ServiceTest" time="0.001"/>
+  <testcase name="getGeocodeFromLocationString_withInvalidQuery_returnsNull" classname="com.myapp.service.ServiceTest" time="0.693"/>
 </testsuite>
