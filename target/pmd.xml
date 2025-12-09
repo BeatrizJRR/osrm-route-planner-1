@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd" version="7.0.0" timestamp="2025-12-09T22:50:13.084">
+<file name="C:\Users\diogo\OneDrive\Ambiente de Trabalho\ADS\osrm-route-planner\src\main\java\com\myapp\service\Service.java">
+<violation beginline="152" endline="152" begincolumn="25" endcolumn="35" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.service" class="Service" method="getPOIsAlongRoute" variable="index" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="262" endline="262" begincolumn="23" endcolumn="112" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.service" class="Service" method="parseOverpassPOIs" variable="lat" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="264" endline="264" begincolumn="23" endcolumn="112" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.service" class="Service" method="parseOverpassPOIs" variable="lon" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+</file>
+<file name="C:\Users\diogo\OneDrive\Ambiente de Trabalho\ADS\osrm-route-planner\src\main\java\com\myapp\ui\MapViewer.java">
+<violation beginline="872" endline="872" begincolumn="20" endcolumn="44" rule="UnnecessaryFullyQualifiedName" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#unnecessaryfullyqualifiedname" priority="4">
+Unnecessary qualifier 'javafx.scene.paint': 'Color' is already in scope because it is imported in this file
+</violation>
+<violation beginline="896" endline="896" begincolumn="22" endcolumn="46" rule="UnnecessaryFullyQualifiedName" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#unnecessaryfullyqualifiedname" priority="4">
+Unnecessary qualifier 'javafx.scene.paint': 'Color' is already in scope because it is imported in this file
+</violation>
+<violation beginline="902" endline="902" begincolumn="20" endcolumn="44" rule="UnnecessaryFullyQualifiedName" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#unnecessaryfullyqualifiedname" priority="4">
+Unnecessary qualifier 'javafx.scene.paint': 'Color' is already in scope because it is imported in this file
+</violation>
+<violation beginline="907" endline="907" begincolumn="22" endcolumn="46" rule="UnnecessaryFullyQualifiedName" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#unnecessaryfullyqualifiedname" priority="4">
+Unnecessary qualifier 'javafx.scene.paint': 'Color' is already in scope because it is imported in this file
+</violation>
+<violation beginline="911" endline="911" begincolumn="38" endcolumn="66" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="x1" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="912" endline="912" begincolumn="51" endcolumn="94" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="y1" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="913" endline="913" begincolumn="38" endcolumn="70" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="x2" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="914" endline="914" begincolumn="51" endcolumn="98" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="y2" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="920" endline="920" begincolumn="20" endcolumn="44" rule="UnnecessaryFullyQualifiedName" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#unnecessaryfullyqualifiedname" priority="4">
+Unnecessary qualifier 'javafx.scene.paint': 'Color' is already in scope because it is imported in this file
+</violation>
+<violation beginline="922" endline="922" begincolumn="27" endcolumn="40" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="dist" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="923" endline="923" begincolumn="37" endcolumn="53" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="x" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="929" endline="929" begincolumn="37" endcolumn="52" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="elev" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="930" endline="930" begincolumn="50" endcolumn="59" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.ui" class="MapViewer" method="showElevationChart" variable="y" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
+Useless parentheses.
+</violation>
+</file>
+</pmd>

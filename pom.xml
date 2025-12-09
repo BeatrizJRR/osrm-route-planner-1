@@ -100,6 +100,24 @@
         </configuration>
       </plugin>
 
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>3.23.0</version>
+          <executions>
+              <execution>
+                  <phase>verify</phase>
+                  <goals>
+                      <goal>check</goal>
+                      <goal>cpd-check</goal>
+                  </goals>
+              </execution>
+          </executions>
+          <configuration>
+              <printFailingErrors>true</printFailingErrors>
+          </configuration>
+        </plugin>
+
       <!-- Javadoc plugin: generate API docs under site/apidocs and relax doclint -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -155,6 +173,14 @@
             </reports>
           </reportSet>
         </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.23.0</version>
+        <configuration>
+            <linkXRef>false</linkXRef>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

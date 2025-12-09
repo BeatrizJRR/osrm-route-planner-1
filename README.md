@@ -40,3 +40,9 @@ mvn clean package
 - Use the POI controls on the left panel to search for points of interest along the calculated route.
 
 That's it — run `mvn clean javafx:run` and you should see the app window.
+
+## Project Board
+
+Track progress and tasks on Trello:
+
+https://trello.com/invite/b/69081da1b4194bef28773eed/ATTI35a6f12827f22e25b7f88fd8c1654a10B48D052F/projeto-ads
