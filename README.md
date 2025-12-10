@@ -45,4 +45,4 @@ That's it — run `mvn clean javafx:run` and you should see the app window.
 
 Track progress and tasks on Trello:
 
-https://trello.com/invite/b/69081da1b4194bef28773eed/ATTI35a6f12827f22e25b7f88fd8c1654a10B48D052F/projeto-ads
+https://trello.com/b/ooPjXIP7/projeto-ads
