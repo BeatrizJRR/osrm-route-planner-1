@@ -41,6 +41,19 @@ mvn clean package
 
 That's it — run `mvn clean javafx:run` and you should see the app window.
 
+## Quality Report
+
+The latest quality report for the OSRM Route Planner is available at:
+
+🔗 [View the report](https://fredericoperescorreia.github.io/osrm-route-planner/)
+
+This includes:
+- Code quality metrics
+- Static analysis results (PMD, SpotBugs, Checkstyle)
+- Test coverage (JaCoCo)
+- Custom quality summary
+
+
 ## Project Board
 
 Track progress and tasks on Trello:
