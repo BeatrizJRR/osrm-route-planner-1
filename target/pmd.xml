@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd" version="7.0.0" timestamp="2025-12-13T11:57:08.006">
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd" version="7.0.0" timestamp="2025-12-13T12:29:46.274">
 <file name="C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\main\java\com\myapp\service\Service.java">
 <violation beginline="152" endline="152" begincolumn="25" endcolumn="35" rule="UselessParentheses" ruleset="Code Style" package="com.myapp.service" class="Service" method="getPOIsAlongRoute" variable="index" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.0.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
 Useless parentheses.

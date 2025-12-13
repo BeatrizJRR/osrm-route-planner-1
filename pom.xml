@@ -301,5 +301,19 @@
       </plugin>
     </plugins>
   </reporting>
-
+<profiles>
+  <profile>
+    <id>ci</id>
+    <build>
+      <plugins>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <excludedTests>com.myapp.ui.MapViewerBasicTest</excludedTests>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
 </project>

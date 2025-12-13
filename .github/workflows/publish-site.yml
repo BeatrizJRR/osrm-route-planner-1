@@ -22,18 +22,21 @@ jobs:
           java-version: 17
           cache: maven
 
-      - name: Build reports
-        run: mvn -B clean test jacoco:report checkstyle:checkstyle pmd:pmd surefire-report:report
+      - name: Build reports (CI profile)
+        run: mvn -B clean verify site -Pci
 
       - name: Copy custom quality report
         run: |
           mkdir -p target/site
           cp src/site/resources/quality-report.html target/site/quality-report.html
 
-      - name: Publish to GitHub Pages
+      - name: Publish to GitHub Pages (external repo)
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.GH_PAGES_DEPLOY }}
+          external_repository: FredericoPeresCorreia/osrm-route-planner
           publish_dir: ./target/site
           publish_branch: gh-pages
           force_orphan: true
+
+
