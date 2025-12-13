@@ -1,0 +1,7 @@
+<project name="OSRM Route Planner">
+  <body>
+    <menu name="Relatórios">
+      <item name="Relatório de Qualidade" href="quality-report.html"/>
+    </menu>
+  </body>
+</project>
