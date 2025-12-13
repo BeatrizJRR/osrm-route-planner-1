@@ -1,6 +1,207 @@
 [
   {
     "origin": {
+      "latitude": 38.7809542,
+      "longitude": -9.1319006,
+      "name": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal"
+    },
+    "destination": {
+      "latitude": 49.0068908,
+      "longitude": 2.571082,
+      "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+    },
+    "waypoints": [
+      {
+        "latitude": 49.0068908,
+        "longitude": 2.571082,
+        "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 15:00",
+    "description": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal ? Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7809542,
+      "longitude": -9.1319006,
+      "name": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal"
+    },
+    "destination": {
+      "latitude": 49.0068908,
+      "longitude": 2.571082,
+      "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+    },
+    "waypoints": [
+      {
+        "latitude": 49.0068908,
+        "longitude": 2.571082,
+        "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 15:00",
+    "description": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal ? Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7809542,
+      "longitude": -9.1319006,
+      "name": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal"
+    },
+    "destination": {
+      "latitude": 49.0068908,
+      "longitude": 2.571082,
+      "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+    },
+    "waypoints": [
+      {
+        "latitude": 49.0068908,
+        "longitude": 2.571082,
+        "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 15:00",
+    "description": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal ? Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7809542,
+      "longitude": -9.1319006,
+      "name": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal"
+    },
+    "destination": {
+      "latitude": 49.0068908,
+      "longitude": 2.571082,
+      "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+    },
+    "waypoints": [
+      {
+        "latitude": 49.0068908,
+        "longitude": 2.571082,
+        "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+      },
+      {
+        "latitude": 49.0068908,
+        "longitude": 2.571082,
+        "name": "Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 15:00",
+    "description": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal ? Aeroporto de Paris - Charles de Gaulle, Tremblay-en-France, Le Raincy, Seine-Saint-Denis, Ilha de França, França metropolitana, 93290, França (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7809542,
+      "longitude": -9.1319006,
+      "name": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal"
+    },
+    "destination": {
+      "latitude": 37.0174596,
+      "longitude": -7.9739337,
+      "name": "Aeroporto Gago Coutinho, Rua Doutor Guerreiro Ascensão, Montenegro, Faro, 8001-701, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 37.0174596,
+        "longitude": -7.9739337,
+        "name": "Aeroporto Gago Coutinho, Rua Doutor Guerreiro Ascensão, Montenegro, Faro, 8001-701, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 14:59",
+    "description": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal ? Aeroporto Gago Coutinho, Rua Doutor Guerreiro Ascensão, Montenegro, Faro, 8001-701, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7813741,
+      "longitude": -9.1816545,
+      "name": "Rua de Portugal, Bairro da Encosta da Luz, Odivelas, Lisboa, 2675-272, Portugal"
+    },
+    "destination": {
+      "latitude": 37.0174596,
+      "longitude": -7.9739337,
+      "name": "Aeroporto Gago Coutinho, Rua Doutor Guerreiro Ascensão, Montenegro, Faro, 8001-701, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 37.0174596,
+        "longitude": -7.9739337,
+        "name": "Aeroporto Gago Coutinho, Rua Doutor Guerreiro Ascensão, Montenegro, Faro, 8001-701, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 14:58",
+    "description": "Rua de Portugal, Bairro da Encosta da Luz, Odivelas, Lisboa, 2675-272, Portugal ? Aeroporto Gago Coutinho, Rua Doutor Guerreiro Ascensão, Montenegro, Faro, 8001-701, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7813741,
+      "longitude": -9.1816545,
+      "name": "Rua de Portugal, Bairro da Encosta da Luz, Odivelas, Lisboa, 2675-272, Portugal"
+    },
+    "destination": {
+      "latitude": 37.12341587100428,
+      "longitude": -8.519976869714355
+    },
+    "waypoints": [
+      {
+        "latitude": 37.12341587100428,
+        "longitude": -8.519976869714355
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 14:57",
+    "description": "Rua de Portugal, Bairro da Encosta da Luz, Odivelas, Lisboa, 2675-272, Portugal ? null (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7813741,
+      "longitude": -9.1816545,
+      "name": "Rua de Portugal, Bairro da Encosta da Luz, Odivelas, Lisboa, 2675-272, Portugal"
+    },
+    "destination": {
+      "latitude": 41.1502195,
+      "longitude": -8.6103497,
+      "name": "Porto, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 41.1502195,
+        "longitude": -8.6103497,
+        "name": "Porto, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 14:57",
+    "description": "Rua de Portugal, Bairro da Encosta da Luz, Odivelas, Lisboa, 2675-272, Portugal ? Porto, Portugal (CAR)"
+  },
+  {
+    "origin": {
+      "latitude": 38.7077507,
+      "longitude": -9.1365919,
+      "name": "Lisboa, Portugal"
+    },
+    "destination": {
+      "latitude": 41.1502195,
+      "longitude": -8.6103497,
+      "name": "Porto, Portugal"
+    },
+    "waypoints": [
+      {
+        "latitude": 41.1502195,
+        "longitude": -8.6103497,
+        "name": "Porto, Portugal"
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "12/12/2025 14:55",
+    "description": "Lisboa, Portugal ? Porto, Portugal (CAR)"
+  },
+  {
+    "origin": {
       "latitude": 38.7904338,
       "longitude": -9.1792617,
       "name": "Odivelas, Lisboa, Portugal"

@@ -1,6 +1,7 @@
 package com.myapp.utils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,11 +33,9 @@ public class RouteExporterTest {
     private Route sampleRoute() {
         List<Point> points = List.of(
                 new Point(41.1579, -8.6291, null),
-                new Point(38.7223, -9.1393, null)
-        );
+                new Point(38.7223, -9.1393, null));
         List<POI> pois = List.of(
-                new POI("Café Central", "amenity:cafe", new Point(41.15, -8.62, "Café Central"))
-        );
+                new POI("Café Central", "amenity:cafe", new Point(41.15, -8.62, "Café Central")));
         return new Route(points, 313.0, 10800L, TransportMode.CAR, new ArrayList<>(pois));
     }
 
@@ -48,7 +47,7 @@ public class RouteExporterTest {
 
         RouteExporter.exportToJson(route, temp.toString());
 
-        String content = Files.readString(temp);
+        String content = Files.readString(temp, StandardCharsets.UTF_8);
         assertTrue(content.contains("\"distance_km\""));
         assertTrue(content.contains("\"duration_sec\""));
         assertTrue(content.contains("\"mode\""));
@@ -65,7 +64,7 @@ public class RouteExporterTest {
 
         RouteExporter.exportToGPX(route, temp.toString());
 
-        String content = Files.readString(temp);
+        String content = Files.readString(temp, StandardCharsets.UTF_8);
         assertTrue(content.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         assertTrue(content.contains("<gpx version=\"1.1\""));
         assertTrue(content.contains("<trkseg>"));

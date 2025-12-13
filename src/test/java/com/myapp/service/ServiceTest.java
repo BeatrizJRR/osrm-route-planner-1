@@ -4,6 +4,8 @@ import com.myapp.model.Point;
 import com.myapp.model.Route;
 import com.myapp.model.TransportMode;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,11 +14,28 @@ import static org.junit.jupiter.api.Assertions.*;
  * 
  * Nota: Como Service tem dependências hard-coded dos clientes,
  * estes testes são de integração básica.
- * Uma refatoração futura permitiria injeção de dependências para mocking completo.
+ * Uma refatoração futura permitiria injeção de dependências para mocking
+ * completo.
  */
 class ServiceTest {
 
     private final Service service = new Service();
+
+    @Test
+    void getRoute_shouldCompleteWithinFiveSeconds() {
+        Point origin = new Point(41.1579, -8.6291, "Porto");
+        Point destination = new Point(38.7223, -9.1393, "Lisboa");
+
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            Route route = service.getRoute(origin, destination, TransportMode.CAR);
+            if (route != null) {
+                assertNotNull(route.getRoutePoints());
+                assertTrue(route.getRoutePoints().size() > 0);
+                assertTrue(route.getDistanceKm() > 0);
+                assertTrue(route.getDurationSec() > 0);
+            }
+        }, "Route calculation exceeded 5 seconds (critically fast response required)");
+    }
 
     @Test
     void getGeocodeFromLocationString_withValidQuery_returnsPoint() {
@@ -72,6 +91,18 @@ class ServiceTest {
         } else {
             System.out.println("Route test skipped: OSRM API unavailable");
         }
+    }
+
+    @Test
+    void getRoute_whenApiFails_shouldReturnNullOrEmptyAndNotThrow() {
+        // Coordinates likely to fail or return no route, but must not throw
+        Point origin = new Point(0.0, 0.0, "Nowhere A");
+        Point destination = new Point(0.1, 0.1, "Nowhere B");
+
+        Route route = service.getRoute(origin, destination, TransportMode.CAR);
+
+        assertTrue(route == null || route.getRoutePoints() == null || route.getRoutePoints().isEmpty(),
+                "Service should fail gracefully without throwing when API is unavailable or returns no route");
     }
 
     @Test

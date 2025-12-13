@@ -2,6 +2,7 @@ package com.myapp.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import com.google.gson.JsonArray;
@@ -71,7 +72,7 @@ public class RouteExporter {
         }
         root.add("pois", pois);
 
-        try (FileWriter fw = new FileWriter(filePath)) {
+        try (FileWriter fw = new FileWriter(filePath, StandardCharsets.UTF_8)) {
             fw.write(root.toString());
         }
     }
@@ -96,16 +97,16 @@ public class RouteExporter {
 
         for (Point p : route.getRoutePoints()) {
             gpx.append(String.format(Locale.US,
-                "      <trkpt lat=\"%.6f\" lon=\"%.6f\">\n",
-                p.getLatitude(),
-                p.getLongitude()));
+                    "      <trkpt lat=\"%.6f\" lon=\"%.6f\">\n",
+                    p.getLatitude(),
+                    p.getLongitude()));
         }
 
         gpx.append("    </trkseg>\n");
         gpx.append("  </trk>\n");
         gpx.append("</gpx>\n");
 
-        try (FileWriter fw = new FileWriter(filePath)) {
+        try (FileWriter fw = new FileWriter(filePath, StandardCharsets.UTF_8)) {
             fw.write(gpx.toString());
         }
     }
