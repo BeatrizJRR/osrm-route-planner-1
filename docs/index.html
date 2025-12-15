@@ -197,7 +197,7 @@
         <div class="header">
             <h1>📊 Relatório de Qualidade</h1>
             <p>OSRM Route Planner v1.0-SNAPSHOT</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Gerado em: 13 de Dezembro de 2025</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Gerado em: 15 de Dezembro de 2025</p>
         </div>
         
         <div class="content">
@@ -205,11 +205,11 @@
             <div class="metrics-grid">
                 <div class="metric-card success">
                     <h3>Cobertura de Código</h3>
-                    <div class="metric-value">16%</div>
+                    <div class="metric-value">35%</div>
                     <div class="metric-label">JaCoCo Coverage</div>
                     <div class="metric-info">
                         <strong>Ferramenta:</strong> JaCoCo 0.8.11<br>
-                        <strong>Testes:</strong> Todos (33 testes)
+                        <strong>Fonte:</strong> Execução mais recente (mvn clean verify)
                     </div>
                 </div>
                 
@@ -218,8 +218,8 @@
                     <div class="metric-value">0</div>
                     <div class="metric-label">Violações Encontradas</div>
                     <div class="metric-info">
-                        <strong>Ferramenta:</strong> PMD 3.23.0<br>
-                        <strong>Análise:</strong> Qualidade de Código
+                        <strong>Ferramenta:</strong> PMD 3.21.0<br>
+                        <strong>Análise:</strong> Relatório gerado (check desativado no build)
                     </div>
                 </div>
                 
@@ -236,10 +236,10 @@
                 <div class="metric-card success">
                     <h3>Testes Unitários</h3>
                     <div class="metric-value">100%</div>
-                    <div class="metric-label">Taxa de Sucesso (33/33)</div>
+                    <div class="metric-label">Taxa de Sucesso (build atual)</div>
                     <div class="metric-info">
                         <strong>Framework:</strong> JUnit 5 / Mockito<br>
-                        <strong>Testes:</strong> 8 classes, 33 casos
+                        <strong>Escopo:</strong> Suites de unidade e serviço
                     </div>
                 </div>
             </div>
@@ -258,12 +258,12 @@
                     <tbody>
                         <tr>
                             <td><strong>Total de Testes</strong></td>
-                            <td>33</td>
+                            <td>Build atual</td>
                             <td><span class="badge badge-success">✓ PASS</span></td>
                         </tr>
                         <tr>
                             <td><strong>Testes com Sucesso</strong></td>
-                            <td>33 (100%)</td>
+                            <td>100%</td>
                             <td><span class="badge badge-success">✓ PASS</span></td>
                         </tr>
                         <tr>
@@ -273,7 +273,7 @@
                         </tr>
                         <tr>
                             <td><strong>Novos Testes Adicionados</strong></td>
-                            <td><span class="badge badge-info">(+3 novos)</span></td>
+                            <td><span class="badge badge-info">Incluídos</span></td>
                             <td><span class="badge badge-success">✓ PASS</span></td>
                         </tr>
                     </tbody>
@@ -331,37 +331,37 @@
                     <tbody>
                         <tr>
                             <td><strong>Instruções</strong></td>
-                            <td>793</td>
-                            <td>4.940</td>
-                            <td>16%</td>
-                            <td><span class="badge badge-danger">Baixo</span></td>
+                            <td>1.748</td>
+                            <td>4.964</td>
+                            <td>35%</td>
+                            <td><span class="badge badge-warning">Médio</span></td>
                         </tr>
                         <tr>
                             <td><strong>Ramos</strong></td>
-                            <td>25</td>
+                            <td>94</td>
                             <td>265</td>
-                            <td>9%</td>
-                            <td><span class="badge badge-danger">Baixo</span></td>
+                            <td>36%</td>
+                            <td><span class="badge badge-warning">Médio</span></td>
                         </tr>
                         <tr>
                             <td><strong>Linhas</strong></td>
-                            <td>199</td>
-                            <td>1.076</td>
-                            <td>18%</td>
-                            <td><span class="badge badge-danger">Baixo</span></td>
+                            <td>399</td>
+                            <td>1.087</td>
+                            <td>37%</td>
+                            <td><span class="badge badge-warning">Médio</span></td>
                         </tr>
                         <tr>
                             <td><strong>Métodos</strong></td>
-                            <td>42</td>
-                            <td>131</td>
-                            <td>32%</td>
+                            <td>61</td>
+                            <td>133</td>
+                            <td>46%</td>
                             <td><span class="badge badge-warning">Médio</span></td>
                         </tr>
                         <tr>
                             <td><strong>Classes</strong></td>
-                            <td>11</td>
+                            <td>14</td>
                             <td>16</td>
-                            <td>69%</td>
+                            <td>88%</td>
                             <td><span class="badge badge-success">Bom</span></td>
                         </tr>
                     </tbody>
