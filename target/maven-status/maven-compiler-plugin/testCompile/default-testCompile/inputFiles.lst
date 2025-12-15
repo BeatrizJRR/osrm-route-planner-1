@@ -1,8 +1,13 @@
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\AppTest.java
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\model\ElevationProfileTest.java
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\model\PointTest.java
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\model\POITest.java
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\model\RouteTest.java
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\service\ServiceTest.java
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\ui\MapViewerBasicTest.java
-C:\Users\bea_j\Documents\GitHub\osrm-route-planner\src\test\java\com\myapp\utils\RouteExporterTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\AppTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\model\ElevationProfileTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\model\HistoryEntryTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\model\PointTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\model\POITest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\model\RouteTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\service\ServiceEdgeCasesTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\service\ServiceParsingTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\service\ServicePublicMethodsTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\service\ServiceTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\ui\MapViewerBasicTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\utils\HistoryManagerTest.java
+C:\Users\Frederico\Desktop\Mestrado\1 Ano\1º Semestre\Arquiteura e Desenho de Software\osrm-route-planner\src\test\java\com\myapp\utils\RouteExporterTest.java

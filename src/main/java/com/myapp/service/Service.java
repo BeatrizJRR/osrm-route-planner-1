@@ -44,10 +44,31 @@ public class Service {
     private static final int MAX_UNIQUE_POIS = 100;
     private static final int MAX_ELEVATION_SAMPLES = 100;
 
-    private final OSRMClient osrmClient = new OSRMClient();
-    private final OverpassClient overpassClient = new OverpassClient();
-    private final NominatimClient nominatimClient = new NominatimClient();
-    private final ElevationClient elevationClient = new ElevationClient();
+    private final OSRMClient osrmClient;
+    private final OverpassClient overpassClient;
+    private final NominatimClient nominatimClient;
+    private final ElevationClient elevationClient;
+
+    /**
+     * Construtor por omissão que instancia clientes reais.
+     */
+    public Service() {
+        this.osrmClient = new OSRMClient();
+        this.overpassClient = new OverpassClient();
+        this.nominatimClient = new NominatimClient();
+        this.elevationClient = new ElevationClient();
+    }
+
+    /**
+     * Construtor alternativo para injeção de dependências (útil para testes).
+     */
+    public Service(OSRMClient osrmClient, OverpassClient overpassClient,
+                   NominatimClient nominatimClient, ElevationClient elevationClient) {
+        this.osrmClient = osrmClient;
+        this.overpassClient = overpassClient;
+        this.nominatimClient = nominatimClient;
+        this.elevationClient = elevationClient;
+    }
 
     /**
      * Obtém uma rota entre dois pontos usando a OSRM e converte o resultado
