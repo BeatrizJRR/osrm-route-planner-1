@@ -63,7 +63,7 @@ public class Service {
      * Construtor alternativo para injeção de dependências (útil para testes).
      */
     public Service(OSRMClient osrmClient, OverpassClient overpassClient,
-                   NominatimClient nominatimClient, ElevationClient elevationClient) {
+            NominatimClient nominatimClient, ElevationClient elevationClient) {
         this.osrmClient = osrmClient;
         this.overpassClient = overpassClient;
         this.nominatimClient = nominatimClient;
@@ -126,8 +126,9 @@ public class Service {
      * @return lista de POIs únicos encontrados (limitada a 100)
      */
     public List<POI> getPOIsAlongRoute(Route route, String type) {
-        if (route == null || route.getRoutePoints().isEmpty())
+        if (route == null || route.getRoutePoints().isEmpty()) {
             return List.of();
+        }
 
         List<POI> result = new ArrayList<>();
         List<Point> points = route.getRoutePoints();
@@ -159,8 +160,9 @@ public class Service {
             default -> null;
         };
 
-        if (tag == null)
+        if (tag == null) {
             return List.of(); // segurança
+        }
 
         // Nova estratégia: dividir rota em SEGMENTOS IGUAIS e pegar poucos POIs de cada
         // Garante distribuição uniforme ao longo de TODA a rota
@@ -171,14 +173,16 @@ public class Service {
         for (int i = 0; i < numSegments; i++) {
             // Calcular índice do ponto médio de cada segmento
             int index = (i * size) / numSegments + (size / numSegments / 2);
-            if (index >= size)
+            if (index >= size) {
                 index = size - 1;
+            }
             selectedCheckpoints.add(points.get(index));
         }
 
         int checkpoints = selectedCheckpoints.size();
-        System.out.println("[POI Search] Rota dividida em " + numSegments
-                + " segmentos iguais para garantir distribuição uniforme.");
+        System.out.println(String.format(
+                "[POI Search] Rota dividida em %d segmentos iguais para garantir distribuição uniforme.",
+                numSegments));
 
         long startTime = System.currentTimeMillis();
         long maxDuration = POI_SEARCH_MAX_DURATION_MS; // limite global para pesquisa de POIs
@@ -187,16 +191,18 @@ public class Service {
             // Timeout
             long elapsed = System.currentTimeMillis() - startTime;
             if (elapsed > maxDuration) {
-                System.out
-                        .println("[POI Search] Timeout " + (elapsed / 1000.0) + "s. POIs coletados: " + result.size());
+                double elapsedSeconds = elapsed / 1000.0;
+                System.out.println(String.format(
+                        "[POI Search] Timeout %.1fs. POIs coletados: %d",
+                        elapsedSeconds, result.size()));
                 break;
             }
 
             Point p = selectedCheckpoints.get(i);
 
-            System.out.println("[POI Search] Segmento " + (i + 1) + "/" + checkpoints +
-                    " (lat=" + String.format("%.4f", p.getLatitude()) +
-                    ", lon=" + String.format("%.4f", p.getLongitude()) + ")");
+            System.out.println(String.format(
+                    "[POI Search] Segmento %d/%d (lat=%.4f, lon=%.4f)",
+                    i + 1, checkpoints, p.getLatitude(), p.getLongitude()));
 
             try {
                 // Delay para rate limit
@@ -220,11 +226,13 @@ public class Service {
                     List<POI> chunkPois = parseOverpassPOIs(json);
 
                     if (!chunkPois.isEmpty()) {
-                        System.out.println("[POI Search] Segmento " + (i + 1) + " - ✓ " + chunkPois.size()
-                                + " POIs | Total: " + (result.size() + chunkPois.size()));
+                        int total = result.size() + chunkPois.size();
+                        System.out.println(String.format(
+                                "[POI Search] Segmento %d - ✓ %d POIs | Total: %d",
+                                i + 1, chunkPois.size(), total));
                         result.addAll(chunkPois);
                     } else {
-                        System.out.println("[POI Search] Segmento " + (i + 1) + " - 0 POIs");
+                        System.out.println(String.format("[POI Search] Segmento %d - 0 POIs", i + 1));
                     }
                 } else {
                     System.out.println("[POI Search] Segmento " + (i + 1) + " - resposta inválida");
@@ -250,8 +258,9 @@ public class Service {
                             &&
                             Math.abs(x.getCoordinate().getLongitude()
                                     - poi.getCoordinate().getLongitude()) < DUPLICATE_COORD_THRESHOLD_DEG);
-            if (!exists)
+            if (!exists) {
                 unique.add(poi);
+            }
         }
 
         // Aplicar limite final
@@ -273,8 +282,9 @@ public class Service {
     private List<POI> parseOverpassPOIs(String json) {
         List<POI> pois = new ArrayList<>();
         JsonObject root = JsonParser.parseString(json).getAsJsonObject();
-        if (!root.has("elements"))
+        if (!root.has("elements")) {
             return pois;
+        }
 
         JsonArray elems = root.getAsJsonArray("elements");
         for (JsonElement el : elems) {
@@ -283,20 +293,24 @@ public class Service {
                     : (obj.has("center") ? obj.getAsJsonObject("center").get("lat").getAsDouble() : Double.NaN);
             double lon = obj.has("lon") ? obj.get("lon").getAsDouble()
                     : (obj.has("center") ? obj.getAsJsonObject("center").get("lon").getAsDouble() : Double.NaN);
-            if (Double.isNaN(lat) || Double.isNaN(lon))
+            if (Double.isNaN(lat) || Double.isNaN(lon)) {
                 continue;
+            }
 
-            String name = null, category = null;
+            String name = null;
+            String category = null;
             if (obj.has("tags")) {
                 JsonObject tags = obj.getAsJsonObject("tags");
-                if (tags.has("name"))
+                if (tags.has("name")) {
                     name = tags.get("name").getAsString();
-                if (tags.has("amenity"))
+                }
+                if (tags.has("amenity")) {
                     category = "amenity:" + tags.get("amenity").getAsString();
-                else if (tags.has("tourism"))
+                } else if (tags.has("tourism")) {
                     category = "tourism:" + tags.get("tourism").getAsString();
-                else if (tags.has("shop"))
+                } else if (tags.has("shop")) {
                     category = "shop:" + tags.get("shop").getAsString();
+                }
             }
             pois.add(new POI(name, category, new Point(lat, lon, name)));
         }
@@ -314,8 +328,9 @@ public class Service {
         try {
             String json = nominatimClient.searchJson(query);
             JsonArray array = JsonParser.parseString(json).getAsJsonArray();
-            if (array.isEmpty())
+            if (array.isEmpty()) {
                 return null;
+            }
 
             JsonElement first = array.get(0);
             double lat = first.getAsJsonObject().get("lat").getAsDouble();
@@ -428,8 +443,9 @@ public class Service {
      * @return perfil de elevação ou {@code null} em caso de erro
      */
     public ElevationProfile getElevationProfile(Route route) {
-        if (route == null || route.getRoutePoints().isEmpty())
+        if (route == null || route.getRoutePoints().isEmpty()) {
             return null;
+        }
 
         List<Point> points = route.getRoutePoints();
 

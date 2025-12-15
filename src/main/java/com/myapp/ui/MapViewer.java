@@ -345,10 +345,11 @@ public class MapViewer extends Application {
 
                 mapView.addEventHandler(MapViewEvent.MAP_CLICKED, event -> {
                     Coordinate c = event.getCoordinate();
-                    if (originMarker == null)
+                    if (originMarker == null) {
                         setOrigin(c);
-                    else
+                    } else {
                         addWaypoint(c, null);
+                    }
                 });
             }
         });
@@ -360,8 +361,9 @@ public class MapViewer extends Application {
      * @param c
      */
     private void setOrigin(Coordinate c) {
-        if (originMarker != null)
+        if (originMarker != null) {
             mapView.removeMarker(originMarker);
+        }
 
         originMarker = Marker.createProvided(Marker.Provided.RED)
                 .setPosition(c)
@@ -373,13 +375,15 @@ public class MapViewer extends Application {
 
     private void handleSetOrigem() {
         String input = origemField.getText().trim();
-        if (input.isEmpty())
+        if (input.isEmpty()) {
             return;
+        }
 
         new Thread(() -> {
             Point result = service.getGeocodeFromLocationString(input);
-            if (result == null)
+            if (result == null) {
                 return;
+            }
 
             Platform.runLater(() -> {
                 Coordinate c = new Coordinate(result.getLatitude(), result.getLongitude());
@@ -456,8 +460,9 @@ public class MapViewer extends Application {
     }
 
     private void addLastSearchAsWaypoint() {
-        if (lastSearchPoint == null)
+        if (lastSearchPoint == null) {
             return;
+        }
         Coordinate c = new Coordinate(lastSearchPoint.getLatitude(), lastSearchPoint.getLongitude());
         addWaypoint(c, lastSearchPoint.getName());
     }
@@ -470,13 +475,15 @@ public class MapViewer extends Application {
             return;
         }
 
-        if (currentRouteLine != null)
+        if (currentRouteLine != null) {
             mapView.removeCoordinateLine(currentRouteLine);
+        }
 
         String originName = origemField.getText();
 
-        if (originName != null && originName.isBlank())
+        if (originName != null && originName.isBlank()) {
             originName = null;
+        }
 
         Point origin = new Point(
                 originMarker.getPosition().getLatitude(),
@@ -544,13 +551,15 @@ public class MapViewer extends Application {
 
     private void handlePesquisar() {
         String query = pesquisaField.getText().trim();
-        if (query.isEmpty())
+        if (query.isEmpty()) {
             return;
+        }
 
         new Thread(() -> {
             Point result = service.getGeocodeFromLocationString(query);
-            if (result == null)
+            if (result == null) {
                 return;
+            }
 
             lastSearchPoint = result;
 
@@ -587,8 +596,9 @@ public class MapViewer extends Application {
                 String queryAtRequestTime = field.getText(); // Pode ser null se mudou entretanto
 
                 // Outra verificação de segurança
-                if (queryAtRequestTime == null || queryAtRequestTime.trim().length() < 3)
+                if (queryAtRequestTime == null || queryAtRequestTime.trim().length() < 3) {
                     return;
+                }
 
                 final String queryFinal = queryAtRequestTime.trim();
 
@@ -650,7 +660,7 @@ public class MapViewer extends Application {
 
         String selected = poiFilterBox.getValue();
 
-        if (selected.equals("Nenhum")) {
+        if ("Nenhum".equals(selected)) {
             clearPOIsFromMap();
             poiSummaryLabel.setText("Pontos de Interesse: 0");
             return;
@@ -721,9 +731,7 @@ public class MapViewer extends Application {
             return;
         }
 
-        for (int i = 0; i < pois.size(); i++) {
-            POI poi = pois.get(i);
-
+        for (POI poi : pois) {
             String name = poi.getName() != null ? poi.getName() : "Sem nome";
             String category = poi.getCategory() != null ? poi.getCategory() : "Desconhecido";
             String address = String.format("%.4f, %.4f",
@@ -760,8 +768,9 @@ public class MapViewer extends Application {
     // Remove todos os Pontos de Interesse do mapa.
 
     private void clearPOIsFromMap() {
-        for (Marker m : poiMarkers)
+        for (Marker m : poiMarkers) {
             mapView.removeMarker(m);
+        }
         poiMarkers.clear();
         currentPOIs.clear();
         poiListUI.getChildren().clear();
@@ -770,8 +779,9 @@ public class MapViewer extends Application {
     // Exporta a rota atual para ficheiro JSON.
 
     private void handleExportJson() {
-        if (lastRoute == null)
+        if (lastRoute == null) {
             return;
+        }
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Rota como JSON");
@@ -794,8 +804,9 @@ public class MapViewer extends Application {
     // Exporta a rota atual para ficheiro GPX.
 
     private void handleExportGpx() {
-        if (lastRoute == null)
+        if (lastRoute == null) {
             return;
+        }
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Rota como GPX");
@@ -869,18 +880,22 @@ public class MapViewer extends Application {
         var gc = canvas.getGraphicsContext2D();
 
         // Fundo
-        gc.setFill(javafx.scene.paint.Color.WHITE);
+        gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, 800, 400);
 
         // Dados
         var elevations = profile.getElevations();
         var distances = profile.getDistances();
 
-        if (elevations.isEmpty())
+        if (elevations.isEmpty()) {
             return;
+        }
 
         // Margens
-        double marginLeft = 60, marginRight = 20, marginTop = 30, marginBottom = 50;
+        double marginLeft = 60;
+        double marginRight = 20;
+        double marginTop = 30;
+        double marginBottom = 50;
         double chartWidth = 800 - marginLeft - marginRight;
         double chartHeight = 400 - marginTop - marginBottom;
 
@@ -889,22 +904,23 @@ public class MapViewer extends Application {
         double maxElev = profile.getMaxElevation();
         double minElev = profile.getMinElevation();
         double elevRange = maxElev - minElev;
-        if (elevRange < 10)
+        if (elevRange < 10) {
             elevRange = 10; // Evitar divisão por zero
+        }
 
         // Eixos
-        gc.setStroke(javafx.scene.paint.Color.BLACK);
+        gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
         gc.strokeLine(marginLeft, marginTop, marginLeft, marginTop + chartHeight); // Y
         gc.strokeLine(marginLeft, marginTop + chartHeight, marginLeft + chartWidth, marginTop + chartHeight); // X
 
         // Labels eixos
-        gc.setFill(javafx.scene.paint.Color.BLACK);
+        gc.setFill(Color.BLACK);
         gc.fillText("Elevação (m)", 5, marginTop + chartHeight / 2);
         gc.fillText("Distância (km)", marginLeft + chartWidth / 2 - 40, marginTop + chartHeight + 40);
 
         // Desenhar perfil
-        gc.setStroke(javafx.scene.paint.Color.BLUE);
+        gc.setStroke(Color.BLUE);
         gc.setLineWidth(2);
 
         for (int i = 0; i < elevations.size() - 1; i++) {
@@ -917,7 +933,7 @@ public class MapViewer extends Application {
         }
 
         // Marcadores no eixo X
-        gc.setFill(javafx.scene.paint.Color.BLACK);
+        gc.setFill(Color.BLACK);
         for (int i = 0; i <= 5; i++) {
             double dist = (maxDist / 5) * i;
             double x = marginLeft + (dist / maxDist) * chartWidth;
@@ -955,15 +971,17 @@ public class MapViewer extends Application {
     // Reseta todos os dados e o mapa para o estado inicial.
 
     private void resetAll() {
-        if (originMarker != null)
+        if (originMarker != null) {
             mapView.removeMarker(originMarker);
+        }
         originMarker = null;
 
         clearWaypoints();
         clearPOIsFromMap();
 
-        if (currentRouteLine != null)
+        if (currentRouteLine != null) {
             mapView.removeCoordinateLine(currentRouteLine);
+        }
         currentRouteLine = null;
 
         origemField.setText("");

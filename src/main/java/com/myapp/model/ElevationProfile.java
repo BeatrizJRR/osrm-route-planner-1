@@ -55,10 +55,11 @@ public class ElevationProfile {
 
             if (i > 0) {
                 double diff = elev - elevations.get(i - 1);
-                if (diff > 0)
+                if (diff > 0) {
                     ascent += diff;
-                else
+                } else {
                     descent += Math.abs(diff);
+                }
             }
         }
 
