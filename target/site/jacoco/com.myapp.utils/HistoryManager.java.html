@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HistoryManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">osrm-route-planner</a> &gt; <a href="index.source.html" class="el_package">com.myapp.utils</a> &gt; <span class="el_source">HistoryManager.java</span></div><h1>HistoryManager.java</h1><pre class="source lang-java linenums">package com.myapp.utils;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HistoryManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">osrm-route-planner</a> &gt; <a href="index.source.html" class="el_package">com.myapp.utils</a> &gt; <span class="el_source">HistoryManager.java</span></div><h1>HistoryManager.java</h1><pre class="source lang-java linenums">package com.myapp.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,51 +12,57 @@ import java.util.List;
 
 // Gere a persistência do histórico de rotas em ficheiro JSON.
 public class HistoryManager {
-    private static final String FILE_NAME = &quot;history.json&quot;;
-<span class="nc" id="L16">    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();</span>
+<span class="fc" id="L15">    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();</span>
+    private final String fileName;
     private List&lt;HistoryEntry&gt; history;
 
-<span class="nc" id="L19">    public HistoryManager() {</span>
-<span class="nc" id="L20">        this.history = loadHistory();</span>
+    public HistoryManager() {
+<span class="nc" id="L20">        this(&quot;history.json&quot;);</span>
 <span class="nc" id="L21">    }</span>
+
+    // Construtor adicional para permitir injeção de caminho de ficheiro (útil para testes)
+<span class="fc" id="L24">    public HistoryManager(String fileName) {</span>
+<span class="fc" id="L25">        this.fileName = fileName;</span>
+<span class="fc" id="L26">        this.history = loadHistory();</span>
+<span class="fc" id="L27">    }</span>
 
     // Adiciona uma nova entrada e guarda no ficheiro.
     public void addEntry(HistoryEntry entry) {
-<span class="nc" id="L25">        history.add(0, entry); // Adiciona no início (mais recente primeiro)</span>
-<span class="nc" id="L26">        saveHistory();</span>
-<span class="nc" id="L27">    }</span>
+<span class="fc" id="L31">        history.add(0, entry); // Adiciona no início (mais recente primeiro)</span>
+<span class="fc" id="L32">        saveHistory();</span>
+<span class="fc" id="L33">    }</span>
 
     public List&lt;HistoryEntry&gt; getHistory() {
-<span class="nc" id="L30">        return history;</span>
+<span class="fc" id="L36">        return history;</span>
     }
 
     public void clearHistory() {
-<span class="nc" id="L34">        history.clear();</span>
-<span class="nc" id="L35">        saveHistory();</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L40">        history.clear();</span>
+<span class="fc" id="L41">        saveHistory();</span>
+<span class="fc" id="L42">    }</span>
 
     private void saveHistory() {
-<span class="nc" id="L39">        try (Writer writer = new FileWriter(FILE_NAME)) {</span>
-<span class="nc" id="L40">            GSON.toJson(history, writer);</span>
-<span class="nc" id="L41">        } catch (IOException e) {</span>
-<span class="nc" id="L42">            System.err.println(&quot;Erro ao guardar histórico: &quot; + e.getMessage());</span>
-<span class="nc" id="L43">        }</span>
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L45">        try (Writer writer = new FileWriter(fileName)) {</span>
+<span class="fc" id="L46">            GSON.toJson(history, writer);</span>
+<span class="nc" id="L47">        } catch (IOException e) {</span>
+<span class="nc" id="L48">            System.err.println(&quot;Erro ao guardar histórico: &quot; + e.getMessage());</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">    }</span>
 
     private List&lt;HistoryEntry&gt; loadHistory() {
-<span class="nc" id="L47">        File file = new File(FILE_NAME);</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (!file.exists()) {</span>
-<span class="nc" id="L49">            return new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L53">        File file = new File(fileName);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (!file.exists()) {</span>
+<span class="nc" id="L55">            return new ArrayList&lt;&gt;();</span>
         }
 
-<span class="nc" id="L52">        try (Reader reader = new FileReader(file)) {</span>
-<span class="nc" id="L53">            Type listType = new TypeToken&lt;ArrayList&lt;HistoryEntry&gt;&gt;() {</span>
-<span class="nc" id="L54">            }.getType();</span>
-<span class="nc" id="L55">            List&lt;HistoryEntry&gt; loaded = GSON.fromJson(reader, listType);</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">            return loaded != null ? loaded : new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L57">        } catch (IOException e) {</span>
-<span class="nc" id="L58">            System.err.println(&quot;Erro ao ler histórico: &quot; + e.getMessage());</span>
-<span class="nc" id="L59">            return new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L58">        try (Reader reader = new FileReader(file)) {</span>
+<span class="fc" id="L59">            Type listType = new TypeToken&lt;ArrayList&lt;HistoryEntry&gt;&gt;() {</span>
+<span class="fc" id="L60">            }.getType();</span>
+<span class="fc" id="L61">            List&lt;HistoryEntry&gt; loaded = GSON.fromJson(reader, listType);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            return loaded != null ? loaded : new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L63">        } catch (IOException e) {</span>
+<span class="nc" id="L64">            System.err.println(&quot;Erro ao ler histórico: &quot; + e.getMessage());</span>
+<span class="nc" id="L65">            return new ArrayList&lt;&gt;();</span>
         }
     }
 }

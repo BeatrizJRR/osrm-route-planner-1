@@ -12,11 +12,17 @@ import java.util.List;
 
 // Gere a persistência do histórico de rotas em ficheiro JSON.
 public class HistoryManager {
-    private static final String FILE_NAME = "history.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private final String fileName;
     private List<HistoryEntry> history;
 
     public HistoryManager() {
+        this("history.json");
+    }
+
+    // Construtor adicional para permitir injeção de caminho de ficheiro (útil para testes)
+    public HistoryManager(String fileName) {
+        this.fileName = fileName;
         this.history = loadHistory();
     }
 
@@ -36,7 +42,7 @@ public class HistoryManager {
     }
 
     private void saveHistory() {
-        try (Writer writer = new FileWriter(FILE_NAME)) {
+        try (Writer writer = new FileWriter(fileName)) {
             GSON.toJson(history, writer);
         } catch (IOException e) {
             System.err.println("Erro ao guardar histórico: " + e.getMessage());
@@ -44,7 +50,7 @@ public class HistoryManager {
     }
 
     private List<HistoryEntry> loadHistory() {
-        File file = new File(FILE_NAME);
+        File file = new File(fileName);
         if (!file.exists()) {
             return new ArrayList<>();
         }

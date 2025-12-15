@@ -1,7 +1,29 @@
 <project name="OSRM Route Planner">
   <body>
-    <menu name="Relatórios">
-      <item name="Relatório de Qualidade" href="quality-report.html"/>
+    <!-- Project Information Menu -->
+    <menu name="Project Info">
+      <item name="About" href="index.html"/>
+      <item name="Summary" href="summary.html"/>
+      <item name="Dependencies" href="dependencies.html"/>
+      <item name="Dependency Info" href="dependency-info.html"/>
+    </menu>
+
+    <!-- Quality & Code Analysis -->
+    <menu name="Code Quality">
+      <item name="PMD" href="pmd.html"/>
+      <item name="CPD (Duplicate Code)" href="cpd.html"/>
+      <item name="Checkstyle" href="checkstyle.html"/>
+    </menu>
+
+    <!-- Testing & Coverage -->
+    <menu name="Testing &amp; Coverage">
+      <item name="JaCoCo Coverage" href="jacoco/index.html"/>
+    </menu>
+
+    <!-- Documentation -->
+    <menu name="Documentation">
+      <item name="Javadoc" href="apidocs/index.html"/>
+      <item name="Quality Report" href="quality-report.html"/>
     </menu>
   </body>
 </project>
