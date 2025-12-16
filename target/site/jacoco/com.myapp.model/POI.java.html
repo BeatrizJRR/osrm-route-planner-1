@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>POI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">osrm-route-planner</a> &gt; <a href="index.source.html" class="el_package">com.myapp.model</a> &gt; <span class="el_source">POI.java</span></div><h1>POI.java</h1><pre class="source lang-java linenums">package com.myapp.model;
+
+/**
+ * Representa um Ponto de Interesse (POI) com nome, categoria e coordenada.
+ *
+ * Papel na arquitetura MVC:
+ * - Model: entidade de dados imutável que representa um POI.
+ * - Service (Controller) cria POIs a partir de dados da Overpass API.
+ * - UI (View) renderiza POIs no mapa; este modelo não contém lógica de UI.
+ * 
+ * O POI pode ser usado para anotar locais relevantes ao longo de uma rota,
+ * como monumentos, serviços, alertas ou referências de navegação.
+ */
+public class POI {
+    // Nome legível do ponto de interesse.
+    private final String name;
+    // Categoria do ponto de interesse (por exemplo: &quot;monumento&quot;, &quot;serviço&quot;).
+    private final String category;
+    // Coordenada do POI representada por um {@link Point}.
+    private final Point coordinate;
+
+    /**
+     * Cria um novo {@link POI} com os atributos fornecidos.
+     *
+     * @param name       nome do ponto de interesse
+     * @param category   categoria do ponto de interesse
+     * @param coordinate coordenada geográfica do ponto
+     */
+<span class="fc" id="L29">    public POI(String name, String category, Point coordinate) {</span>
+<span class="fc" id="L30">        this.name = name;</span>
+<span class="fc" id="L31">        this.category = category;</span>
+<span class="fc" id="L32">        this.coordinate = coordinate;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Devolve o nome do ponto de interesse.
+     *
+     * @return nome do POI
+     */
+    public String getName() {
+<span class="fc" id="L41">        return name;</span>
+    }
+
+    /**
+     * Devolve a categoria do ponto de interesse.
+     *
+     * @return categoria do POI
+     */
+    public String getCategory() {
+<span class="fc" id="L50">        return category;</span>
+    }
+
+    /**
+     * Devolve a coordenada do ponto de interesse.
+     *
+     * @return coordenada como {@link Point}
+     */
+    public Point getCoordinate() {
+<span class="fc" id="L59">        return coordinate;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

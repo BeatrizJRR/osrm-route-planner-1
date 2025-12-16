@@ -1,0 +1,345 @@
+/* Estilos do Sidebar */
+.sidebar {
+    -fx-background-color: white;
+    -fx-pref-width: 360px;
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+    -fx-background-radius: 18px;
+}
+
+.sidebar-scroll {
+    -fx-background-color: white;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    /* Sombra em camadas aplicada ao ScrollPane para não ser cortada */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 28, 0.35, 0, 0),
+                dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0.2, 0, 2);
+}
+
+.sidebar-scroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-background-radius: 18px;
+}
+
+.sidebar-scroll > .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.sidebar-scroll > .scroll-bar:vertical > .track {
+    -fx-background-color: transparent;
+}
+
+.sidebar-scroll > .scroll-bar:vertical > .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 10px;
+}
+
+.sidebar-scroll > .scroll-bar:vertical > .thumb:hover {
+    -fx-background-color: #999999;
+}
+
+/* Estilo dos Botões - Default */
+
+.sidebar Button {
+    -fx-padding: 10px 15px;
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 6px;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.sidebar Button:hover {
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+.sidebar Button:pressed {
+    -fx-background-color: #1c6396;
+    -fx-translate-y: 1px;
+}
+
+/* Botões de Ação Primária (Ações principais) */
+.btn-primary {
+    -fx-background-color: #27ae60;
+    -fx-font-size: 14px;
+    -fx-padding: 12px 20px;
+    -fx-font-weight: bold;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #229954;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #1e8449;
+}
+
+/* Botões de Ação Secundária (Pesquisar, Adicionar) */
+.btn-secondary {
+    -fx-background-color: #3498db;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Botões de Aviso/Eliminar */
+.btn-danger {
+    -fx-background-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #c0392b;
+}
+
+.btn-danger:pressed {
+    -fx-background-color: #a93226;
+}
+
+/* Botões de Informação (Mostrar, Exibir) */
+.btn-info {
+    -fx-background-color: #9b59b6;
+}
+
+.btn-info:hover {
+    -fx-background-color: #8e44ad;
+}
+
+.btn-info:pressed {
+    -fx-background-color: #7d3c98;
+}
+
+/* Botões de Exportação */
+.btn-export {
+    -fx-background-color: #f39c12;
+}
+
+.btn-export:hover {
+    -fx-background-color: #e67e22;
+}
+
+.btn-export:pressed {
+    -fx-background-color: #d35400;
+}
+
+/* Botões Pequenos de Remoção */
+.btn-remove-small {
+    -fx-background-color: #e74c3c;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 11px;
+}
+
+.btn-remove-small:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* Variante Outline para botão de informação (borda roxa, sem preenchimento) */
+.btn-info-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #8e44ad;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #8e44ad;
+    -fx-font-weight: 600;
+}
+
+.btn-info-outline:hover {
+    -fx-background-color: rgba(142,68,173,0.08);
+}
+
+.btn-info-outline:pressed {
+    -fx-background-color: rgba(142,68,173,0.18);
+}
+
+/* Variante Outline para botão de aviso (borda vermelha, sem preenchimento) */
+.btn-danger-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #e74c3c;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #e74c3c;
+    -fx-font-weight: 600;
+}
+
+.btn-danger-outline:hover {
+    -fx-background-color: rgba(231,76,60,0.08);
+}
+
+.btn-danger-outline:pressed {
+    -fx-background-color: rgba(231,76,60,0.18);
+}
+
+/* Variante Outline para botão secundário (borda azul, sem preenchimento) */
+.btn-secondary-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: 600;
+}
+
+.btn-secondary-outline:hover {
+    -fx-background-color: rgba(52,152,219,0.08);
+}
+
+.btn-secondary-outline:pressed {
+    -fx-background-color: rgba(52,152,219,0.18);
+}
+
+/* Estilos do Botão Toggle (Modo de Transporte) */
+.toggle-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: 600;
+    -fx-padding: 10px 5px;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-min-width: 95px;
+}
+
+.toggle-button:hover {
+    -fx-background-color: rgba(52,152,219,0.08);
+}
+
+.toggle-button:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+.toggle-button:selected:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Contêiner do Mapa */
+.map-container {
+    -fx-background-color: #ddd;
+}
+
+/* Estilos do ComboBox (Filtro de POI) */
+.sidebar .combo-box {
+    -fx-background-color: rgb(207, 205, 205);
+    -fx-background-radius: 6px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 6px;
+    -fx-padding: 8px 12px;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box:hover {
+    -fx-border-color: #999999;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box:focused {
+    -fx-border-color: #141414;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box .list-cell {
+    -fx-padding: 8px 12px;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+/* Hover sobre cada item dentro do dropdown (popup) */
+.sidebar .combo-box .list-cell:hover {
+    -fx-background-color: #d9f8e4; /* verde claro para hover */
+    -fx-text-fill: #000000;
+}
+
+/* Item selecionado na lista */
+.sidebar .combo-box .list-cell:selected {
+    -fx-background-color: transparent; /* cor principal selecionado */
+    -fx-text-fill: #000000;
+}
+
+/* Selecionado + hover (sobre o item já selecionado) */
+.sidebar .combo-box .list-cell:selected:hover {
+    -fx-background-color: #2fcf65; /* ligeira variação */
+    -fx-text-fill: #000000;
+}
+
+/* Estilos equivalentes para o popup interno da ComboBox */
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #d9f8e4;
+    -fx-text-fill: #000000;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+.combo-box-popup .list-view .list-cell:selected:hover {
+    -fx-background-color: #2fcf65;
+    -fx-text-fill: #000000;
+}
+
+.sidebar .combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 8px 0 0;
+}
+
+.sidebar .combo-box .arrow {
+    -fx-background-color: #191818;
+}
+
+.sidebar .combo-box:hover .arrow {
+    -fx-background-color: #201f1f;
+}
+
+/* Estilos da Lista de POI */
+.poi-list-container {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 3;
+}
+
+.poi-label-text {
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff8c00;
+}
+
+.poi-category-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: #666;
+}
+
+.poi-entry {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+}
+
+.poi-entry:hover {
+    -fx-background-color: #fff0f0;
+    -fx-border-color: #3498db;
+    -fx-border-width: 0 0 1 0;
+}
+
+.poi-empty-label {
+    -fx-text-fill: #888;
+    -fx-font-style: italic;
+}
+
+/* Estilos do Gráfico de Elevação */
+.elevation-stats-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+/* Estilos Gerais da Label */
+.label {
+    -fx-wrap-text: true;
+}

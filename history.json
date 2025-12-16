@@ -1,6 +1,25 @@
 [
   {
     "origin": {
+      "latitude": 38.87214184082839,
+      "longitude": -9.317141186523438
+    },
+    "destination": {
+      "latitude": 38.978978755335675,
+      "longitude": -9.027376782226565
+    },
+    "waypoints": [
+      {
+        "latitude": 38.978978755335675,
+        "longitude": -9.027376782226565
+      }
+    ],
+    "mode": "CAR",
+    "timestamp": "16/12/2025 00:04",
+    "description": "null ? null (CAR)"
+  },
+  {
+    "origin": {
       "latitude": 38.7809542,
       "longitude": -9.1319006,
       "name": "Aeroporto Humberto Delgado, Alameda das Comunidades Portuguesas, Olivais, Lisboa, 1700-111, Portugal"

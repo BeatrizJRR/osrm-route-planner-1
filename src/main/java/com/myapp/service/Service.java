@@ -172,7 +172,7 @@ public class Service {
 
         for (int i = 0; i < numSegments; i++) {
             // Calcular índice do ponto médio de cada segmento
-            int index = (i * size) / numSegments + (size / numSegments / 2);
+            int index = i * size / numSegments + size / numSegments / 2;
             if (index >= size) {
                 index = size - 1;
             }
@@ -290,9 +290,9 @@ public class Service {
         for (JsonElement el : elems) {
             JsonObject obj = el.getAsJsonObject();
             double lat = obj.has("lat") ? obj.get("lat").getAsDouble()
-                    : (obj.has("center") ? obj.getAsJsonObject("center").get("lat").getAsDouble() : Double.NaN);
+                    : obj.has("center") ? obj.getAsJsonObject("center").get("lat").getAsDouble() : Double.NaN;
             double lon = obj.has("lon") ? obj.get("lon").getAsDouble()
-                    : (obj.has("center") ? obj.getAsJsonObject("center").get("lon").getAsDouble() : Double.NaN);
+                    : obj.has("center") ? obj.getAsJsonObject("center").get("lon").getAsDouble() : Double.NaN;
             if (Double.isNaN(lat) || Double.isNaN(lon)) {
                 continue;
             }
@@ -419,7 +419,7 @@ public class Service {
 
     // Calcular distância em km entre dois pontos usando fórmula de Haversine
     private double calculateDistance(Point p1, Point p2) {
-        final double R = 6371.0; // Raio da Terra em km
+        final double r = 6371.0; // Raio da Terra em km
 
         double lat1 = Math.toRadians(p1.getLatitude());
         double lat2 = Math.toRadians(p2.getLatitude());
@@ -432,7 +432,7 @@ public class Service {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c;
+        return r * c;
     }
 
     /**

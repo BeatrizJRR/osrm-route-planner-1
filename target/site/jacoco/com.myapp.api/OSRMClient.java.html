@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OSRMClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">osrm-route-planner</a> &gt; <a href="index.source.html" class="el_package">com.myapp.api</a> &gt; <span class="el_source">OSRMClient.java</span></div><h1>OSRMClient.java</h1><pre class="source lang-java linenums">package com.myapp.api;
+
+import com.myapp.model.Point;
+import com.myapp.model.TransportMode;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.List;
+import java.util.Locale;
+
+
+/**
+ * Cliente para a API OSRM (Open Source Routing Machine).
+ *
+ * Papel na arquitetura MVC:
+ * - Camada API (infra): executa chamadas HTTP à OSRM.
+ * - A camada Service (Controller) decide perfis/modos e pós-processa resultados.
+ * - Model representa entidades como `Route` e `Point`; UI consome via Service.
+ *
+ * Endpoints utilizados:
+ * - GET {@code /route/v1/{profile}/{coordinates}} com parâmetros {@code overview=full} e {@code geometries=geojson}.
+ *   Referência: https://project-osrm.org/docs/v5.27.0/api/#route-service
+ */
+<span class="fc" id="L30">public class OSRMClient {</span>
+    private static final String BASE_URL = &quot;https://router.project-osrm.org/route/v1/&quot;;
+
+    private static final String PROFILE_DRIVING = &quot;driving&quot;;
+    private static final String PROFILE_CYCLING = &quot;cycling&quot;;
+    private static final String PROFILE_WALKING = &quot;walking&quot;;
+
+    private static final String QUERY_PARAMS = &quot;?overview=full&amp;geometries=geojson&quot;;
+    private static final String HEADER_USER_AGENT = &quot;User-Agent&quot;;
+    private static final String USER_AGENT_VALUE = &quot;ProjetoADS/1.0&quot;;
+<span class="fc" id="L40">    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);</span>
+
+<span class="fc" id="L42">    private static final HttpClient CLIENT = HttpClient.newBuilder()</span>
+<span class="fc" id="L43">            .connectTimeout(DEFAULT_TIMEOUT)</span>
+<span class="fc" id="L44">            .build();</span>
+
+    /**
+     * Obtém uma rota simples entre origem e destino no formato JSON da OSRM.
+     *
+     * Mapeamento para OSRM: GET
+     * {@code /route/v1/{profile}/{lon,lat;lon,lat}?overview=full&amp;geometries=geojson}
+     *
+     * @param origin      ponto de origem
+     * @param destination ponto de destino
+     * @param mode        modo de transporte (perfil OSRM: driving/cycling/walking)
+     * @return resposta JSON devolvida pela OSRM
+     * @throws IOException            erro de I/O ao comunicar
+     * @throws InterruptedException   se a thread for interrompida durante o pedido
+     */
+    public String getRouteJson(Point origin, Point destination, TransportMode mode) throws IOException, InterruptedException {
+<span class="pc bpc" id="L60" title="3 of 4 branches missed.">        String profile = switch (mode) {</span>
+<span class="fc" id="L61">            case CAR -&gt; PROFILE_DRIVING;</span>
+<span class="nc" id="L62">            case BIKE -&gt; PROFILE_CYCLING;</span>
+<span class="nc" id="L63">            case FOOT -&gt; PROFILE_WALKING;</span>
+<span class="pc" id="L64">            default -&gt; PROFILE_DRIVING;</span>
+        };
+
+<span class="fc" id="L67">        String coords = String.format(Locale.US, &quot;%f,%f;%f,%f&quot;,</span>
+<span class="fc" id="L68">                origin.getLongitude(), origin.getLatitude(),</span>
+<span class="fc" id="L69">                destination.getLongitude(), destination.getLatitude());</span>
+
+<span class="fc" id="L71">        String url = BASE_URL + profile + &quot;/&quot; + URLEncoder.encode(coords, StandardCharsets.UTF_8)</span>
+            + QUERY_PARAMS;
+<span class="fc" id="L73">        HttpRequest request = HttpRequest.newBuilder()</span>
+<span class="fc" id="L74">                .uri(URI.create(url))</span>
+<span class="fc" id="L75">            .timeout(DEFAULT_TIMEOUT)</span>
+<span class="fc" id="L76">            .header(HEADER_USER_AGENT, USER_AGENT_VALUE)</span>
+<span class="fc" id="L77">                .GET()</span>
+<span class="fc" id="L78">                .build();</span>
+
+<span class="fc" id="L80">        HttpResponse&lt;String&gt; response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());</span>
+<span class="fc" id="L81">        return response.body(); </span>
+    }
+
+    /**
+     * Obtém uma rota com pontos intermédios (waypoints) no formato JSON da OSRM.
+     *
+     * Mapeamento para OSRM: GET
+     * {@code /route/v1/{profile}/{lon,lat;lon,lat;...}?overview=full&amp;geometries=geojson}
+     *
+     * @param origin    ponto de origem
+     * @param waypoints lista de pontos intermédios na ordem desejada
+     * @param mode      modo de transporte (perfil OSRM)
+     * @return resposta JSON devolvida pela OSRM
+     * @throws IOException          erro de I/O ao comunicar
+     * @throws InterruptedException se a thread for interrompida
+     */
+    public String getRouteJsonWithWaypoints(Point origin, List&lt;Point&gt; waypoints, TransportMode mode)
+        throws IOException, InterruptedException {
+
+<span class="nc bnc" id="L100" title="All 4 branches missed.">        String profile = switch (mode) {</span>
+<span class="nc" id="L101">            case CAR -&gt; PROFILE_DRIVING;</span>
+<span class="nc" id="L102">            case BIKE -&gt; PROFILE_CYCLING;</span>
+<span class="nc" id="L103">            case FOOT -&gt; PROFILE_WALKING;</span>
+<span class="nc" id="L104">            default -&gt; PROFILE_DRIVING;</span>
+        };
+
+<span class="nc" id="L107">        StringBuilder url = new StringBuilder(BASE_URL);</span>
+<span class="nc" id="L108">        url.append(profile).append(&quot;/&quot;);</span>
+
+        // Origin
+<span class="nc" id="L111">        url.append(origin.getLongitude()).append(&quot;,&quot;).append(origin.getLatitude());</span>
+
+        // Waypoints
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        for (Point wp : waypoints) {</span>
+<span class="nc" id="L115">            url.append(&quot;;&quot;)</span>
+<span class="nc" id="L116">                    .append(wp.getLongitude())</span>
+<span class="nc" id="L117">                    .append(&quot;,&quot;)</span>
+<span class="nc" id="L118">                    .append(wp.getLatitude());</span>
+<span class="nc" id="L119">        }</span>
+
+        // Full geometry and overview
+<span class="nc" id="L122">        url.append(QUERY_PARAMS);</span>
+
+<span class="nc" id="L124">        HttpRequest request = HttpRequest.newBuilder()</span>
+<span class="nc" id="L125">            .uri(URI.create(url.toString()))</span>
+<span class="nc" id="L126">            .timeout(DEFAULT_TIMEOUT)</span>
+<span class="nc" id="L127">            .header(HEADER_USER_AGENT, USER_AGENT_VALUE)</span>
+<span class="nc" id="L128">            .GET()</span>
+<span class="nc" id="L129">            .build();</span>
+
+<span class="nc" id="L131">        HttpResponse&lt;String&gt; response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());</span>
+
+<span class="nc" id="L133">        return response.body();</span>
+    }   
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
